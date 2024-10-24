@@ -1,26 +1,24 @@
 package com.example.btl_oop.config;
 
+import com.example.btl_oop.entity.Role;
 import com.example.btl_oop.entity.User;
+import com.example.btl_oop.repository.RoleRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import java.util.*;
 
 public class MyUserDetails implements UserDetails {
+
+    private static RoleRepository roleRepository;
     private String username;
     private String password;
     private List<GrantedAuthority> authorities;
     public MyUserDetails(User user) {
         username = user.getUsername();
         password = user.getPassword();
-        authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole_id().getRole_name().name()));
+        Role role = roleRepository.findById(user.getRole_id()).orElse(null);
+        if (role != null && role.getRole_name() != null) authorities = Collections.singletonList(new SimpleGrantedAuthority(role.getRole_name().name()));
     }
 
     @Override
