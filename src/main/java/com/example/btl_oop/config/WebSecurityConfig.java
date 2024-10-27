@@ -1,6 +1,6 @@
 package com.example.btl_oop.config;
 
-import com.example.btl_oop.service.UserServiceImpl;
+import com.example.btl_oop.service.Impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;

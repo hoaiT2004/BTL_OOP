@@ -9,7 +9,8 @@ import java.util.stream.Stream;
 public enum RoleEnum {
 
     Tenant(1),
-    Landlord(2);
+    Landlord(2),
+    Admin(3);
 
     @Getter(onMethod_ = @JsonValue)
     private final Integer value;
