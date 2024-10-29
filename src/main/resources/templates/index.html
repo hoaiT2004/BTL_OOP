@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/static/css/index.css">
     <script src="/static/js/index.js"></script>
     <script src="/static/js/loadData.js"></script>
 </head>
@@ -485,19 +484,26 @@
 </style>
 <body data-spy="scroll" data-target=".nav" data-offset="1">
     <header>
-        <div style="background-color: white;" class="flex bordertop">
+        <div style="background-color: white;" class="flex border top">
             <div class="container">
                 <div class="header flex">
-                    <div class="webicon">
-                        <a th:href="@{/api/home}"><img style="width: 100%; height: 100%;" src="/static/images/tro-sinh-vien2.png" alt=""></a>
+                    <div class="web icon">
+                        <a th:href="@{/api/home}"><img style="width: 50%; height: 50%;" src="https://res.cloudinary.com/hoaptit/image/upload/v1730187948/tro-sinh-vien2_wiuzca.png" alt=""></a>
                     </div>
-                    <div class="rightheader flex">
-                        <div class="big-device flex">
-                            <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
-                                        class="fa fa-sign-in"></i>Đăng nhập</a></div>
-                            <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
-                                        class="fa fa-address-book"></i>Đăng ký</a></div>
+                    <div class="right header flex">
+                        <div th:if="${username != null}" class="big-device flex">
+                            <div><a class="btn italic" th:href="@{/user/profile}"><h4 th:text="${username}"></h4></a></div>
+                            <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
+                                                                                            class="fa fa-address-book"></i>Đăng xuất</a></div>
                             <div><a class="btn header-btn" href="#"><i style="margin-right: 5px;"
+                                                                       class="fas fa-pen-alt"></i>Đăng tin</a></div>
+                        </div>
+                        <div th:if="${username == null}" class="big-device flex">
+                                <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
+                                            class="fa fa-sign-in"></i>Đăng nhập</a></div>
+                                <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
+                                            class="fa fa-address-book"></i>Đăng ký</a></div>
+                                <div><a class="btn header-btn" href="#"><i style="margin-right: 5px;"
                                         class="	fas fa-pen-alt"></i>Đăng tin</a></div>
                         </div>
                         <div class="small-device flex">
@@ -519,9 +525,13 @@
         <div>
             <div class="container">
                 <ul class="menu flex" id="menu">
-                    <li><a class="active" href="#">Trang chủ</a></li>
-                    <li><a href="phongtro.html">Phòng trọ</a></li>
-                    <li><a href="nguyencan.html">Nguyên căn</a></li>
+                    <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
+                    <li><a href="#">Phòng trọ</a></li>
+                    <li><a href="#">Nguyên căn</a></li>
+                    <div th:if="${role == 'Admin'}">
+                        <li><a href="#">Người dùng</a></li>
+                        <li><a href="#">Phòng</a></li>
+                    </div>
                 </ul>
             </div>
         </div>
@@ -608,43 +618,6 @@
                 </div>
                 <div class="right-no-border"></div>
 
-                <div class="left border mt-10">
-                    <h3 class="subject">Cho thuê mặt bằng</h3>
-                    <div class="items" id="matbang">
-                        <div class="item">
-                            <div class="image"><img src="images/tro-1.jpg" style="width: 100%;" /></div>
-                            <div class="info">
-                                <div class="main-title"><a href="/detail.html">Phòng cho thuê rộng rãi thoải mái</a>
-                                </div>
-                                <div class="flex main-info">
-                                    <div>2.8 triệu/tháng</div>
-                                    <div>20m2</div>
-                                    <div>Phường 11,Quận Gò Vấp, Hồ Chí Minh</div>
-                                </div>
-                                <div>Phòng mới xây, thoáng mát, sạch đẹp, tường ốp men cao, có bếp, nhà vệ sinh riêng
-                                </div>
-                                <div class="header">
-                                    <div class="flex">
-                                        <div style="margin-right: 10px;">
-                                            <h4>Tên chủ nhà: </h4>
-                                        </div>
-                                        <div>
-                                            <h4>Nguyễn Văn B</h4>
-                                        </div>
-                                    </div>
-                                    <div class="flex">
-                                        <div style="margin-right: 10px;">
-                                            <h4>Số điện thoại: </h4>
-                                        </div>
-                                        <div>
-                                            <h4>123456789</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="right-no-border"></div>
 
             </div>

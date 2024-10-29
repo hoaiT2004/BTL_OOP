@@ -34,4 +34,6 @@ public class User extends BaseEntity {
     //@OneToOne(cascade = CascadeType.ALL)
     //Mối quan hệ 1:1 với role
     private long role_id;
+
+    private String linkAvatar;
 }

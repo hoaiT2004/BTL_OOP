@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 @ToString
 public class UserDto {
 
+    public long id;
+
     private String username;
 
     private String password;
@@ -27,14 +29,18 @@ public class UserDto {
 
     private long role_id;
 
+    private String linkAvatar;
+
     public static UserDto toDto(User user) {
         return UserDto.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .fullname(user.getFullname())
                 .password(user.getPassword())
                 .tel(user.getTel())
                 .role_id(user.getRole_id())
                 .username(user.getUsername())
+                .linkAvatar(user.getLinkAvatar())
                 .build();
     }
 
@@ -46,6 +52,7 @@ public class UserDto {
                 .tel(user.getTel())
                 .role_id(user.getRole_id())
                 .username(user.getUsername())
+                .linkAvatar(user.getLinkAvatar())
                 .build();
     }
 

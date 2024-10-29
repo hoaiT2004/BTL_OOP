@@ -1,11 +1,13 @@
 package com.example.btl_oop.config;
 
+import com.cloudinary.Api;
 import com.example.btl_oop.service.Impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -53,10 +55,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity https, HttpServletRequest request) throws Exception {
         https
                 .authorizeHttpRequests()
-                .requestMatchers("/api/home","/api/search","/user/getPassword","/user/sendPasswordViaEmail","/user/register","/user/login")
+                .requestMatchers("/api/home","/user/getPassword","/user/sendPasswordViaEmail","/user/register","/user/login")
                 .permitAll()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                //.requestMatchers(HttpMethod.GET, "/static/*")
                 .permitAll()
                 .requestMatchers("/admin/*").hasAuthority("ADMIN")
                 .anyRequest()
@@ -64,20 +65,17 @@ public class WebSecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
-                .loginProcessingUrl("/user/login")
+                .loginProcessingUrl("/user/login/credentials")
                 .defaultSuccessUrl("/api/home")
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
                 .logout()
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                .logoutSuccessUrl("/api/home")
-                .and()
-                .exceptionHandling()
-                .accessDeniedPage("/api/404");
+                .logoutSuccessUrl("/api/home");
 
         return https.build();
     }

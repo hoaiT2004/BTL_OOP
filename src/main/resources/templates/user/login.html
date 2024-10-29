@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="css/login.css">
-    <script src="js/index.js"></script>
     <title>Login</title>
 </head>
 <style>
@@ -191,10 +189,10 @@
     <div class="container">
         <div class="wrap">
             <div class="left-pic">
-                <img style="width: 100%; text-align: center;" src="images/tro-sinh-vien2.png" />
+                <img style="width: 100%; text-align: center;" src="https://res.cloudinary.com/hoaptit/image/upload/v1730187948/tro-sinh-vien2_wiuzca.png"  alt=""/>
             </div>
 
-            <form class="right-form validate-form">
+            <form class="right-form validate-form" th:action="@{/user/login/credentials}" method="post">
                 <span class="form-title">
                     Đăng nhập
                 </span>
@@ -208,7 +206,7 @@
                 </div>
 
                 <div class="wrap-input validate-input" data-validate="Password is required">
-                    <input class="input" type="password" name="pass" placeholder="Mật khẩu..." required>
+                    <input class="input" type="password" name="password" placeholder="Mật khẩu..." required>
                     <span class="focus-input"></span>
                     <span class="symbol-input">
                         <i class="fa fa-lock" aria-hidden="true"></i>
@@ -233,7 +231,7 @@
                 </div>
 
                 <div class="text-center p-t-20">
-                    <a href="register.html">
+                    <a th:href="@{/user/register}">
                         Tạo tài khoản
                         <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                     </a>
@@ -247,5 +245,40 @@
         </div>
     </div>
 </body>
+<script>
 
+    $(document).ready(() => {
+        $('.toggle').click(function () {
+            $('nav').slideToggle();
+        });
+
+        $('textarea').each(function () {
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+        }).on('input', function () {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 150) {
+                $('nav').addClass('sticky');
+                $('ul.menu > li > a').addClass('smaller');
+            } else {
+                $('nav').removeClass('sticky');
+                $('ul.menu > li > a').removeClass('smaller');
+            }
+        })
+    });
+
+
+    window.onload = function() {
+        let images =document.querySelectorAll(".thump img");
+        for(let ima of images)
+            ima.onclick = function() {
+                let d = document.getElementById("main");
+                d.src = this.src;
+            }
+    }
+</script>
 </html>

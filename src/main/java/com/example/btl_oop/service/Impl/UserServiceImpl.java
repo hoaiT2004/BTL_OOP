@@ -1,21 +1,36 @@
 package com.example.btl_oop.service.Impl;
 
 import com.example.btl_oop.config.MyUserDetails;
+import com.example.btl_oop.entity.Role;
 import com.example.btl_oop.entity.User;
+import com.example.btl_oop.model.request.user.ChangeAvatarRequest;
+import com.example.btl_oop.model.request.user.ChangeInfoRequest;
 import com.example.btl_oop.model.request.user.RegisterRequest;
+import com.example.btl_oop.model.response.user.ChangeAvatarResponse;
+import com.example.btl_oop.model.response.user.ChangeInfoResponse;
 import com.example.btl_oop.model.response.user.RegisterResponse;
 import com.example.btl_oop.model.response.user.UserDto;
+import com.example.btl_oop.repository.RoleRepository;
 import com.example.btl_oop.repository.UserRepository;
+import com.example.btl_oop.service.FileService;
 import com.example.btl_oop.service.UserService;
+import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,21 +41,35 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private FileService fileService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> optional = userRepository.findUserByUsername(username);
         if(!optional.isPresent()) throw new RuntimeException("Could not find user by username");
         User user = optional.get();
-        return new MyUserDetails(user);
+        Role role = roleRepository.findById(user.getRole_id()).orElse(null);
+        return new MyUserDetails(user, role);
+    }
+
+    @Override
+    public UserDto findUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> optional = userRepository.findUserByUsername(username);
+        if(!optional.isPresent()) throw new RuntimeException("Could not find user by username");
+        return UserDto.toDto(optional.get());
     }
 
     @Override
     @Transactional
     public RegisterResponse register(RegisterRequest registerRequest) {
         User user1 = userRepository.findUserByUsername(registerRequest.getUsername()).orElse(null);
-        if(user1 != null) return null;
+        if (user1 != null) throw new EntityExistsException("Account existed!");
 
         var user = User.builder()
                 .username(registerRequest.getUsername().toLowerCase())
@@ -48,16 +77,26 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .fullname(registerRequest.getFullname())
                 .email(registerRequest.getEmail())
                 .tel(registerRequest.getTel())
-                .role_id(Long.parseLong(registerRequest.getRole()))
+                .role_id(Long.parseLong(registerRequest.getRole_id()))
+                .linkAvatar("https://res.cloudinary.com/hoaptit/image/upload/v1714322737/samples/people/bicycle.jpg")
                 .build();
         userRepository.save(user);
         return new RegisterResponse(user.getId());
     }
 
-//    @Override
-//    public EditResponse edit(EditRequest request) {
-//        return null;
-//    }
+    @Override
+    @Transactional
+    public ChangeInfoResponse changeInfo(ChangeInfoRequest request) {
+        userRepository.updateInfoUser(request.getTel(), request.getFullname(), request.getUsername());
+        return new ChangeInfoResponse(request.getUsername());
+    }
+
+    @Override
+    public ChangeAvatarResponse changeAvatar(ChangeAvatarRequest request) {
+        String linkAvatar = fileService.uploadFile(request.getFile());
+        userRepository.updateAvatarUser(linkAvatar, request.getUsername());
+        return new ChangeAvatarResponse(request.getUsername());
+    }
 
     @Override
     public UserDto getUserById(long id) {
@@ -65,17 +104,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public Page<UserDto> getAllUser(Integer pageNo) {
-        return null;
-    }
-
-    @Override
-    public Page<UserDto> searchCategory(String keyword, Integer pageNo) {
-        return null;
-    }
-
-    @Override
-    public List<UserDto> searchCategory(String keyword) {
-        return UserDto.toDto(userRepository.findUserByUsernameLike("%" + keyword + "%"));
+    public List<UserDto> getAllUser(String textSearch, Pageable pageable) {
+        Page<User> userPage;
+        if (textSearch != null) {
+            userPage = userRepository.findByUsernameContaining(textSearch, pageable);
+        } else {
+            userPage = userRepository.findAll(pageable);
+        }
+        List<User> userList = new LinkedList<>();
+        userPage.forEach(userList::add);
+        return UserDto.toDto(userList);
     }
 }
