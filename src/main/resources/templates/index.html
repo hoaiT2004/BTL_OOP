@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <script src="/static/js/index.js"></script>
-    <script src="/static/js/loadData.js"></script>
 </head>
 <style>
     * {
@@ -526,12 +524,8 @@
             <div class="container">
                 <ul class="menu flex" id="menu">
                     <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                    <li><a href="#">Phòng trọ</a></li>
-                    <li><a href="#">Nguyên căn</a></li>
-                    <div th:if="${role == 'Admin'}">
-                        <li><a href="#">Người dùng</a></li>
-                        <li><a href="#">Phòng</a></li>
-                    </div>
+                    <li th:if = "${role == 'Admin'}"><a href="#">Người dùng</a></li>
+                    <li th:if = "${role == 'Admin'}"><a href="#">Phòng</a></li>
                 </ul>
             </div>
         </div>
@@ -579,43 +573,7 @@
                     </ul>
                 </div>
 
-                <div class="left border mt-10">
-                    <h3 class="subject">Nhà thuê nguyên căn</h3>
-                    <div class="items" id="nguyencan">
-                        <div class="item">
-                            <div class="image"><img src="images/tro-1.jpg" style="width: 100%;" /></div>
-                            <div class="info">
-                                <div class="main-title"><a href="/detail.html">Phòng cho thuê rộng rãi thoải mái</a>
-                                </div>
-                                <div class="flex main-info">
-                                    <div>2.8 triệu/tháng</div>
-                                    <div>20m2</div>
-                                    <div>Phường 11,Quận Gò Vấp, Hồ Chí Minh</div>
-                                </div>
-                                <div>Phòng mới xây, thoáng mát, sạch đẹp, tường ốp men cao, có bếp, nhà vệ sinh riêng
-                                </div>
-                                <div class="header">
-                                    <div class="flex">
-                                        <div style="margin-right: 10px;">
-                                            <h4>Tên chủ nhà: </h4>
-                                        </div>
-                                        <div>
-                                            <h4>Nguyễn Văn B</h4>
-                                        </div>
-                                    </div>
-                                    <div class="flex">
-                                        <div style="margin-right: 10px;">
-                                            <h4>Số điện thoại: </h4>
-                                        </div>
-                                        <div>
-                                            <h4>123456789</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="right-no-border"></div>
 
                 <div class="right-no-border"></div>
@@ -629,5 +587,144 @@
         <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
     </footer>
 </body>
+<script>
+    function loadCates() {
+        fetch("data/categories.json").then(res => res.json()).then(data => {
+            let h = "";
+            for (let c of data)
+                h += `<li><a class="cate" href="/${c.tag}">${c.name}</a></li>`;
+            let e = document.getElementById("menu");
+            if (e !== null)
+                e.innerHTML += h;
+        })
 
+    }
+
+    function loadInfo() {
+        fetch("data/chung.json").then(res => res.json()).then(data => {
+            let pt = "";
+            let mb = "";
+            let nc = "";
+            for (let p of data)
+                switch (p.cateId) {
+                    case 1: {
+                        pt += `
+                    <div class="item">
+                                    <div class="image"><img src="images/${p.image}" style="width: 100%;" /></div>
+                                    <div class="info">
+                                        <div class="main-title"><a href="tro${p.id}.html">${p.title}</a></div>
+                                        <div class="main-info">
+                                            <div class="price">${p.price} Triệu/tháng</div>
+                                            <div>${p.dientich}m2</div>
+                                            <div>${p.address}</div>
+                                        </div>
+                                        <div>${p.info}
+                                        </div>
+                                        <div>
+                                            <a href="tro${p.id}.html">Xem thông tin chi tiết <i class="fas fa-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                    `;
+                        let e = document.getElementById("phongtro");
+                        if (e !== null)
+                            e.innerHTML = pt;
+                    };
+                        break;
+                    case 2: {
+                        nc += `
+                    <div class="item">
+                                    <div class="image"><img src="images/${p.image}" style="width: 100%;" /></div>
+                                    <div class="info">
+                                        <div class="main-title"><a href="nha${p.id}.html">${p.title}</a></div>
+                                        <div class="main-info">
+                                            <div class="price"><strong>${p.price}</strong> Triệu/tháng</div>
+                                            <div>${p.dientich}m2</div>
+                                            <div>${p.address}</div>
+                                        </div>
+                                        <div>${p.info}
+                                        </div>
+                                        <div>
+                                            <a href="nha${p.id}.html">Xem thông tin chi tiết <i class="fas fa-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                    `;
+                        let e = document.getElementById("nguyencan");
+                        if (e !== null)
+                            e.innerHTML = nc;
+                    };
+                        break;
+                    case 3: {
+                        mb += `
+                    <div class="item">
+                                    <div class="image"><img src="images/${p.image}" style="width: 100%;" /></div>
+                                    <div class="info">
+                                        <div class="main-title"><a href="matbang${p.id}.html">${p.title}</a></div>
+                                        <div class="main-info">
+                                            <div class="price">${p.price} Triệu/tháng</div>
+                                            <div>${p.dientich}m2</div>
+                                            <div>${p.address}</div>
+                                        </div>
+                                        <div>${p.info}
+                                        </div>
+                                        <div>
+                                            <a href="matbang${p.id}.html">Xem thông tin chi tiết <i class="fas fa-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                    `;
+                        let e = document.getElementById("matbang");
+                        if (e !== null)
+                            e.innerHTML = mb;
+                    };
+                        break;
+
+                }
+
+        })
+    }
+
+
+
+    window.onload = function () {
+        loadInfo();
+
+
+    }
+
+    $(document).ready(() => {
+        $('.toggle').click(function () {
+            $('nav').slideToggle();
+        });
+
+        $('textarea').each(function () {
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+        }).on('input', function () {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 150) {
+                $('nav').addClass('sticky');
+                $('ul.menu > li > a').addClass('smaller');
+            } else {
+                $('nav').removeClass('sticky');
+                $('ul.menu > li > a').removeClass('smaller');
+            }
+        })
+    });
+
+
+    window.onload = function() {
+        let images =document.querySelectorAll(".thump img");
+        for(let ima of images)
+            ima.onclick = function() {
+                let d = document.getElementById("main");
+                d.src = this.src;
+            }
+    }
+</script>
 </html>

@@ -95,63 +95,63 @@
         border-bottom: 5px solid lightblue;
     }
 
-    /*@media screen and (max-width: 873px) {*/
-    /*    .menu {*/
-    /*        flex-direction: column;*/
-    /*    }*/
+    @media screen and (max-width: 873px) {
+        .menu {
+            flex-direction: column;
+        }
 
-    /*    .container{*/
-    /*        width: 95%;*/
-    /*    }*/
+        .container{
+            width: 95%;
+        }
 
-    /*    .content {*/
-    /*        display: block;*/
-    /*    }*/
+        .content {
+            display: block;
+        }
 
-    /*    .right {*/
-    /*        width: 100%;*/
-    /*    }*/
+        .right {
+            width: 100%;
+        }
 
-    /*    .left {*/
-    /*        width: 100%;*/
-    /*    }*/
+        .left {
+            width: 100%;
+        }
 
-    /*    .toggle {*/
-    /*        display: block !important;*/
-    /*    }*/
+        .toggle {
+            display: block !important;
+        }
 
-    /*    nav {*/
-    /*        display: none;*/
-    /*    }*/
+        nav {
+            display: none;
+        }
 
-    /*    div.big-device {*/
-    /*        display: none;*/
-    /*    }*/
+        div.big-device {
+            display: none;
+        }
 
-    /*    div.small-device {*/
-    /*        display: flex !important;*/
-    /*    }*/
+        div.small-device {
+            display: flex !important;
+        }
 
-    /*    .main-info {*/
-    /*        display: block;*/
-    /*    }*/
+        .main-info {
+            display: block;
+        }
 
-    /*    .sticky {*/
-    /*        position: absolute !important;*/
-    /*        top: 0;*/
-    /*        width: 100%*/
-    /*    }*/
-    /*    .item{*/
-    /*        display: block !important;*/
-    /*    }*/
-    /*    .image{*/
-    /*        width: 100% !important;*/
-    /*        margin: 0 !important;*/
-    /*    }*/
-    /*    .info{*/
-    /*        width: 100% !important;*/
-    /*    }*/
-    /*}*/
+        .sticky {
+            position: absolute !important;
+            top: 0;
+            width: 100%
+        }
+        .item{
+            display: block !important;
+        }
+        .image{
+            width: 100% !important;
+            margin: 0 !important;
+        }
+        .info{
+            width: 100% !important;
+        }
+    }
 
 
     div.small-device {
@@ -177,33 +177,33 @@
         }
     }
 
-    /*.v-menu {*/
-    /*    flex-direction: column;*/
-    /*    overflow: hidden;*/
-    /*    list-style-type: none;*/
-    /*    padding: 0;*/
-    /*    margin: 0;*/
+    .v-menu {
+        flex-direction: column;
+        overflow: hidden;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
 
-    /*}*/
+    }
 
-    /*.v-menu>li {*/
-    /*    width: 90%;*/
-    /*    border-top: 1px solid lightgray;*/
-    /*}*/
+    .v-menu>li {
+        width: 90%;
+        border-top: 1px solid lightgray;
+    }
 
-    /*.v-menu>li>a {*/
-    /*    float: left;*/
-    /*    display: block;*/
-    /*    color: black;*/
-    /*    text-align: center;*/
-    /*    padding: 14px 16px;*/
-    /*    text-decoration: none;*/
-    /*    font-size: 17px;*/
-    /*}*/
+    .v-menu>li>a {
+        float: left;
+        display: block;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
 
-    /*.v-menu>li>a:hover {*/
-    /*    color: red;*/
-    /*}*/
+    .v-menu>li>a:hover {
+        color: red;
+    }
 
     footer {
         margin-top: 10px;
@@ -276,22 +276,22 @@
         width: 100px;
     }
 
-    /*@media only screen and (max-width: 873px) {*/
-    /*    .comment-info {*/
-    /*        max-width: 90%;*/
-    /*        width: auto;*/
-    /*    }*/
+    @media only screen and (max-width: 873px) {
+        .comment-info {
+            max-width: 90%;
+            width: auto;
+        }
 
-    /*    .comment-info table th,*/
-    /*    .comment-info table td {*/
-    /*        display: block;*/
-    /*    }*/
+        .comment-info table th,
+        .comment-info table td {
+            display: block;
+        }
 
-    /*    .comment-info p button {*/
-    /*        width: 50%;*/
-    /*        min-width: 200px;*/
-    /*    }*/
-    /*}*/
+        .comment-info p button {
+            width: 50%;
+            min-width: 200px;
+        }
+    }
 
     .header-btn {
         color: white;
@@ -468,7 +468,7 @@
                             <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
                                                                                           class="fa fa-address-book"></i>Đăng ký</a></div>
                             <div><a class="btn header-btn" href="#"><i style="margin-right: 5px;"
-                                                                       class="	fas fa-pen-alt"></i>Đăng tin</a></div>
+                                                                       class="fas fa-pen-alt"></i>Đăng tin</a></div>
                         </div>
                         <div class="small-device flex">
                             <div><a href="@{/user/login}" type="button" style="padding: 3px;" class="fa fa-sign-in"></a></div>
@@ -490,12 +490,8 @@
             <div class="container">
                 <ul class="menu flex" id="menu">
                     <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                    <li><a href="#">Phòng trọ</a></li>
-                    <li><a href="#">Nguyên căn</a></li>
-                    <div th:if="${role == 'Admin'}">
-                        <li><a href="#">Người dùng</a></li>
-                        <li><a href="#">Phòng</a></li>
-                    </div>
+                    <li th:if="${role == 'Admin'}"><a href="#">Người dùng</a></li>
+                    <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
                 </ul>
             </div>
         </div>
@@ -511,7 +507,7 @@
             <nav2>
                     <ul>
                         <li><a th:href="@{/user/changePassword}">Thay đổi mật khẩu</a></li>
-                        <li><a th:href="@{/api/book/show}">Đơn hàng của tôi</a></li>
+                        <li><a href="#">Đơn hàng của tôi</a></li>
                         <hr>
                         <li><a th:href="@{/user/logout}">Đăng xuất</a></li>
                     </ul>
@@ -530,7 +526,7 @@
                 <label for="fullName">FullName:</label>
                 <input type="text" id="fullName" name="fullname" th:value="${fullname}" required><br>
                 <label>Email: <span class = "highlight" th:text="${email}"></span></label>
-                <a class = "highlight" th:href="@{/user/changeEmail}">Thay đổi</a>  <br>
+                <br>
                 <label for="tel">Tel:</label>
                 <input type="tel" id="tel" name="tel" th:value="${tel}" pattern="^0\d{9,11}$" title="Telephone number must be between 10 and 12 digits
                             and start with zero number" required><span id="inform" style="color: red"></span><br>

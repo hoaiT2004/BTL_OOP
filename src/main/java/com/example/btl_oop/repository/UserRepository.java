@@ -1,6 +1,6 @@
 package com.example.btl_oop.repository;
 
-import com.example.btl_oop.entity.Booking;
+
 import com.example.btl_oop.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +17,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.fullname = :fullname,u.tel = :tel WHERE u.username = :username")
     void updateInfoUser(String tel,String fullname, String username);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE User u SET u.password = :password WHERE u.username = :username")
+    void updatePassword(String password, String username);
+
 
     @Transactional
     @Modifying

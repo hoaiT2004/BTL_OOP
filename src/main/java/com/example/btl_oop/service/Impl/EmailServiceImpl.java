@@ -17,8 +17,6 @@ import java.util.Properties;
 
 @Component
 public class EmailServiceImpl implements EmailService {
-
-    @Autowired
     static final String from = "codeptit123@gmail.com";
     static final String password = "wnhpagypqhffhwjc";
     public boolean sendEmail(String to,String title,String content) {
