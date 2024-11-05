@@ -7,6 +7,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.security.InvalidParameterException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -20,5 +22,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleMethodArgumentNotValidExceptions(
             MethodArgumentNotValidException ex) {
         return ResponseEntity.badRequest().body(ex.getFieldError().getDefaultMessage());
+    }
+
+    @ExceptionHandler(InvalidParameterException.class)
+    public String handleInvalidParameterException(InvalidParameterException ex, Model model) {
+        model.addAttribute("errorBE", ex.getMessage());
+        return "user/changePassword";
     }
 }

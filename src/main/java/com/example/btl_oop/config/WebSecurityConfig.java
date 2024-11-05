@@ -55,7 +55,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity https, HttpServletRequest request) throws Exception {
         https
                 .authorizeHttpRequests()
-                .requestMatchers("/api/home","/user/getPassword","/user/sendPasswordViaEmail","/user/register","/user/login")
+                .requestMatchers("/api/home","/user/register","/user/login","/user/retrievePassword")
                 .permitAll()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .permitAll()

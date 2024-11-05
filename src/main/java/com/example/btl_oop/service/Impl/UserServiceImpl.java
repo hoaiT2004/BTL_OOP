@@ -3,13 +3,8 @@ package com.example.btl_oop.service.Impl;
 import com.example.btl_oop.config.MyUserDetails;
 import com.example.btl_oop.entity.Role;
 import com.example.btl_oop.entity.User;
-import com.example.btl_oop.model.request.user.ChangeAvatarRequest;
-import com.example.btl_oop.model.request.user.ChangeInfoRequest;
-import com.example.btl_oop.model.request.user.RegisterRequest;
-import com.example.btl_oop.model.response.user.ChangeAvatarResponse;
-import com.example.btl_oop.model.response.user.ChangeInfoResponse;
-import com.example.btl_oop.model.response.user.RegisterResponse;
-import com.example.btl_oop.model.response.user.UserDto;
+import com.example.btl_oop.model.request.user.*;
+import com.example.btl_oop.model.response.user.*;
 import com.example.btl_oop.repository.RoleRepository;
 import com.example.btl_oop.repository.UserRepository;
 import com.example.btl_oop.service.FileService;
@@ -18,21 +13,16 @@ import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
+import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
@@ -51,25 +41,37 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optional = userRepository.findUserByUsername(username);
-        if(!optional.isPresent()) throw new RuntimeException("Could not find user by username");
-        User user = optional.get();
+        User user = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("Could not find user by username"));
         Role role = roleRepository.findById(user.getRole_id()).orElse(null);
         return new MyUserDetails(user, role);
     }
 
     @Override
     public UserDto findUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optional = userRepository.findUserByUsername(username);
-        if(!optional.isPresent()) throw new RuntimeException("Could not find user by username");
-        return UserDto.toDto(optional.get());
+        User user = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("Could not find user by username"));
+        return UserDto.toDto(user);
+    }
+
+    @Override
+    public ChangePasswordResponse changePassword(ChangePasswordRequest request, String username) {
+        UserDetails userDetails = loadUserByUsername(username);
+        if (request.getPassword().equals(userDetails.getPassword())) {
+            throw new InvalidParameterException("Wrong password");
+        }
+        userRepository.updatePassword(passwordEncoder.encode(request.getNewPassword()), username);
+        return new ChangePasswordResponse(username);
+    }
+
+    @Override
+    public CreateNewPasswordResponse createNewPassword(CreateNewPasswordRequest request) {
+        userRepository.updatePassword(passwordEncoder.encode(request.getNewPassword()), request.getUsername());
+        return new CreateNewPasswordResponse(request.getUsername());
     }
 
     @Override
     @Transactional
     public RegisterResponse register(RegisterRequest registerRequest) {
-        User user1 = userRepository.findUserByUsername(registerRequest.getUsername()).orElse(null);
-        if (user1 != null) throw new EntityExistsException("Account existed!");
+        User user1 = userRepository.findUserByUsername(registerRequest.getUsername()).orElseThrow(() -> new EntityExistsException("Account existed!"));
 
         var user = User.builder()
                 .username(registerRequest.getUsername().toLowerCase())

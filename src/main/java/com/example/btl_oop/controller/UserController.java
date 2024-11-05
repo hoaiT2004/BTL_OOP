@@ -1,12 +1,11 @@
 package com.example.btl_oop.controller;
 
 import com.example.btl_oop.entity.User;
-import com.example.btl_oop.model.request.user.ChangeAvatarRequest;
-import com.example.btl_oop.model.request.user.ChangeInfoRequest;
-import com.example.btl_oop.model.request.user.RegisterRequest;
+import com.example.btl_oop.model.request.user.*;
 import com.example.btl_oop.model.response.user.ChangeInfoResponse;
 import com.example.btl_oop.model.response.user.RegisterResponse;
 import com.example.btl_oop.model.response.user.UserDto;
+import com.example.btl_oop.service.EmailService;
 import com.example.btl_oop.service.UserService;
 import jakarta.validation.Valid;
 import lombok.NonNull;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/user")
@@ -30,6 +30,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/list")
     public String getAll(Model model, @RequestParam(name = "keyword") String keyword,
@@ -65,7 +68,8 @@ public class UserController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             UserDto userDto = userService.findUserByUsername(userDetails.getUsername());
             model.addAttribute("username", userDto.getUsername());
-            model.addAttribute("role", userDetails.getAuthorities());
+            String roleLength = userDetails.getAuthorities().toString();
+            model.addAttribute("role", roleLength.substring(1, roleLength.length() - 1));
             model.addAttribute("linkAvatar", userDto.getLinkAvatar());
             model.addAttribute("fullname", userDto.getFullname());
             model.addAttribute("email", userDto.getEmail());
@@ -90,5 +94,83 @@ public class UserController {
             userService.changeAvatar(request);
         }
         return "redirect:/user/profile";
+    }
+
+    @GetMapping("/changePassword")
+    public String changePassword(Authentication authentication, Model model) {
+        if (authentication != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            UserDto userDto = userService.findUserByUsername(authentication.getName());
+            model.addAttribute("username", userDto.getUsername());
+            String roleLength = userDetails.getAuthorities().toString();
+            model.addAttribute("role", roleLength.substring(1, roleLength.length() - 1));
+            sendEmail(model, userDto);
+        }
+        return "user/changePassword";
+    }
+
+    private String encodeEmail(String email) {
+        StringBuilder encodedEmail = new StringBuilder();
+        encodedEmail.append(email.substring(0,5)).append("*".repeat(email.length() - 15))
+                .append("@gmail.com");
+        return encodedEmail.toString();
+    }
+
+    private String genOTP() {
+        StringBuilder otp = new StringBuilder();
+        Random rd = new Random();
+        otp.append(rd.nextInt(10)).append(rd.nextInt(10)).append(rd.nextInt(10))
+                .append(rd.nextInt(10)).append(rd.nextInt(10)).append(rd.nextInt(10));
+        return otp.toString();
+    }
+
+    @PostMapping("/changePassword")
+    public String changePassword(@ModelAttribute ChangePasswordRequest request, Authentication authentication) {
+        if (authentication != null) {
+            userService.changePassword(request, authentication.getName());
+        }
+        return "redirect:/user/profile";
+    }
+
+    @GetMapping("/retrievePassword")
+    public String retrievePassword() {
+        return "user/enterUsername";
+    }
+
+    @PostMapping("/retrievePassword")
+    public String retrievePassword(@RequestParam(name = "username") String username, Model model) {
+        UserDto userDto = userService.findUserByUsername(username.toLowerCase());
+        if (userDto == null) {
+            model.addAttribute("errorBE", "Tên đăng nhập không tồn tại!");
+            return "user/enterUsername";
+        }
+        sendEmail(model, userDto);
+        return "user/createNewPassword";
+    }
+
+    private void sendEmail(Model model, UserDto userDto) {
+        String email = userDto.getEmail();
+        String encodedEmail = encodeEmail(email);
+        model.addAttribute("email", encodedEmail);
+        String otp = genOTP();
+        model.addAttribute("trueOTP", otp);
+        emailService.sendEmail(email, "Mã bảo mật tài khoản của bạn", "<body style=\"font-family: Arial, sans-serif;\">\n" +
+                "    <div style=\"max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0;\">\n" +
+                "        <h2 style=\"font-size: 24px; margin-bottom: 10px;\">Mã bảo mật tài khoản của bạn</h2>\n" +
+                "        <p style=\"margin: 10px 0;\">Xin chào "+userDto.getUsername()+ ",</p>\n" +
+                "        <p style=\"margin: 10px 0;\">Mã bảo mật của bạn là:</p>\n" +
+                "        <div style=\"font-size: 24px; font-weight: bold; padding: 10px; background-color: #f0f0f0; text-align: center; margin: 20px 0;\">\n" +
+                otp +
+                "        </div>\n" +
+                "        <p style=\"margin: 10px 0;\">Để xác nhận danh tính của bạn trên Facebook, chúng tôi cần xác minh địa chỉ email của bạn. Hãy dán mã này vào trình duyệt. Đây là mã dùng một lần.</p>\n" +
+                "        <p style=\"margin: 10px 0;\">Cảm ơn bạn!<br>Đội ngũ bảo mật của nhóm 9</p>\n" +
+                "    </div>\n" +
+                "</body>");
+    }
+
+    @PostMapping("/createNewPassword")
+    public String saveNewPassword(@NonNull @ModelAttribute CreateNewPasswordRequest request) {
+        userService.createNewPassword(request);
+        return "redirect:/user/login";
     }
 }
