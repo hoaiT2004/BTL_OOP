@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="btloop@localhost" uuid="d827799a-7ff9-4594-86ae-c2ae4d728aaa">
+    <data-source source="LOCAL" name="btloop@localhost" uuid="ef626124-a638-4ba7-b20b-49b073d482cd">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
