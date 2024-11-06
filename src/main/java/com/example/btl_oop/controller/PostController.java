@@ -28,4 +28,6 @@ public class PostController {
     public String post2(){
         return "nhadephon";
     }
+
+
 }

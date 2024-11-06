@@ -30,4 +30,8 @@ public class HomeController {
         model.addAttribute("rooms", roomList);
         return "index";
     }
+    @GetMapping("/home/UserManagement")
+    public String usermanagement() {
+        return "UserManagement";
+    }
 }

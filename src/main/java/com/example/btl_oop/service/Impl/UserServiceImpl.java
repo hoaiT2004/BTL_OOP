@@ -69,6 +69,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
     @Transactional
     public RegisterResponse register(RegisterRequest registerRequest) {
         User user1 = userRepository.findUserByUsername(registerRequest.getUsername()).orElseThrow(() -> new EntityExistsException("Account existed!"));

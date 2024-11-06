@@ -1,5 +1,6 @@
 package com.example.btl_oop.service;
 
+import com.example.btl_oop.entity.User;
 import com.example.btl_oop.model.request.user.*;
 import com.example.btl_oop.model.response.user.*;
 import org.springframework.data.domain.Pageable;
@@ -23,4 +24,6 @@ public interface UserService {
     ChangePasswordResponse changePassword(ChangePasswordRequest request, String username);
 
     CreateNewPasswordResponse createNewPassword(CreateNewPasswordRequest request);
+
+    List<User> getAllUsers();
 }

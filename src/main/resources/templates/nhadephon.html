@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phòng trọ sinh viên</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
-        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+            integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="/static/js/index.js"></script>
     <script src="/static/js/loadData.js"></script>
 </head>
@@ -19,6 +19,22 @@
     * {
         margin: 0px;
         padding: 0px;
+    }
+    .back-button {
+        display: flex;
+        align-items: center;
+        font-size: 1.1em;
+        margin: 20px 0;
+        cursor: pointer;
+        color: #020101;
+        text-decoration: none;
+    }
+    .back-button:hover {
+        color: #020101;
+    }
+    .back-button i {
+        margin-right: 8px;
+        font-size: 2em;
     }
 
     hr {
@@ -480,114 +496,117 @@
     .main  {
         width: 80%;
     }
+    .larger-font li {
+        font-size: 1.2em; /* Điều chỉnh cỡ chữ theo ý muốn, 1.2em là ví dụ */
+    }
 
+    h1 {
+        text-align: center;
+        color: #333;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        color: #007bff;
+    }
+
+    ul {
+        list-style-type: disc;
+        margin-left: 20px;
+        line-height: 1.6;
+    }
+
+    strong {
+        color: #333;
+    }
+
+    section {
+        margin-bottom: 20px;
+    }
 </style>
 <body data-spy="scroll" data-target=".nav" data-offset="1">
-    <header>
-        <div style="background-color: white;" class="flex border top">
-            <div class="container">
-                <div class="header flex">
-                    <div class="web icon">
-                        <a th:href="@{/api/home}"><img style="width: 50%; height: 50%;" src="https://res.cloudinary.com/hoaptit/image/upload/v1730187948/tro-sinh-vien2_wiuzca.png" alt=""></a>
+<header>
+
+    <div style="background-color: white;" class="flex border top">
+        <div class="container">
+            <div class="header flex">
+                <div class="web icon">
+                    <a th:href="@{/api/home}"><img style="width: 50%; height: 50%;" src="https://res.cloudinary.com/hoaptit/image/upload/v1730187948/tro-sinh-vien2_wiuzca.png" alt=""></a>
+                </div>
+                <div class="right header flex">
+                    <div th:if="${username != null}" class="big-device flex">
+                        <div><a class="btn italic" th:href="@{/user/profile}"><h4 th:text="${username}"></h4></a></div>
+                        <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
+                                                                                    class="fa fa-address-book"></i>Đăng xuất</a></div>
+                        <div><a class="btn header-btn" href="#"><i style="margin-right: 5px;"
+                                                                   class="fas fa-pen-alt"></i>Đăng tin</a></div>
                     </div>
-                    <div class="right header flex">
-                        <div th:if="${username != null}" class="big-device flex">
-                            <div><a class="btn italic" th:href="@{/user/profile}"><h4 th:text="${username}"></h4></a></div>
-                            <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
-                                                                                            class="fa fa-address-book"></i>Đăng xuất</a></div>
-                            <div><a class="btn header-btn" href="#"><i style="margin-right: 5px;"
-                                                                       class="fas fa-pen-alt"></i>Đăng tin</a></div>
-                        </div>
-                        <div th:if="${username == null}" class="big-device flex">
-                                <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
-                                            class="fa fa-sign-in"></i>Đăng nhập</a></div>
-                                <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
-                                            class="fa fa-address-book"></i>Đăng ký</a></div>
-                                <div><a class="btn header-btn" href="#"><i style="margin-right: 5px;"
-                                        class="	fas fa-pen-alt"></i>Đăng tin</a></div>
-                        </div>
-                        <div class="small-device flex">
-                            <div><a href="@{/user/login}" type="button" style="padding: 3px;" class="fa fa-sign-in"></a></div>
-                            <div><a href="@{/user/register}" type="button" style="padding: 3px;" class="fa-solid fa-user-plus"></a></div>
-                            <div><a href="#" type="button" style="padding: 3px;" class="fa-solid fa-plus"></a></div>
-                        </div>
+                    <div th:if="${username == null}" class="big-device flex">
+                        <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
+                                                                                   class="fa fa-sign-in"></i>Đăng nhập</a></div>
+                        <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
+                                                                                      class="fa fa-address-book"></i>Đăng ký</a></div>
+                        <div><a class="btn header-btn" href="#"><i style="margin-right: 5px;"
+                                                                   class="	fas fa-pen-alt"></i>Đăng tin</a></div>
+                    </div>
+                    <div class="small-device flex">
+                        <div><a href="@{/user/login}" type="button" style="padding: 3px;" class="fa fa-sign-in"></a></div>
+                        <div><a href="@{/user/register}" type="button" style="padding: 3px;" class="fa-solid fa-user-plus"></a></div>
+                        <div><a href="#" type="button" style="padding: 3px;" class="fa-solid fa-plus"></a></div>
                     </div>
                 </div>
-
             </div>
 
         </div>
-    </header>
-    <div class="toggle">
-        <i class="fas fa-bars"></i>
+
     </div>
-    <nav>
-        <div>
-            <div class="container">
-                <ul class="menu flex" id="menu">
-                    <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                    <li th:if="${role == 'Admin'}"><a href="/api/home/UserManagement">Người dùng</a></li>
-                    <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
-                </ul>
-            </div>
+</header>
+<div class="toggle">
+    <i class="fas fa-bars"></i>
+</div>
+<nav>
+    <div>
+        <div class="container">
+            <ul class="menu flex" id="menu">
+                <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
+                <li><a href="#">Phòng trọ</a></li>
+                <li><a href="#">Nguyên căn</a></li>
+                <div th:if="${role == 'Admin'}">
+                    <li><a href="#">Người dùng</a></li>
+                    <li><a href="#">Phòng</a></li>
+                </div>
+            </ul>
         </div>
-    </nav>
-
-
-    <div class="container">
-        <section>
-            <div style="margin-top: 10px;" class="content">
-                <div class="left border">
-                    <h3 class="subject">Phòng trọ sinh viên</h3>
-                    <div class="items" id="phongtro">
-                        <div class="item">
-                            <div class="image"><img src="images/tro-1.jpg" style="width: 100%;" /></div>
-                            <div class="info">
-                                <div class="main-title"><a href="/detail.html">Phòng cho thuê rộng rãi thoải mái</a>
-                                </div>
-                                <div class=" main-info">
-                                    <div>2.8 triệu/tháng</div>
-                                    <div>20m2</div>
-                                    <div>Phường 11,Quận Gò Vấp, Hồ Chí Minh</div>
-                                </div>
-                                <div>Phòng mới xây, thoáng mát, sạch đẹp, tường ốp men cao, có bếp, nhà vệ sinh riêng
-                                </div>
-                                <div>
-                                    <a href="">Xem thông tin chi tiết <i class="fas fa-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-
-
-
-
-                <div class="right border bg-white">
-                    <h3 class="subject">Tin mới đăng</h3>
-                    <ul class="flex v-menu">
-                        <li><a href="/api/home/news_1">Những lưu ý khi thuê trọ</a></li>
-                        <li><a href="/api/home/news_2">Vấn nạn an toàn PCCC tại các nhà trọ</a></li>
-                        <li><a href="/api/home/nenthuenhaodau">Nên thuê nhà ở đâu</a></li>
-                        <li><a href="/api/home/nhadephon">Làm sao để nhà đẹp hơn</a></li>
-                    </ul>
-                </div>
-
-
-
-                <div class="right-no-border"></div>
-
-                <div class="right-no-border"></div>
-
-            </div>
-        </section>
-
     </div>
-    <footer>
-        <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>
-        <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
-    </footer>
+</nav>
+
+
+<div class="container bg-white">
+    <h1>Làm Thế Nào Để Nhà Đẹp Hơn</h1>
+    <p>Ngôi nhà là nơi chúng ta sống và nghỉ ngơi, vì vậy việc tạo nên một không gian đẹp và thoải mái là rất quan trọng. Dưới đây là một số gợi ý giúp bạn làm cho ngôi nhà của mình trở nên đẹp hơn:</p>
+
+    <h2>1. Sử dụng ánh sáng tự nhiên</h2>
+    <p>Ánh sáng tự nhiên không chỉ giúp không gian sáng sủa hơn mà còn tạo cảm giác rộng rãi và tươi mới. Hãy mở rộng cửa sổ hoặc sử dụng rèm cửa mỏng để ánh sáng có thể dễ dàng tràn vào nhà.</p>
+
+    <h2>2. Chọn màu sắc hài hòa</h2>
+    <p>Màu sắc có ảnh hưởng lớn đến thẩm mỹ của ngôi nhà. Chọn những gam màu trung tính và phối hợp hài hòa để không gian trở nên nhẹ nhàng, dễ chịu.</p>
+
+    <h2>3. Trang trí cây xanh</h2>
+    <p>Cây xanh mang lại sức sống và sự tươi mới cho ngôi nhà. Bạn có thể đặt vài chậu cây nhỏ trong phòng khách, phòng ngủ hoặc phòng làm việc để tạo sự gần gũi với thiên nhiên.</p>
+
+    <h2>4. Sắp xếp đồ đạc gọn gàng</h2>
+    <p>Việc sắp xếp đồ đạc gọn gàng không chỉ giúp ngôi nhà trông ngăn nắp hơn mà còn tạo cảm giác thoải mái, dễ chịu. Hãy loại bỏ những đồ dùng không cần thiết và tối giản hóa không gian.</p>
+
+    <h2>5. Tạo điểm nhấn trang trí</h2>
+    <p>Thêm các điểm nhấn như tranh treo tường, gương hoặc các đồ trang trí sẽ giúp không gian trở nên sinh động và bắt mắt hơn. Tuy nhiên, không nên quá lạm dụng để tránh làm rối mắt.</p>
+
+    <p>Với một số gợi ý trên, hy vọng bạn sẽ tạo nên một không gian sống thoải mái và đẹp mắt cho ngôi nhà của mình.</p>
+</div>
+<footer>
+    <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>
+    <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
+</footer>
 </body>
 
 </html>
