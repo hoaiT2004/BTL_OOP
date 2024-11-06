@@ -10,6 +10,9 @@
         <module name="BTL_OOP" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="BTL_OOP (1)" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
