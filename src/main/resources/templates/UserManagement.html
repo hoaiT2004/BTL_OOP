@@ -128,7 +128,7 @@
     </tbody>
   </table>
 
-  <!-- Pagination Controls -->
+
   <div class="pagination">
     <button onclick="prevPage()">Previous</button>
     <span id="pageDisplay">Page 1</span>
@@ -137,11 +137,11 @@
 </div>
 
 <script>
-  let users = []; // Array to store user data fetched from the API
-  const rowsPerPage = 10; // Number of rows per page
+  let users = [];
+  const rowsPerPage = 10;
   let currentPage = 1;
 
-  // Function to fetch users from the API
+
   async function fetchUsers() {
     try {
       const response = await fetch('/api/users');
@@ -197,17 +197,14 @@
   }
 
   // Function to search for users by name and address
-  // Function to search for users by name, address, or both
   function searchUser() {
     const name = document.getElementById('searchName').value.toLowerCase();
     const address = document.getElementById('searchAddress').value.toLowerCase();
 
-    const filteredUsers = users.filter(user => {
-      const matchesName = name ? user.name.toLowerCase().includes(name) : true;
-      const matchesAddress = address ? user.address.toLowerCase().includes(address) : true;
-
-      return matchesName && matchesAddress;
-    });
+    const filteredUsers = users.filter(user =>
+            user.name.toLowerCase().includes(name) &&
+            user.address.toLowerCase().includes(address)
+    );
 
     // Update the users array with the filtered results
     users = filteredUsers;
@@ -216,7 +213,6 @@
     currentPage = 1;
     displayUsers();
   }
-
 
   // Fetch users when the page loads
   fetchUsers();

@@ -26,14 +26,10 @@ public class User extends BaseEntity {
     @Size(max = 100)
     @NotNull
     private String fullname;
-
     private String tel;
-
     private String email;
-
     //@OneToOne(cascade = CascadeType.ALL)
     //Mối quan hệ 1:1 với role
     private long role_id;
-
     private String linkAvatar;
 }
