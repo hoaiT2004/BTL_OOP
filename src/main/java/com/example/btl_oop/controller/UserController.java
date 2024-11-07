@@ -30,7 +30,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private EmailService emailService;
 
@@ -172,5 +171,11 @@ public class UserController {
     public String saveNewPassword(@NonNull @ModelAttribute CreateNewPasswordRequest request) {
         userService.createNewPassword(request);
         return "redirect:/user/login";
+    }
+    @Autowired
+    // Endpoint để lấy danh sách người dùng
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 }

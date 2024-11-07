@@ -526,7 +526,7 @@
             <div class="container">
                 <ul class="menu flex" id="menu">
                     <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                    <li th:if="${role == 'Admin'}"><a href="#">Người dùng</a></li>
+                    <li th:if="${role == 'Admin'}"><a href="/api/home/UserManagement">Người dùng</a></li>
                     <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
                 </ul>
             </div>
@@ -569,8 +569,8 @@
                     <ul class="flex v-menu">
                         <li><a href="/api/home/news_1">Những lưu ý khi thuê trọ</a></li>
                         <li><a href="/api/home/news_2">Vấn nạn an toàn PCCC tại các nhà trọ</a></li>
-                        <li><a href="#">Nên thuê nhà ở đâu</a></li>
-                        <li><a href="#">Làm sao để nhà đẹp hơn</a></li>
+                        <li><a href="/api/home/nenthuenhaodau">Nên thuê nhà ở đâu</a></li>
+                        <li><a href="/api/home/nhadephon">Làm sao để nhà đẹp hơn</a></li>
                     </ul>
                 </div>
 

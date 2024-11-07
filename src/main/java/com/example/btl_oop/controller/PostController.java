@@ -20,4 +20,14 @@ public class PostController {
     public String dang_song(){
         return "news_2";
     }
+    @GetMapping("/nenthuenhaodau")
+    public String post1(){
+        return "nenthuenhaodau";
+    }
+    @GetMapping("/nhadephon")
+    public String post2(){
+        return "nhadephon";
+    }
+
+
 }
