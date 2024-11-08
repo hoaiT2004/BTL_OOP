@@ -61,14 +61,6 @@ public class HomeController {
     }
 
 
-    @GetMapping("/UserManagement")
-    public String usermanagement() {
-        return "UserManagement";
-    }
-    @GetMapping("/home/RoomManagement")
-    public String roommanagement() {
-        return "RoomManagement";
-    }
 
     @GetMapping("/news_1")
     public String notice(Authentication authentication, Model model) {

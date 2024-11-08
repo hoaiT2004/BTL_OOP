@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class RoomServiceImpl implements RoomService {
+public abstract class RoomServiceImpl implements RoomService {
 
     @Autowired
     private RoomRepository roomRepository;

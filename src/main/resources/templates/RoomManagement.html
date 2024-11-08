@@ -1,229 +1,288 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Phòng - Admin</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
-        .back-button {
-            display: flex;
-            align-items: center;
-            font-size: 1.1em;
-            margin: 20px 0;
-            cursor: pointer;
-            color: #020101;
-            text-decoration: none;
-        }
-        .back-button:hover {
-            color: #020101;
-        }
-        .back-button i {
-            margin-right: 8px;
-            font-size: 2em;
-        }
-        h1 {
-            text-align: center;
-            padding: 20px;
-        }
-        .filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .filter-bar input[type="text"],
-        .filter-bar select {
-            padding: 10px;
-            width: 180px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .filter-bar button {
-            padding: 10px 15px;
-            border: none;
-            background-color: #0656d2;
-            color: #fff;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .filter-bar button:hover {
-            background-color: #003c9d;
-        }
-        table {
-            width: 100%;
-            margin: 20px 0;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #0656d2;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        .pagination {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .pagination button {
-            padding: 10px 15px;
-            margin: 0 5px;
-            background-color: #0656d2;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .pagination button:hover {
-            background-color: #003c9d;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <a href="/api/home" class="back-button">
-        <i>&#8592;</i>
-    </a>
-    <h1>Quản Lý Phòng</h1>
-
-    <!-- Filter Bar -->
-    <div class="filter-bar">
-        <input type="text" id="filterName" placeholder="Tên phòng">
-        <input type="text" id="filterPrice" placeholder="Giá phòng">
-        <input type="text" id="filterAddress" placeholder="Địa chỉ">
-        <select id="filterType">
-            <option value="">Kiểu phòng</option>
-            <option value="chung_chu">Chung chủ</option>
-            <option value="khong_chung_chu">Không chung chủ</option>
-        </select>
-        <button onclick="filterRooms()">Lọc</button>
-    </div>
-
-    <!-- Room Table -->
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Tên Phòng</th>
-            <th>Giá</th>
-            <th>Địa Chỉ</th>
-            <th>Kiểu Phòng</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody id="roomTable">
-        <!-- Danh sách các phòng sẽ được hiển thị ở đây -->
-        </tbody>
-    </table>
-
-
-    <div class="pagination">
-        <button onclick="prevPage()">Previous</button>
-        <span id="pageDisplay">Page 1</span>
-        <button onclick="nextPage()">Next</button>
-    </div>
-</div>
-
-<script>
-    let rooms = [];
-    const rowsPerPage = 10;
-    let currentPage = 1;
-
-
-    async function fetchRooms() {
-        try {
-            const response = await fetch('/api/rooms');
-            if (response.ok) {
-                rooms = await response.json();
-                displayRooms();
-            } else {
-                console.error('Failed to fetch rooms:', response.status);
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quản Lý Phòng - Admin</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+                margin: 0;
+                padding: 0;
             }
-        } catch (error) {
-            console.error('Error fetching rooms:', error);
+            .container {
+                width: 80%;
+                margin: auto;
+                overflow: hidden;
+            }
+            .back-button {
+                display: flex;
+                align-items: center;
+                font-size: 1.1em;
+                margin: 20px 0;
+                cursor: pointer;
+                color: #020101;
+                text-decoration: none;
+            }
+            .back-button:hover {
+                color: #020101;
+            }
+            .back-button i {
+                margin-right: 8px;
+                font-size: 2em;
+            }
+            h1 {
+                text-align: center;
+                padding: 20px;
+            }
+            .filter-bar {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+                margin: 20px 0;
+            }
+            .filter-bar input[type="text"],
+            .filter-bar select {
+                padding: 10px;
+                width: 180px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+            .filter-bar button {
+                padding: 10px 15px;
+                border: none;
+                background-color: #0656d2;
+                color: #fff;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .filter-bar button:hover {
+                background-color: #003c9d;
+            }
+            table {
+                width: 100%;
+                margin: 20px 0;
+                border-collapse: collapse;
+            }
+            table, th, td {
+                border: 1px solid #ddd;
+            }
+            th, td {
+                padding: 12px;
+                text-align: left;
+            }
+            th {
+                background-color: #0656d2;
+                color: white;
+            }
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+            .pagination {
+                text-align: center;
+                margin: 20px 0;
+            }
+            .pagination button {
+                padding: 10px 15px;
+                margin: 0 5px;
+                background-color: #0656d2;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .pagination button:hover {
+                background-color: #003c9d;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+        <a href="/api/home" class="back-button">
+            <i>&#8592;</i>
+        </a>
+        <h1>Quản Lý Phòng</h1>
+
+        <!-- Filter Bar -->
+        <div class="filter-container container" style="border-color: white">
+            <form th:action="@{/RoomManagement}" method="GET" class="flex" style="justify-content: space-evenly; margin-top: 20px; margin-bottom: 20px;">
+                <!-- Lọc theo giá -->
+                <div class="filter-item">
+                    <label for="price">Giá (triệu/tháng):</label>
+                    <select id="price" name="price" th:value="${request.price}">
+                        <option value="">Tất cả</option>
+                        <option value="1" th:selected="${request.price == '1'}">Dưới 1 triệu</option>
+                        <option value="1-2" th:selected="${request.price == '1-2'}">1 - 2 triệu</option>
+                        <option value="2-3" th:selected="${request.price == '2-3'}">2 - 3 triệu</option>
+                        <option value="3" th:selected="${request.price == '3'}">Trên 3 triệu</option>
+                    </select>
+                </div>
+
+
+                <div class="filter-item">
+                    <label for="address">Địa chỉ:</label>
+                    <select id="address" name="address" th:value="${request.address}">
+                        <option value="">Tất cả</option>
+                        <option value="Biên Giang" th:selected="${request.address == 'Biên Giang'}">Biên Giang</option>
+                        <option value="Dương Nội" th:selected="${request.address == 'Dương Nội'}">Dương Nội</option>
+                        <option value="Đồng Mai" th:selected="${request.address == 'Đồng Mai'}">Đồng Mai</option>
+                        <option value="Hà Cầu" th:selected="${request.address == 'Hà Cầu'}">Hà Cầu</option>
+                        <option value="Kiến Hưng" th:selected="${request.address == 'Kiến Hưng'}">Kiến Hưng</option>
+                        <option value="La Khê" th:selected="${request.address == 'La Khê'}">La Khê</option>
+                        <option value="Mộ Lao" th:selected="${request.address == 'Mộ Lao'}">Mộ Lao</option>
+                        <option value="Nguyễn Trãi" th:selected="${request.address == 'Nguyễn Trãi'}">Nguyễn Trãi</option>
+                        <option value="Phú La" th:selected="${request.address == 'Phú La'}">Phú La</option>
+                        <option value="Phú Lãm" th:selected="${request.address == 'Phú Lãm'}">Phú Lãm</option>
+                        <option value="Phú Lương" th:selected="${request.address == 'Phú Lương'}">Phú Lương</option>
+                        <option value="Phúc La" th:selected="${request.address == 'Phúc La'}">Phúc La</option>
+                        <option value="Quang Trung" th:selected="${request.address == 'Quang Trung'}">Quang Trung</option>
+                        <option value="Vạn Phúc" th:selected="${request.address == 'Vạn Phúc'}">Vạn Phúc</option>
+                        <option value="Văn Quán" th:selected="${request.address == 'Văn Quán'}">Văn Quán</option>
+                        <option value="Yên Nghĩa" th:selected="${request.address == 'Yên Nghĩa'}">Yên Nghĩa</option>
+                        <option value="Yết Kiêu" th:selected="${request.address == 'Yết Kiêu'}">Yết Kiêu</option>
+                    </select>
+
+
+                </div>
+
+                <!-- Lọc theo diện tích -->
+                <div class="filter-item">
+                    <label for="area">Diện tích (m²):</label>
+                    <select id="area" name="area" th:value="${request.area}">
+                        <option value="">Tất cả</option>
+                        <option value="20" th:selected="${request.area == '20'}">Dưới 20m²</option>
+                        <option value="20-30" th:selected="${request.area == '20-30'}">20 - 30m²</option>
+                        <option value="30-40" th:selected="${request.area == '30-40'}">30 - 40m²</option>
+                        <option value="40" th:selected="${request.area == '40'}">Trên 40m²</option>
+                    </select>
+                </div>
+
+                <!-- Lọc theo kiểu phòng -->
+                <div class="filter-item">
+                    <label for="roomType">Kiểu phòng:</label>
+                    <select id="roomType" name="roomType" th:value="${request.roomType}">
+                        <option value="">Tất cả</option>
+                        <option value="CHUNG_CHU" th:selected="${request.roomType == 'CHUNG_CHU'}">Chung chủ</option>
+                        <option value="KHONG_CHUNG_CHU" th:selected="${request.roomType == 'KHONG_CHUNG_CHU'}">Không chung chủ</option>
+                    </select>
+                </div>
+
+
+                <!-- Nút lọc -->
+                <div class="filter-item">
+                    <button type="submit" class="btn header-btn">Lọc kết quả</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Room Table -->
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Phòng</th>
+                <th>Giá</th>
+                <th>Địa Chỉ</th>
+                <th>Kiểu Phòng</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="roomTable">
+            <!-- Danh sách các phòng sẽ được hiển thị ở đây -->
+            </tbody>
+        </table>
+
+
+        <div class="pagination">
+            <button onclick="prevPage()">Previous</button>
+            <span id="pageDisplay">Page 1</span>
+            <button onclick="nextPage()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let rooms = [];
+        const rowsPerPage = 10;
+        let currentPage = 1;
+
+
+        async function fetchRooms() {
+            try {
+                const response = await fetch('/api/rooms');
+                if (response.ok) {
+                    rooms = await response.json();
+                    displayRooms();
+                } else {
+                    console.error('Failed to fetch rooms:', response.status);
+                }
+            } catch (error) {
+                console.error('Error fetching rooms:', error);
+            }
         }
-    }
 
-    // Function to display rooms on the current page
-    function displayRooms() {
-        const roomTable = document.getElementById('roomTable');
-        roomTable.innerHTML = ''; // Clear the table before adding new rows
+        // Function to display rooms on the current page
+        function displayRooms() {
+            const roomTable = document.getElementById('roomTable');
+            roomTable.innerHTML = ''; // Clear the table before adding new rows
 
-        const start = (currentPage - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        const paginatedRooms = rooms.slice(start, end);
-
-
-        paginatedRooms.forEach(room => {
-            const row = `<tr>
-        <td>${room.id}</td>
-        <td>${room.name}</td>
-        <td>${room.price}</td>
-        <td>${room.address}</td>
-        <td>${room.type === 'chung_chu' ? 'Chung chủ' : 'Không chung chủ'}</td>
-        <td><button>Edit</button> <button>Delete</button></td>
-      </tr>`;
-            roomTable.innerHTML += row;
-        });
-
-        document.getElementById('pageDisplay').innerText = `Page ${currentPage}`;
-    }
-
-    // Function to filter rooms based on criteria
-    function filterRooms() {
-        const name = document.getElementById('filterName').value.toLowerCase();
-        const price = document.getElementById('filterPrice').value;
-        const address = document.getElementById('filterAddress').value.toLowerCase();
-        const type = document.getElementById('filterType').value;
-
-        const filteredRooms = rooms.filter(room => {
-            return (!name || room.name.toLowerCase().includes(name)) &&
-                (!price || room.price <= parseFloat(price)) &&
-                (!address || room.address.toLowerCase().includes(address)) &&
-                (!type || room.type === type);
-        });
-
-        rooms = filteredRooms; // Update rooms with filtered results
-        currentPage = 1;
-        displayRooms();
-    }
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedRooms = rooms.slice(start, end);
 
 
-    function prevPage() {
-        if (currentPage > 1) {
-            currentPage--;
+            paginatedRooms.forEach(room => {
+                const row = `<tr>
+            <td>${room.id}</td>
+            <td>${room.name}</td>
+            <td>${room.price}</td>
+            <td>${room.address}</td>
+            <td>${room.type === 'chung_chu' ? 'Chung chủ' : 'Không chung chủ'}</td>
+            <td><button>Edit</button> <button>Delete</button></td>
+          </tr>`;
+                roomTable.innerHTML += row;
+            });
+
+            document.getElementById('pageDisplay').innerText = `Page ${currentPage}`;
+        }
+
+        // Function to filter rooms based on criteria
+        function filterRooms() {
+            const name = document.getElementById('filterName').value.toLowerCase();
+            const price = document.getElementById('filterPrice').value;
+            const address = document.getElementById('filterAddress').value.toLowerCase();
+            const type = document.getElementById('filterType').value;
+
+            const filteredRooms = rooms.filter(room => {
+                return (!name || room.name.toLowerCase().includes(name)) &&
+                    (!price || room.price <= parseFloat(price)) &&
+                    (!address || room.address.toLowerCase().includes(address)) &&
+                    (!type || room.type === type);
+            });
+
+            rooms = filteredRooms; // Update rooms with filtered results
+            currentPage = 1;
             displayRooms();
         }
-    }
 
-    function nextPage() {
-        if (currentPage * rowsPerPage < rooms.length) {
-            currentPage++;
-            displayRooms();
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayRooms();
+            }
         }
-    }
-    
-    fetchRooms();
-</script>
-</body>
-</html>
+
+        function nextPage() {
+            if (currentPage * rowsPerPage < rooms.length) {
+                currentPage++;
+                displayRooms();
+            }
+        }
+
+        fetchRooms();
+    </script>
+    </body>
+    </html>
