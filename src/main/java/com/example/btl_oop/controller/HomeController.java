@@ -32,7 +32,7 @@ public class HomeController {
     @Autowired
     private RoomService roomService;
 
-    private static int sizeOfPage = 4;
+    private static final int sizeOfPage = 4;
 
     private void func_common(Authentication authentication, Model model) {
         if (authentication != null) {
@@ -43,7 +43,7 @@ public class HomeController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping
     public String home(Authentication authentication, Model model,
                        @ModelAttribute RoomFilterDataRequest request
             , @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
