@@ -34,4 +34,8 @@ public class HomeController {
     public String usermanagement() {
         return "UserManagement";
     }
+    @GetMapping("/home/RoomManagement")
+    public String roommanagement() {
+        return "RoomManagement";
+    }
 }

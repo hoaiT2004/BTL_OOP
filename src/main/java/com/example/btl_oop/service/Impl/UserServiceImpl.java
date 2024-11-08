@@ -73,6 +73,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return userRepository.findAll();
     }
 
+
     @Override
     @Transactional
     public RegisterResponse register(RegisterRequest registerRequest) {

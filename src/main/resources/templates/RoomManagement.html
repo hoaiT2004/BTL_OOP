@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Phòng - Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+        }
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .filter-bar input[type="text"],
+        .filter-bar select {
+            padding: 10px;
+            width: 180px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .filter-bar button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #0656d2;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .filter-bar button:hover {
+            background-color: #003c9d;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #0656d2;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .pagination {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .pagination button {
+            padding: 10px 15px;
+            margin: 0 5px;
+            background-color: #0656d2;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .pagination button:hover {
+            background-color: #003c9d;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Quản Lý Phòng</h1>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <input type="text" id="filterName" placeholder="Tên phòng">
+        <input type="text" id="filterPrice" placeholder="Giá phòng">
+        <input type="text" id="filterAddress" placeholder="Địa chỉ">
+        <select id="filterType">
+            <option value="">Kiểu phòng</option>
+            <option value="chung_chu">Chung chủ</option>
+            <option value="khong_chung_chu">Không chung chủ</option>
+        </select>
+        <button onclick="filterRooms()">Lọc</button>
+    </div>
+
+    <!-- Room Table -->
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên Phòng</th>
+            <th>Giá</th>
+            <th>Địa Chỉ</th>
+            <th>Kiểu Phòng</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="roomTable">
+        <!-- Danh sách các phòng sẽ được hiển thị ở đây -->
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <button onclick="prevPage()">Previous</button>
+        <span id="pageDisplay">Page 1</span>
+        <button onclick="nextPage()">Next</button>
+    </div>
+</div>
+
+<script>
+    let rooms = []; // Array to store room data fetched from the API
+    const rowsPerPage = 10; // Number of rows per page
+    let currentPage = 1;
+
+    // Function to fetch rooms from the API
+    async function fetchRooms() {
+        try {
+            const response = await fetch('/api/rooms');
+            if (response.ok) {
+                rooms = await response.json();
+                displayRooms();
+            } else {
+                console.error('Failed to fetch rooms:', response.status);
+            }
+        } catch (error) {
+            console.error('Error fetching rooms:', error);
+        }
+    }
+
+    // Function to display rooms on the current page
+    function displayRooms() {
+        const roomTable = document.getElementById('roomTable');
+        roomTable.innerHTML = ''; // Clear the table before adding new rows
+
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedRooms = rooms.slice(start, end);
+
+        // Add rows for current page rooms
+        paginatedRooms.forEach(room => {
+            const row = `<tr>
+        <td>${room.id}</td>
+        <td>${room.name}</td>
+        <td>${room.price}</td>
+        <td>${room.address}</td>
+        <td>${room.type === 'chung_chu' ? 'Chung chủ' : 'Không chung chủ'}</td>
+        <td><button>Edit</button> <button>Delete</button></td>
+      </tr>`;
+            roomTable.innerHTML += row;
+        });
+
+        document.getElementById('pageDisplay').innerText = `Page ${currentPage}`;
+    }
+
+    // Function to filter rooms based on criteria
+    function filterRooms() {
+        const name = document.getElementById('filterName').value.toLowerCase();
+        const price = document.getElementById('filterPrice').value;
+        const address = document.getElementById('filterAddress').value.toLowerCase();
+        const type = document.getElementById('filterType').value;
+
+        const filteredRooms = rooms.filter(room => {
+            return (!name || room.name.toLowerCase().includes(name)) &&
+                (!price || room.price <= parseFloat(price)) &&
+                (!address || room.address.toLowerCase().includes(address)) &&
+                (!type || room.type === type);
+        });
+
+        rooms = filteredRooms; // Update rooms with filtered results
+        currentPage = 1;
+        displayRooms();
+    }
+
+    // Pagination Functions
+    function prevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            displayRooms();
+        }
+    }
+
+    function nextPage() {
+        if (currentPage * rowsPerPage < rooms.length) {
+            currentPage++;
+            displayRooms();
+        }
+    }
+
+    // Fetch rooms when the page loads
+    fetchRooms();
+</script>
+</body>
+</html>
