@@ -17,6 +17,22 @@
             margin: auto;
             overflow: hidden;
         }
+        .back-button {
+            display: flex;
+            align-items: center;
+            font-size: 1.1em;
+            margin: 20px 0;
+            cursor: pointer;
+            color: #020101;
+            text-decoration: none;
+        }
+        .back-button:hover {
+            color: #020101;
+        }
+        .back-button i {
+            margin-right: 8px;
+            font-size: 2em;
+        }
         h1 {
             text-align: center;
             padding: 20px;
@@ -85,6 +101,9 @@
 </head>
 <body>
 <div class="container">
+    <a href="/api/home" class="back-button">
+        <i>&#8592;</i>
+    </a>
     <h1>Quản Lý Phòng</h1>
 
     <!-- Filter Bar -->
@@ -117,7 +136,7 @@
         </tbody>
     </table>
 
-    <!-- Pagination Controls -->
+
     <div class="pagination">
         <button onclick="prevPage()">Previous</button>
         <span id="pageDisplay">Page 1</span>
@@ -126,11 +145,11 @@
 </div>
 
 <script>
-    let rooms = []; // Array to store room data fetched from the API
-    const rowsPerPage = 10; // Number of rows per page
+    let rooms = [];
+    const rowsPerPage = 10;
     let currentPage = 1;
 
-    // Function to fetch rooms from the API
+
     async function fetchRooms() {
         try {
             const response = await fetch('/api/rooms');
@@ -154,7 +173,7 @@
         const end = start + rowsPerPage;
         const paginatedRooms = rooms.slice(start, end);
 
-        // Add rows for current page rooms
+
         paginatedRooms.forEach(room => {
             const row = `<tr>
         <td>${room.id}</td>
@@ -189,7 +208,7 @@
         displayRooms();
     }
 
-    // Pagination Functions
+
     function prevPage() {
         if (currentPage > 1) {
             currentPage--;
@@ -203,8 +222,7 @@
             displayRooms();
         }
     }
-
-    // Fetch rooms when the page loads
+    
     fetchRooms();
 </script>
 </body>
