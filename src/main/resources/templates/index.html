@@ -495,7 +495,7 @@
                             <div><a class="btn italic" th:href="@{/user/profile}"><h4 th:text="${username}"></h4></a></div>
                             <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
                                                                                             class="fa fa-address-book"></i>Đăng xuất</a></div>
-                            <div><a class="btn header-btn" href="#"><i style="margin-right: 5px;"
+                            <div><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
                                                                        class="fas fa-pen-alt"></i>Đăng tin</a></div>
                         </div>
                         <div th:if="${username == null}" class="big-device flex">
@@ -503,7 +503,7 @@
                                             class="fa fa-sign-in"></i>Đăng nhập</a></div>
                                 <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
                                             class="fa fa-address-book"></i>Đăng ký</a></div>
-                                <div><a class="btn header-btn" href="#"><i style="margin-right: 5px;"
+                                <div><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
                                         class="	fas fa-pen-alt"></i>Đăng tin</a></div>
                         </div>
                         <div class="small-device flex">
