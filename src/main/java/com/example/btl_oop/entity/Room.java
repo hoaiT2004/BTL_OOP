@@ -1,6 +1,7 @@
 package com.example.btl_oop.entity;
 
 import com.example.btl_oop.common.RoomType;
+import com.example.btl_oop.common.RoomTypeConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
@@ -29,7 +30,8 @@ public class Room extends BaseEntity {
     @Size(max = 5000)
     private String description;
 
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
+    @Convert(converter = RoomTypeConverter.class)
     private RoomType roomType;
 
     private double area;
