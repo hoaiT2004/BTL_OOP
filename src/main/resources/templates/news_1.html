@@ -553,12 +553,8 @@
         <div class="container">
             <ul class="menu flex" id="menu">
                 <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                <li><a href="#">Phòng trọ</a></li>
-                <li><a href="#">Nguyên căn</a></li>
-                <div th:if="${role == 'Admin'}">
-                    <li><a href="#">Người dùng</a></li>
-                    <li><a href="#">Phòng</a></li>
-                </div>
+                    <li th:if="${role == 'Admin'}"><a href="#">Người dùng</a></li>
+                    <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
             </ul>
         </div>
     </div>

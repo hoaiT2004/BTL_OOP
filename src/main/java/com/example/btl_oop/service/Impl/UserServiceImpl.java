@@ -73,13 +73,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return userRepository.findAll();
     }
 
-
     @Override
     @Transactional
     public RegisterResponse register(RegisterRequest registerRequest) {
-        if (userRepository.findUserByUsername(registerRequest.getUsername()).isPresent()) {
-            throw new EntityExistsException("Account already exists!");
-        }
+        User user1 = userRepository.findUserByUsername(registerRequest.getUsername()).orElse(null) ;
+        if (user1 != null) throw new EntityExistsException("Account existed!");
 
         var user = User.builder()
                 .username(registerRequest.getUsername().toLowerCase())
