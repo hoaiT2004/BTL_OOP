@@ -14,5 +14,4 @@ public interface RoomService {
     List<RoomDto> getAllRoomByManyContraints(RoomFilterDataRequest request, Pageable pageable);
 
 
-    Page<RoomDto> getAllRoomByManyConstraints(RoomFilterDataRequest request, Pageable pageable);
 }
