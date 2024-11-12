@@ -17,7 +17,7 @@ public interface UserService {
 
     UserDto getUserById(long id);
 
-    List<UserDto> getAllUser(String textSearch, Pageable pageable);
+    List<UserDto> getAllUser(String name, String tel, Pageable pageable);
 
     UserDto findUserByUsername(String username);
 

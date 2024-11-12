@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Random;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping(    "/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -34,13 +34,17 @@ public class UserController {
     private EmailService emailService;
 
     @GetMapping("/list")
-    public String getAll(Model model, @RequestParam(name = "keyword") String keyword,
+    public String getAll(Model model,
+                         @RequestParam(name = "name", required = false) String name,
+                         @RequestParam(name = "tel", required = false) String tel,
                          @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, 10);
-        List<UserDto> users = userService.getAllUser(keyword, pageable);
-        model.addAttribute("users",users);
+        List<UserDto> users = userService.getAllUser(name, tel, pageable);
+        model.addAttribute("users", users);
+        model.addAttribute("currentPage", pageNo);
         return "user/list";
     }
+
 
     @GetMapping("/login")
     public String login(){
