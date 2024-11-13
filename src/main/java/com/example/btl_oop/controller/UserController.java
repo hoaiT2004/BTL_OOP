@@ -32,7 +32,6 @@ public class UserController {
     private UserService userService;
     @Autowired
     private EmailService emailService;
-
     @GetMapping("/list")
     public String getAll(Model model,
                          @RequestParam(name = "name", required = false) String name,
