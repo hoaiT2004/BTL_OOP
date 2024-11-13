@@ -42,6 +42,9 @@ public class RoomDto {
     private String image;
 
     public static RoomDto toDto(Room room) {
+        if (room == null) {
+            return null;
+        }
         var roomDto = RoomDto.builder()
                 .room_id(room.getId())
                 .user_id(room.getUser_id())
@@ -63,6 +66,9 @@ public class RoomDto {
     }
 
     public static Room toRoom(RoomDto room) {
+        if (room == null) {
+            return null;
+        }
         return Room.builder()
                 .user_id(room.user_id)
                 .address(room.address)

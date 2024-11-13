@@ -181,90 +181,97 @@ public class BtlOopApplication {
 //                .image("https://res.cloudinary.com/hoaptit/image/upload/v1730789419/p81_end9iz.jpg")
 //                .isApproval("true")
 //                .build();
-//        roomRepository.saveAll(new ArrayList<>(List.of(r1,r2,r3,r4,r5,r6,r7,r8)));
+//        r1 = roomRepository.save(r1);
+//        r2 = roomRepository.save(r2);
+//        r3 = roomRepository.save(r3);
+//        r4 = roomRepository.save(r4);
+//        r5 = roomRepository.save(r5);
+//        r6 = roomRepository.save(r6);
+//        r7 = roomRepository.save(r7);
+//        r8 = roomRepository.save(r8);
 //
 //        var image1 = Image.builder()
-//                .room_id(r1.getUser_id())
+//                .room_id(r1.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789422/p2_jenfgx.jpg")
 //                .build();
 //        var image2 = Image.builder()
-//                .room_id(r1.getUser_id())
+//                .room_id(r1.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789422/p1_wjequs.jpg")
 //                .build();
 //        var image3 = Image.builder()
-//                .room_id(r2.getUser_id())
+//                .room_id(r2.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789421/p21_yzzmu8.jpg")
 //                .build();
 //        var image4 = Image.builder()
-//                .room_id(r2.getUser_id())
+//                .room_id(r2.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789422/p22_srp1wy.jpg")
 //                .build();
 //        var image5 = Image.builder()
-//                .room_id(r3.getUser_id())
+//                .room_id(r3.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789422/p2_jenfgx.jpg")
 //                .build();
 //        var image6 = Image.builder()
-//                .room_id(r3.getUser_id())
+//                .room_id(r3.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789421/p31_hw3skv.jpg")
 //                .build();
 //        var image7 = Image.builder()
-//                .room_id(r3.getUser_id())
+//                .room_id(r3.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789420/p32_x9uzdw.jpg")
 //                .build();
 //        var image8 = Image.builder()
-//                .room_id(r3.getUser_id())
+//                .room_id(r3.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789421/p33_jyhelj.jpg")
 //                .build();
 //        var image9 = Image.builder()
-//                .room_id(r3.getUser_id())
+//                .room_id(r3.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789419/p34_dj2ge0.jpg")
 //                .build();
 //        var image10 = Image.builder()
-//                .room_id(r4.getUser_id())
+//                .room_id(r4.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789418/p41_zxeclf.jpg")
 //                .build();
 //        var image11 = Image.builder()
-//                .room_id(r4.getUser_id())
+//                .room_id(r4.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789418/p42_ctux1l.jpg")
 //                .build();
 //        var image12 = Image.builder()
-//                .room_id(r4.getUser_id())
+//                .room_id(r4.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789421/p43_qjakee.jpg")
 //                .build();
 //        var image13 = Image.builder()
-//                .room_id(r5.getUser_id())
+//                .room_id(r5.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789421/p51_saxw00.jpg")
 //                .build();
 //        var image14 = Image.builder()
-//                .room_id(r5.getUser_id())
+//                .room_id(r5.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789420/p52_o6wzf5.jpg")
 //                .build();
 //        var image15 = Image.builder()
-//                .room_id(r6.getUser_id())
+//                .room_id(r6.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789419/p61_hkpdei.jpg")
 //                .build();
 //        var image16 = Image.builder()
-//                .room_id(r6.getUser_id())
+//                .room_id(r6.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789420/p62_sz8hel.jpg")
 //                .build();
 //        var image17 = Image.builder()
-//                .room_id(r6.getUser_id())
+//                .room_id(r6.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789420/p63_akdpbc.jpg")
 //                .build();
 //        var image18 = Image.builder()
-//                .room_id(r6.getUser_id())
+//                .room_id(r6.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789419/p64_sszw6f.jpg")
 //                .build();
 //        var image19 = Image.builder()
-//                .room_id(r7.getUser_id())
+//                .room_id(r7.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789418/p71_ll9qjj.jpg")
 //                .build();
 //        var image20 = Image.builder()
-//                .room_id(r8.getUser_id())
+//                .room_id(r8.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789419/p81_end9iz.jpg")
 //                .build();
 //        var image21 = Image.builder()
-//                .room_id(r8.getUser_id())
+//                .room_id(r8.getId())
 //                .url("https://res.cloudinary.com/hoaptit/image/upload/v1730789419/p82_ettd8o.jpg")
 //                .build();
 //        imageRepository.saveAll(new ArrayList<>(List.of(image1, image2, image3, image4, image5
