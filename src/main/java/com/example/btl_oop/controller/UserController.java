@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Random;
 
 @Controller
-@RequestMapping(    "/user")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -32,6 +32,7 @@ public class UserController {
     private UserService userService;
     @Autowired
     private EmailService emailService;
+
     @GetMapping("/list")
     public String getAll(Model model,
                          @RequestParam(name = "name", required = false) String name,
@@ -43,7 +44,6 @@ public class UserController {
         model.addAttribute("currentPage", pageNo);
         return "user/list";
     }
-
 
     @GetMapping("/login")
     public String login(){
@@ -156,18 +156,23 @@ public class UserController {
         model.addAttribute("email", encodedEmail);
         String otp = genOTP();
         model.addAttribute("trueOTP", otp);
-        emailService.sendEmail(email, "Mã bảo mật tài khoản của bạn", "<body style=\"font-family: Arial, sans-serif;\">\n" +
-                "    <div style=\"max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0;\">\n" +
-                "        <h2 style=\"font-size: 24px; margin-bottom: 10px;\">Mã bảo mật tài khoản của bạn</h2>\n" +
-                "        <p style=\"margin: 10px 0;\">Xin chào "+userDto.getUsername()+ ",</p>\n" +
-                "        <p style=\"margin: 10px 0;\">Mã bảo mật của bạn là:</p>\n" +
-                "        <div style=\"font-size: 24px; font-weight: bold; padding: 10px; background-color: #f0f0f0; text-align: center; margin: 20px 0;\">\n" +
-                otp +
-                "        </div>\n" +
-                "        <p style=\"margin: 10px 0;\">Để xác nhận danh tính của bạn trên Facebook, chúng tôi cần xác minh địa chỉ email của bạn. Hãy dán mã này vào trình duyệt. Đây là mã dùng một lần.</p>\n" +
-                "        <p style=\"margin: 10px 0;\">Cảm ơn bạn!<br>Đội ngũ bảo mật của nhóm 9</p>\n" +
-                "    </div>\n" +
-                "</body>");
+        var emailDto = EmailDTO.builder()
+                        .to(email)
+                        .subject("Mã bảo mật tài khoản của bạn")
+                        .body("<body style=\"font-family: Arial, sans-serif;\">\n" +
+                                                "    <div style=\"max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0;\">\n" +
+                                                "        <h2 style=\"font-size: 24px; margin-bottom: 10px;\">Mã bảo mật tài khoản của bạn</h2>\n" +
+                                                "        <p style=\"margin: 10px 0;\">Xin chào "+userDto.getUsername()+ ",</p>\n" +
+                                                "        <p style=\"margin: 10px 0;\">Mã bảo mật của bạn là:</p>\n" +
+                                                "        <div style=\"font-size: 24px; font-weight: bold; padding: 10px; background-color: #f0f0f0; text-align: center; margin: 20px 0;\">\n" +
+                                                otp +
+                                                "        </div>\n" +
+                                                "        <p style=\"margin: 10px 0;\">Để xác nhận danh tính của bạn trên Facebook, chúng tôi cần xác minh địa chỉ email của bạn. Hãy dán mã này vào trình duyệt. Đây là mã dùng một lần.</p>\n" +
+                                                "        <p style=\"margin: 10px 0;\">Cảm ơn bạn!<br>Đội ngũ bảo mật của nhóm 9</p>\n" +
+                                                "    </div>\n" +
+                                                "</body>")
+                        .build();
+        emailProducer.sendEmail(emailDto);
     }
 
     @PostMapping("/createNewPassword")

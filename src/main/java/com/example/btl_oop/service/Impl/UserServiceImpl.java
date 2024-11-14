@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDto findUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("Could not find user by username"));
+        User user = userRepository.findUserByUsername(username).orElse(null);
+        if (user == null) return null;
         return UserDto.toDto(user);
     }
 
@@ -108,7 +109,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDto getUserById(long id) {
-        return null;
+        return UserDto.toDto(userRepository.findById(id).orElse(null));
     }
 
 

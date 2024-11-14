@@ -13,5 +13,8 @@ public interface RoomService {
 
     List<RoomDto> getAllRoomByManyContraints(RoomFilterDataRequest request, Pageable pageable);
 
+    RoomDto getInfoRoomByRoom_Id(String room_id);
+
+    List<String> getAllImagesByRoom_Id(String room_id);
 
 }

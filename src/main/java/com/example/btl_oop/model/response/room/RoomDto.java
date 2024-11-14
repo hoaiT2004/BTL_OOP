@@ -42,6 +42,9 @@ public class RoomDto {
     private String image;
 
     public static RoomDto toDto(Room room) {
+        if (room == null) {
+            return null;
+        }
         var roomDto = RoomDto.builder()
                 .room_id(room.getId())
                 .user_id(room.getUser_id())
@@ -49,7 +52,7 @@ public class RoomDto {
                 .capacity(room.getCapacity())
                 .price(room.getPrice())
                 .description(room.getDescription())
-//                .roomType(room.getRoomType().name())
+                .roomType(room.getRoomType().name())
                 .area(room.getArea())
                 .isApproval(room.getIsApproval())
                 .image(room.getImage())
@@ -63,13 +66,16 @@ public class RoomDto {
     }
 
     public static Room toRoom(RoomDto room) {
+        if (room == null) {
+            return null;
+        }
         return Room.builder()
                 .user_id(room.user_id)
                 .address(room.address)
                 .capacity(room.capacity)
                 .price(room.price)
                 .description(room.description)
-//                .roomType()
+                .roomType(RoomType.valueOf(room.roomType))
                 .area(room.area)
                 .isApproval(room.isApproval)
                 .image(room.image)

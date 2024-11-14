@@ -32,6 +32,9 @@ public class UserDto {
     private String linkAvatar;
 
     public static UserDto toDto(User user) {
+        if (user == null) {
+            return null;
+        }
         return UserDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -45,6 +48,9 @@ public class UserDto {
     }
 
     public static User toUser(UserDto user) {
+        if (user == null) {
+            return null;
+        }
         return User.builder()
                 .email(user.getEmail())
                 .fullname(user.getFullname())
