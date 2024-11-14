@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-
-<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -551,7 +549,7 @@
             </h1>
         </div>
         <section>
-            <form th:action="@{/api/addroom}" th:object="${room}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/api/room/addroom}" th:object="${room}" method="post" enctype="multipart/form-data">
                 <div class="col-xs-12">
                     <div class="form-horizontal" role="form" >
 
@@ -610,7 +608,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-9">
-                                <button type="submit" class="btn btn-primary">Gửi</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
                             </div>
                         </div>
                     </div>

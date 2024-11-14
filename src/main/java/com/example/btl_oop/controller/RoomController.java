@@ -13,10 +13,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("api/room")
 public class RoomController {
+
 
     @Autowired
     private RoomService roomService;
@@ -26,6 +29,20 @@ public class RoomController {
 
     @Autowired
     private AppointmentServiceImpl appointmentService;
+
+    @PostMapping("/addroom")
+    public String addRoom(@ModelAttribute RoomDto roomDto, Model model, Authentication auth,@RequestParam("images") List<MultipartFile> images ) {
+        commonFunc(auth, model);
+        roomService.addRoom(roomDto, images);
+        return "redirect:/api/room/addroom";
+    }
+
+    @GetMapping("/addroom")
+    public String showAddRoom(@ModelAttribute RoomDto roomDto, Model model, Authentication auth) {
+        commonFunc(auth, model);
+        model.addAttribute("room", new RoomDto());
+        return "addroom";
+    }
 
     @GetMapping
     public String showDetailRoom(Authentication auth, @RequestParam(name = "room_id") String room_id, Model model) {
