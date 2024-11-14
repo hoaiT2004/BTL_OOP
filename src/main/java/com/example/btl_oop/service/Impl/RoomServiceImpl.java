@@ -78,12 +78,14 @@ public class RoomServiceImpl implements RoomService {
             Optional<User> user =  userRepository.findUserByUsername(username);
             room.setUser_id(user.get().getId());
         }
+        String url = fileService.uploadFile((MultipartFile) images.get(0));
+        room.setImage(url);
         roomRepository.save(room);
 
-        for(MultipartFile item : images) {
+        for(int i=1;i<images.size();i++) {
             Image image = new Image();
             image.setRoom_id(room.getId());
-            String imageUrl = fileService.uploadFile(item);
+            String imageUrl = fileService.uploadFile(images.get(i));
             image.setUrl(imageUrl);
             imageRepository.save(image);
         }

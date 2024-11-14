@@ -8,7 +8,7 @@
     <title>Phòng trọ sinh viên</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
             integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
@@ -28,7 +28,7 @@
         border-width: 1px;
     }
 
-    a{
+    a {
         text-decoration: none !important;
     }
 
@@ -52,7 +52,7 @@
         height: 100%;
     }
 
-    .bg-white{
+    .bg-white {
         background-color: white;
     }
 
@@ -127,8 +127,6 @@
     }
 
 
-
-
     nav ul.menu {
         display: flex;
         overflow: hidden;
@@ -138,7 +136,7 @@
 
     }
 
-    nav ul.menu>li>a {
+    nav ul.menu > li > a {
 
         display: block;
         color: white;
@@ -148,12 +146,12 @@
         font-size: 17px;
     }
 
-    nav ul.menu>li:hover a {
+    nav ul.menu > li:hover a {
         border-bottom: 5px solid lightblue;
         transition: all 0.1s;
     }
 
-    nav ul.menu>li>a.active {
+    nav ul.menu > li > a.active {
         border-bottom: 5px solid lightblue;
     }
 
@@ -162,7 +160,7 @@
             flex-direction: column;
         }
 
-        .container{
+        .container {
             width: 95%;
         }
 
@@ -203,14 +201,17 @@
             top: 0;
             width: 100%
         }
-        .item{
+
+        .item {
             display: block !important;
         }
-        .image{
+
+        .image {
             width: 100% !important;
             margin: 0 !important;
         }
-        .info{
+
+        .info {
             width: 100% !important;
         }
     }
@@ -259,12 +260,12 @@
 
     }
 
-    .v-menu>li {
+    .v-menu > li {
         width: 90%;
         border-top: 1px solid lightgray;
     }
 
-    .v-menu>li>a {
+    .v-menu > li > a {
         float: left;
         display: block;
         color: black;
@@ -274,7 +275,7 @@
         font-size: 17px;
     }
 
-    .v-menu>li>a:hover {
+    .v-menu > li > a:hover {
         color: red;
     }
 
@@ -286,7 +287,7 @@
         color: black;
     }
 
-    footer>span.moving {
+    footer > span.moving {
         position: relative;
         animation: move 10s infinite;
     }
@@ -302,11 +303,11 @@
         padding: 5px;
     }
 
-    .image>img {
+    .image > img {
         border-radius: 7px;
     }
 
-    .border-image{
+    .border-image {
         border-radius: 7px;
     }
 
@@ -326,7 +327,7 @@
         /* padding: 10px; */
     }
 
-    .info>div {
+    .info > div {
         padding: 10px;
     }
 
@@ -410,7 +411,7 @@
         margin-top: 10px;
     }
 
-    .ml-10{
+    .ml-10 {
         margin-left: 10px;
     }
 
@@ -429,16 +430,16 @@
     }
 
 
-    .price{
+    .price {
         color: green;
         font-size: 25px;
     }
 
-    .mr-5{
+    .mr-5 {
         margin-right: 5px;
     }
 
-    .test{
+    .test {
         background-color: red;
     }
 
@@ -466,6 +467,7 @@
         align-items: center;
         padding: 0 25px;
     }
+
     button {
         outline: none !important;
         border: none;
@@ -477,9 +479,10 @@
         width: 15%;
     }
 
-    .main  {
+    .main {
         width: 80%;
     }
+
     .larger-font li {
         font-size: 1.2em; /* Điều chỉnh cỡ chữ theo ý muốn, 1.2em là ví dụ */
     }
@@ -514,34 +517,34 @@
     <div style="background-color: white;" class="flex border top">
         <div class="container">
             <div class="header flex">
-                <div class="web icon">
-                    <a th:href="@{/api/home}"><img style="width: 50%; height: 50%;" src="https://res.cloudinary.com/hoaptit/image/upload/v1730187948/tro-sinh-vien2_wiuzca.png" alt=""></a>
+                <div th:if="${username != null}" class="big-device flex">
+                    <div><a class="btn italic" th:href="@{/user/profile}"><h4 th:text="${username}"></h4></a></div>
+                    <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
+                                                                                class="fa fa-address-book"></i>Đăng xuất</a>
+                    </div>
+                    <div th:if="${role == 'Landlord'}"><a class="btn header-btn" href="/api/room/addroom"><i
+                            style="margin-right: 5px;"
+                            class="fas fa-pen-alt"></i>Đăng tin</a></div>
                 </div>
-                <div class="right header flex">
-                    <div th:if="${username != null}" class="big-device flex">
-                        <div><a class="btn italic" th:href="@{/user/profile}"><h4 th:text="${username}"></h4></a></div>
-                        <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
-                                                                                    class="fa fa-address-book"></i>Đăng xuất</a></div>
-                        <div><a class="btn header-btn" href="#"><i style="margin-right: 5px;"
-                                                                   class="fas fa-pen-alt"></i>Đăng tin</a></div>
+                <div th:if="${username == null}" class="big-device flex">
+                    <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
+                                                                               class="fa fa-sign-in"></i>Đăng nhập</a>
                     </div>
-                    <div th:if="${username == null}" class="big-device flex">
-                        <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
-                                                                                   class="fa fa-sign-in"></i>Đăng nhập</a></div>
-                        <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
-                                                                                      class="fa fa-address-book"></i>Đăng ký</a></div>
-                        <div><a class="btn header-btn" href="#"><i style="margin-right: 5px;"
-                                                                   class="	fas fa-pen-alt"></i>Đăng tin</a></div>
+                    <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
+                                                                                  class="fa fa-address-book"></i>Đăng ký</a>
                     </div>
-                    <div class="small-device flex">
-                        <div><a href="@{/user/login}" type="button" style="padding: 3px;" class="fa fa-sign-in"></a></div>
-                        <div><a href="@{/user/register}" type="button" style="padding: 3px;" class="fa-solid fa-user-plus"></a></div>
-                        <div><a href="#" type="button" style="padding: 3px;" class="fa-solid fa-plus"></a></div>
-                    </div>
+
+                </div>
+                <div class="small-device flex">
+                    <div><a href="@{/user/login}" type="button" style="padding: 3px;" class="fa fa-sign-in"></a></div>
+                    <div><a href="@{/user/register}" type="button" style="padding: 3px;"
+                            class="fa-solid fa-user-plus"></a></div>
+                    <div><a href="#" type="button" style="padding: 3px;" class="fa-solid fa-plus"></a></div>
                 </div>
             </div>
-
         </div>
+
+    </div>
 
     </div>
 </header>
@@ -553,8 +556,8 @@
         <div class="container">
             <ul class="menu flex" id="menu">
                 <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                    <li th:if="${role == 'Admin'}"><a href="#">Người dùng</a></li>
-                    <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
+                <li th:if="${role == 'Admin'}"><a href="#">Người dùng</a></li>
+                <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
             </ul>
         </div>
     </div>
@@ -566,21 +569,35 @@
     <section>
         <h2>1. Xác định khu vực thuê trọ</h2>
         <ul class="larger-font">
-            <li><strong>Xác định khu vực thuê trước khi đến học: </strong>Sinh viên cần lựa chọn khu vực thuê trọ trước khi chuyển đến tỉnh, thành phố mới, đặc biệt là các đô thị đông đúc, nơi việc tìm phòng trọ có thể khó khăn và tốn thời gian.
+            <li><strong>Xác định khu vực thuê trước khi đến học: </strong>Sinh viên cần lựa chọn khu vực thuê trọ trước
+                khi chuyển đến tỉnh, thành phố mới, đặc biệt là các đô thị đông đúc, nơi việc tìm phòng trọ có thể khó
+                khăn và tốn thời gian.
 
             </li>
-            <li><strong>Thuê gần trường học: </strong>Nên ưu tiên khu vực gần trường để thuận tiện cho việc di chuyển, tiết kiệm thời gian và chi phí đi lại. Chọn khu vực này cũng giúp tiếp cận dễ dàng các tiện ích như cửa hàng tiện lợi, siêu thị, và bệnh viện.</li>
-            <li><strong>Chọn theo giá khu vực: </strong>Nếu trường nằm ở quận có mức sống cao như Quận 1, Quận 2 (Tp.HCM) hay Hoàn Kiếm, Ba Đình (Hà Nội), cần cân nhắc lựa chọn nơi thuê phù hợp với ngân sách.</li>
-            <li><strong>Ở ghép để giảm chi phí: </strong>Ở cùng với bạn bè giúp giảm chi phí thuê và các chi phí sinh hoạt khác, dễ dàng chọn trọ với giá hợp lý hơn.</li>
+            <li><strong>Thuê gần trường học: </strong>Nên ưu tiên khu vực gần trường để thuận tiện cho việc di chuyển,
+                tiết kiệm thời gian và chi phí đi lại. Chọn khu vực này cũng giúp tiếp cận dễ dàng các tiện ích như cửa
+                hàng tiện lợi, siêu thị, và bệnh viện.
+            </li>
+            <li><strong>Chọn theo giá khu vực: </strong>Nếu trường nằm ở quận có mức sống cao như Quận 1, Quận 2
+                (Tp.HCM) hay Hoàn Kiếm, Ba Đình (Hà Nội), cần cân nhắc lựa chọn nơi thuê phù hợp với ngân sách.
+            </li>
+            <li><strong>Ở ghép để giảm chi phí: </strong>Ở cùng với bạn bè giúp giảm chi phí thuê và các chi phí sinh
+                hoạt khác, dễ dàng chọn trọ với giá hợp lý hơn.
+            </li>
         </ul>
     </section>
 
-    <section >
+    <section>
         <h2>2. Kiểm tra chất lượng trọ và an ninh khu vực</h2>
         <ul class="larger-font">
-            <li><strong>Đi cùng người có kinh nghiệm:</strong> Khi đi kiểm tra phòng trọ, nên đi cùng người thân hoặc bạn bè có kinh nghiệm để đánh giá nội, ngoại thất.</li>
-            <li><strong>Không gian phòng:</strong> Đảm bảo phòng trọ sạch sẽ, thoáng mát, không bị ẩm mốc, dột, thiếu ánh sáng.</li>
-            <li><strong>Kiểm tra an ninh:</strong> Cửa ra vào và cửa sổ cần chắc chắn; ưu tiên nơi có camera an ninh.</li>
+            <li><strong>Đi cùng người có kinh nghiệm:</strong> Khi đi kiểm tra phòng trọ, nên đi cùng người thân hoặc
+                bạn bè có kinh nghiệm để đánh giá nội, ngoại thất.
+            </li>
+            <li><strong>Không gian phòng:</strong> Đảm bảo phòng trọ sạch sẽ, thoáng mát, không bị ẩm mốc, dột, thiếu
+                ánh sáng.
+            </li>
+            <li><strong>Kiểm tra an ninh:</strong> Cửa ra vào và cửa sổ cần chắc chắn; ưu tiên nơi có camera an ninh.
+            </li>
             <li><strong>Tường, trần và đồ đạc:</strong> Kiểm tra hư hỏng để báo chủ trọ, tránh tranh chấp sau này.</li>
             <li><strong>Nơi để xe:</strong> Hỏi về chỗ để xe và cổng ngoài để an ninh hơn và giảm phí gửi xe.</li>
             <li><strong>Nhà vệ sinh riêng:</strong> Tìm phòng có nhà vệ sinh riêng, sạch sẽ.</li>
@@ -591,9 +608,15 @@
     <section>
         <h2>3. Thông tin về tiền cọc và hợp đồng thuê</h2>
         <ul class="larger-font">
-            <li><strong>Tiền cọc:</strong> Đặt cọc trước khi chuyển đồ vào, số tiền này sẽ được trả lại hoặc gộp vào tiền thuê.</li>
-            <li><strong>Tránh môi giới:</strong> Thuê trọ qua môi giới có thể gây khó khăn khi giải quyết vấn đề và tốn thêm chi phí.</li>
-            <li><strong>Đọc kỹ hợp đồng:</strong> Kiểm tra các điều khoản như thời hạn, tiền thuê, phụ phí, điều kiện phạt khi vi phạm để bảo vệ quyền lợi trước khi ký.</li>
+            <li><strong>Tiền cọc:</strong> Đặt cọc trước khi chuyển đồ vào, số tiền này sẽ được trả lại hoặc gộp vào
+                tiền thuê.
+            </li>
+            <li><strong>Tránh môi giới:</strong> Thuê trọ qua môi giới có thể gây khó khăn khi giải quyết vấn đề và tốn
+                thêm chi phí.
+            </li>
+            <li><strong>Đọc kỹ hợp đồng:</strong> Kiểm tra các điều khoản như thời hạn, tiền thuê, phụ phí, điều kiện
+                phạt khi vi phạm để bảo vệ quyền lợi trước khi ký.
+            </li>
         </ul>
     </section>
 
@@ -609,9 +632,15 @@
     <section>
         <h2>5. Thời gian chuyển đến ở</h2>
         <ul class="larger-font">
-            <li><strong>Chuẩn bị thời gian trước khi nhập học: </strong>Nên đến thành phố trước 1-2 tháng để tìm trọ vì có thể mất vài ngày hoặc hơn để chọn phòng ưng ý.</li>
-            <li><strong>Chuyển đến sớm để ổn định và làm quen: </strong>Việc chuyển đến sớm giúp sinh viên ổn định chỗ ở và làm quen với đường xá trước khi nhập học.</li>
-            <li><strong>Lưu ý khi thuê trọ: </strong>Tổng hợp các lưu ý cơ bản nhằm giúp sinh viên chuẩn bị thuận lợi, tìm được phòng trọ phù hợp trước khi nhập học.</li>
+            <li><strong>Chuẩn bị thời gian trước khi nhập học: </strong>Nên đến thành phố trước 1-2 tháng để tìm trọ vì
+                có thể mất vài ngày hoặc hơn để chọn phòng ưng ý.
+            </li>
+            <li><strong>Chuyển đến sớm để ổn định và làm quen: </strong>Việc chuyển đến sớm giúp sinh viên ổn định chỗ ở
+                và làm quen với đường xá trước khi nhập học.
+            </li>
+            <li><strong>Lưu ý khi thuê trọ: </strong>Tổng hợp các lưu ý cơ bản nhằm giúp sinh viên chuẩn bị thuận lợi,
+                tìm được phòng trọ phù hợp trước khi nhập học.
+            </li>
         </ul>
 
     </section>
