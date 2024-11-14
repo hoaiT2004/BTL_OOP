@@ -19,8 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("api/room")
 public class RoomController {
-
-
     @Autowired
     private RoomService roomService;
 
@@ -33,7 +31,7 @@ public class RoomController {
     @PostMapping("/addroom")
     public String addRoom(@ModelAttribute RoomDto roomDto, Model model, Authentication auth,@RequestParam("images") List<MultipartFile> images ) {
         commonFunc(auth, model);
-        roomService.addRoom(roomDto, images);
+        roomService.addRoom(roomDto, images, auth);
         return "redirect:/api/room/addroom";
     }
 
