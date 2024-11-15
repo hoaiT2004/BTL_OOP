@@ -1,12 +1,13 @@
 package com.example.btl_oop.controller;
 
 import com.example.btl_oop.model.dto.EmailDTO;
+import com.example.btl_oop.model.dto.UserDto;
 import com.example.btl_oop.model.request.user.*;
+import com.example.btl_oop.model.dto.AppointmentDto;
 import com.example.btl_oop.model.response.user.RegisterResponse;
-import com.example.btl_oop.model.response.user.UserDto;
+import com.example.btl_oop.service.AppointmentService;
 import com.example.btl_oop.service.UserService;
 import com.example.btl_oop.service.email.EmailProducer;
-import com.example.btl_oop.service.email.EmailService;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Random;
 
@@ -30,8 +32,14 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private EmailProducer emailProducer;
+
+    @Autowired
+    private AppointmentService appointmentService;
+
+    private static final int sizeOfPage = 8;
 
     @GetMapping("/list")
     public String getAll(Model model, @RequestParam(name = "keyword") String keyword,
@@ -143,6 +151,14 @@ public class UserController {
             model.addAttribute("errorBE", "Tên đăng nhập không tồn tại!");
             return "user/enterUsername";
         }
+        model.addAttribute("username", username);
+        sendEmail(model, userDto);
+        return "user/createNewPassword";
+    }
+
+    @GetMapping("/sendEmailAgain")
+    public String sendEmailAgain(@RequestParam(name = "username") String username, Model model) {
+        UserDto userDto = userService.findUserByUsername(username.toLowerCase());
         sendEmail(model, userDto);
         return "user/createNewPassword";
     }
@@ -176,5 +192,33 @@ public class UserController {
     public String saveNewPassword(@NonNull @ModelAttribute CreateNewPasswordRequest request) {
         userService.createNewPassword(request);
         return "redirect:/user/login";
+    }
+
+    @GetMapping("/schedule")
+    public String showRoomViewingSchedule(Authentication auth, Model model,
+    @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) throws ParseException {
+        commonFunc(auth, model);
+        Pageable pageable = PageRequest.of(pageNo - 1, sizeOfPage);
+        List<AppointmentDto> dtoList = appointmentService.getAllByUsername(auth.getName(), pageable);
+        model.addAttribute("Appointments", dtoList);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPage", dtoList.size() / sizeOfPage + 1);
+        return "user/roomViewingSchedule";
+    }
+
+    @GetMapping("/deleteSchedule")
+    public String deleteRoomViewingSchedule(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                            @RequestParam(name = "appointmentId") Long appointmentId) throws ParseException {
+        appointmentService.deleteScheduleById(appointmentId);
+        return "redirect:/user/schedule?pageNo="+pageNo;
+    }
+
+    private static void commonFunc(Authentication auth, Model model) {
+        if (auth != null) {
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
+            model.addAttribute("username", auth.getName());
+            String roleLength = userDetails.getAuthorities().toString();
+            model.addAttribute("role", roleLength.substring(1, roleLength.length() - 1));
+        }
     }
 }

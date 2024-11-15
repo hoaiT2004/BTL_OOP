@@ -526,6 +526,7 @@
                     <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
                     <li th:if="${role == 'Admin'}"><a href="/api/home/UserManagement">Người dùng</a></li>
                     <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
+                    <li th:if="${role != null}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
                 </ul>
             </div>
         </div>
@@ -609,7 +610,7 @@
                     <h3 class="subject">Phòng trọ sinh viên khu vực hà đông</h3>
                     <div class="items" id="phongtro" th:each="room: ${rooms}">
                         <div class="item">
-                            <div class="image"><img th:src="@{${room.getImage()}}" style="width: 100%;height: 100%"  alt=""/></div>
+                            <div class="image"><a th:href="@{'/api/room?room_id='+${room.getRoom_id()}}"><img th:src="@{${room.getImage()}}" style="width: 100%;height: 100%"  alt=""/></a></div>
                             <div class="info">
                                 <div class="main-title"><a th:href="@{'/api/room?room_id='+${room.getRoom_id()}}">Phòng cho thuê rộng rãi thoải mái</a>
                                 </div>
@@ -628,7 +629,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class = "box-footer clearfix">
                         <ul class="pagination pagination-sm no-margin pull-right">

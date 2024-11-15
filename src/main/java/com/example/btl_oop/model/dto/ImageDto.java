@@ -1,8 +1,7 @@
-package com.example.btl_oop.model.response.room;
+package com.example.btl_oop.model.dto;
 
 
 import com.example.btl_oop.entity.Image;
-import com.example.btl_oop.entity.Room;
 import lombok.*;
 
 import java.util.List;
