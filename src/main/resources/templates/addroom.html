@@ -570,7 +570,7 @@
                         <div class="form-group">
                             <label class="col-sm-3">(*) Giá thuê: </label>
                             <div class="col-sm-9">
-                                <input class="form-control" type="number" id="price" th:field="*{price}" required min="1" placeholder="Nhập giá thuê lớn hơn 0"/>
+                                <input class="form-control" type="number" id="price" th:field="*{price}" required min="1" step="any"  placeholder="Nhập giá thuê lớn hơn 0"/>
                             </div>
                         </div>
 
@@ -584,7 +584,7 @@
                         <div class="form-group">
                             <label class="col-sm-3">(*) Diện tích phòng: </label>
                             <div class="col-sm-9">
-                                <input class="form-control" type="number" id="area" th:field="*{area}" required min="1" placeholder="Nhập diện tích lớn hơn 0"/>
+                                <input class="form-control" type="number" id="area" th:field="*{area}" required min="1"  step="any"  placeholder="Nhập diện tích lớn hơn 0"/>
                             </div>
                         </div>
 
