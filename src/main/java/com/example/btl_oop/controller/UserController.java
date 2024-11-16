@@ -1,5 +1,6 @@
 package com.example.btl_oop.controller;
 
+import com.example.btl_oop.entity.User;
 import com.example.btl_oop.model.dto.EmailDTO;
 import com.example.btl_oop.model.dto.UserDto;
 import com.example.btl_oop.model.request.user.*;
@@ -42,11 +43,14 @@ public class UserController {
     private static final int sizeOfPage = 8;
 
     @GetMapping("/list")
-    public String getAll(Model model, @RequestParam(name = "keyword") String keyword,
+    public String getAll(Model model,
+                         @RequestParam(name = "name", required = false) String name,
+                         @RequestParam(name = "tel", required = false) String tel,
                          @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, 10);
-        List<UserDto> users = userService.getAllUser(keyword, pageable);
-        model.addAttribute("users",users);
+        List<UserDto> users = userService.getAllUser(name, tel, pageable);
+        model.addAttribute("users", users);
+        model.addAttribute("currentPage", pageNo);
         return "user/list";
     }
 
@@ -192,6 +196,12 @@ public class UserController {
     public String saveNewPassword(@NonNull @ModelAttribute CreateNewPasswordRequest request) {
         userService.createNewPassword(request);
         return "redirect:/user/login";
+    }
+
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @GetMapping("/schedule")

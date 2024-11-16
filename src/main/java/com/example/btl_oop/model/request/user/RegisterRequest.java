@@ -28,7 +28,6 @@ public class RegisterRequest {
 
     @Length(max = 12, min = 10)
     private String tel;
-
     private String role_id;
 }
 
