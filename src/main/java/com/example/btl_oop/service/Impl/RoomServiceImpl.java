@@ -19,7 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -70,6 +70,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional
     public void addRoom(RoomDto roomDto, List<MultipartFile> images, Authentication auth) {
         Room room = RoomDto.toRoom(roomDto);
         room.setIsApproval("false");
