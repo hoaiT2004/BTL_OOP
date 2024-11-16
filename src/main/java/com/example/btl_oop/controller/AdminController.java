@@ -1,7 +1,7 @@
 package com.example.btl_oop.controller;
 
 import com.example.btl_oop.model.request.room.RoomFilterDataRequest;
-import com.example.btl_oop.model.response.room.RoomDto;
+import com.example.btl_oop.model.dto.RoomDto;
 import com.example.btl_oop.service.RoomService;
 import jakarta.validation.constraints.Null;
 import com.example.btl_oop.entity.Room;

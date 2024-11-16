@@ -577,6 +577,7 @@
                     <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
                     <li th:if="${role == 'Admin'}"><a href="/api/home/UserManagement">Người dùng</a></li>
                     <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
+                    <li th:if="${role != null}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
                 </ul>
             </div>
         </div>
@@ -594,29 +595,31 @@
                                 <div class="main-info">
                                     <form th:action="@{/api/room/schedule}" method="post">
                                         <input type="text" hidden="hidden" th:value="${room_id}" name="room_id">
+                                        <input type="text" hidden="hidden" th:value="${username}" name="username">
                                         <div class="form-group">
                                             <label for="name">Họ và tên(*):</label>
-                                            <input type="text" class="form-control" name = "fullname" id="name" required>
+                                            <input type="text" class="form-control" name = "fullname" th:value="${dto.getFullname()}" id="name" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="tel">Số điện thoại(*):</label>
-                                            <input type="tel" class="form-control" name = "tel" id="tel" required
+                                            <input type="tel" class="form-control" th:value="${dto.getTel()}" name = "tel" id="tel" required
                                                    pattern="^0\d{9,11}$" title="Telephone number must be between 10 and 12 digits
                             and start with zero number">
                                         </div>
                                         <div class="form-group">
                                             <label for="email">Email(*):</label>
-                                            <input type="email" class="form-control" name = "email" id="email" required
+                                            <input type="email" class="form-control" th:value="${dto.getEmail()}" name = "email" id="email" required
                                                    pattern="^[\w.%+-]+@gmail\.com$" title="Email must contain @gmail.com at the end">
 
                                         </div>
                                         <div class="form-group">
                                             <label for="numPeople">Số người đến(*):</label>
-                                            <input type="number" min="1" class="form-control" name = "numPeople" id="numPeople" required>
+                                            <input type="number" value="1" min="1" class="form-control" name = "numPeople" id="numPeople" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="comeDate">Ngày đến(*):</label>
-                                            <input type="date" class="form-control" onchange="return validateDate()" name = "comeDate" id="comeDate" required>
+                                            <input type="date" class="form-control" onmouseout="validateDate()" name = "comeDate" id="comeDate" required>
+                                            <span id="error-message" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
                                             <label for="transportation">Phương tiện di chuyển(*):</label>
@@ -628,7 +631,7 @@
                                         </div>
                                         <hr>
                                         <div class="form-group">
-                                            <input type="submit" value="Xác nhận">
+                                            <input class="but" type="submit" value="Xác nhận">
                                         </div>
                                     </form>
                                 </div>
@@ -665,17 +668,15 @@
 </body>
 <script>
     function validateDate() {
-        const arrivalDate = new Date(document.getElementById("arrivalDate").value);
-        const currentDate = new Date();
+        const inputDate = new Date(document.getElementById("comeDate").value);
+        const today = new Date();
+        const errorMessage = document.getElementById("error-message");
 
-        // Đặt giờ, phút, giây của currentDate về 0 để so sánh chính xác ngày
-        currentDate.setHours(0, 0, 0, 0);
-
-        if (arrivalDate < currentDate) {
-            alert("Ngày đến phải lớn hơn hoặc bằng ngày hiện tại.");
-            return false;
+        // Kiểm tra nếu ngày nhập vào nhỏ hơn ngày hiện tại
+        if (inputDate < today) {
+            alert("Ngày đến không hợp lệ. Vui lòng chọn ngày trong tương lai.");
+            document.getElementById("comeDate").value = ""; // Xóa giá trị đã nhập
         }
-        return true;
     }
 </script>
 </html>

@@ -3,6 +3,7 @@ package com.example.btl_oop.service.Impl;
 import com.example.btl_oop.config.MyUserDetails;
 import com.example.btl_oop.entity.Role;
 import com.example.btl_oop.entity.User;
+import com.example.btl_oop.model.dto.UserDto;
 import com.example.btl_oop.model.request.user.*;
 import com.example.btl_oop.model.response.user.*;
 import com.example.btl_oop.repository.RoleRepository;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.InvalidParameterException;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        return userRepository.getAllUsers();
     }
 
     @Override

@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class User extends BaseEntity {
+public class  User extends BaseEntity {
 
     @Column(unique = true)
     @Size(max = 100)

@@ -609,7 +609,7 @@
                     <h3 class="subject">Phòng trọ sinh viên khu vực hà đông</h3>
                     <div class="items" id="phongtro" th:each="room: ${rooms}">
                         <div class="item">
-                            <div class="image"><img th:src="@{${room.getImage()}}" style="width: 100%;height: 100%"  alt=""/></div>
+                            <div class="image"><a th:href="@{'/api/room?room_id='+${room.getRoom_id()}}"><img th:src="@{${room.getImage()}}" style="width: 100%;height: 100%"  alt=""/></a></div>
                             <div class="info">
                                 <div class="main-title"><a th:href="@{'/api/room?room_id='+${room.getRoom_id()}}">Phòng cho thuê rộng rãi thoải mái</a>
                                 </div>
@@ -647,6 +647,10 @@
 
                     </div>
                 </div>
+
+
+
+
                 <div class="right border bg-white">
                     <h3 class="subject">Tin mới đăng</h3>
                     <ul class="flex v-menu">
@@ -656,7 +660,11 @@
                         <li><a href="/api/home/nhadephon">Làm sao để nhà đẹp hơn</a></li>
                     </ul>
                 </div>
+
+
+
                 <div class="right-no-border"></div>
+
                 <div class="right-no-border"></div>
 
             </div>

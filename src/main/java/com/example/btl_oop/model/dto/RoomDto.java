@@ -1,13 +1,7 @@
-package com.example.btl_oop.model.response.room;
+package com.example.btl_oop.model.dto;
 
 import com.example.btl_oop.common.RoomType;
 import com.example.btl_oop.entity.Room;
-import com.example.btl_oop.entity.User;
-import com.example.btl_oop.model.response.user.UserDto;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;

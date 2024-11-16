@@ -1,20 +1,13 @@
 package com.example.btl_oop.controller;
 
 import com.example.btl_oop.model.request.room.RoomFilterDataRequest;
-import com.example.btl_oop.model.response.room.RoomDto;
+import com.example.btl_oop.model.dto.RoomDto;
 import com.example.btl_oop.service.RoomService;
-import jakarta.validation.constraints.Null;
-import com.example.btl_oop.entity.Room;
-//import com.example.btl_oop.model.dto.RoomDTO;
-import com.example.btl_oop.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
-
 import java.util.*;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("api/home")
