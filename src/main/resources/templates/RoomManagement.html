@@ -42,7 +42,7 @@
             .left {
                 background-color: white;
                 border: 1px solid;
-                width: 70%;
+                width: 100%;
                 height: 100%;
                 margin-bottom: 20px;
             }
@@ -711,90 +711,75 @@
                 </div>
             </form>
         </div>
+        <div class="container">
+            <section>
+                <div style="margin-top: 10px;" class="content">
+                    <div class="left border">
         <!-- Room Table -->
         <table>
             <thead>
             <tr>
                 <th>ID</th>
-
                 <th>Giá</th>
                 <th>Địa Chỉ</th>
                 <th>Diện Tích</th>
                 <th>Kiểu Phòng</th>
-
+                <th>Trạng thái</th>
+                <th>Hành động</th>
             </tr>
             </thead>
             <tbody id="roomTable">
-            <!-- Danh sách các phòng sẽ được hiển thị ở đây -->
+            <tr th:each="room : ${rooms}">
+                <td th:text="${room.id}"></td>
+                <td th:text="${room.price}"></td>
+                <td th:text="${room.address}"></td>
+                <td th:text="${room.area}"></td>
+                <td th:text="${room.type == 'CHUNG_CHU' ? 'Chung chủ' : 'Không chung chủ'}"></td>
+                <td th:text="${room.approved ? 'Đã duyệt' : 'Chưa duyệt'}"></td>
+                <td>
+                    <button th:if="${!room.approved}" onclick="approveRoom([[${room.id}]])" class="btn btn-success">Duyệt</button>
+                    <button th:if="${room.approved}" onclick="disapproveRoom([[${room.id}]])" class="btn btn-danger">Không duyệt</button>
+                </td>
+            </tr>
             </tbody>
         </table>
 
+        <!-- Pagination Controls -->
+        <div class="pagination">
+            <button onclick="changePage(${currentPage - 1})" ${currentPage == 0 ? 'disabled' : ''}>Previous</button>
+            <span th:text="'Page ' + (${currentPage ?: 0})"></span>
+            <button onclick="changePage(${currentPage + 1})" ${users.size() < 10 ? 'disabled' : ''}>Next</button>
+        </div>
 
-        <div class="pagination" style="text-align: center; margin-top: 20px;">
-            <button onclick="prevPage()">Previous</button>
-            <span id="pageDisplay">Page 1</span>
-            <button onclick="nextPage()">Next</button>
+    <script>
+        // Function to handle search form submission
+        function submitRoomSearch() {
+            document.getElementById('roomSearchForm').submit();
+        }
+
+        // Function to change page
+        function changePage(pageNo) {
+            const form = document.getElementById('roomSearchForm');
+
+            // Create hidden input for page number
+            let pageInput = document.querySelector('input[name="pageNo"]');
+            if (!pageInput) {
+                pageInput = document.createElement('input');
+                pageInput.setAttribute('type', 'hidden');
+                pageInput.setAttribute('name', 'pageNo');
+                form.appendChild(pageInput);
+            }
+            pageInput.setAttribute('value', pageNo);
+
+            form.submit();
+        }
+    </script>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 
-    <script>
-        let rooms = [];
-        const rowsPerPage = 10;
-        let currentPage = 1;
-
-
-        async function fetchRooms() {
-            try {
-                const response = await fetch('/api/rooms');
-                if (response.ok) {
-                    rooms = await response.json();
-                    displayRooms();
-                } else {
-                    console.error('Failed to fetch rooms:', response.status);
-                }
-            } catch (error) {
-                console.error('Error fetching rooms:', error);
-            }
-        }
-
-        // Function to display rooms on the current page
-        function displayRooms() {
-            const roomTable = document.getElementById('roomTable');
-            roomTable.innerHTML = ''; // Clear the table before adding new rows
-
-            const start = (currentPage - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-            const paginatedRooms = rooms.slice(start, end);
-            paginatedRooms.forEach(room => {
-                const row = `<tr>
-            <td>${room.id}</td>
-            <td>${room.price}</td>
-            <td>${room.address}</td>
-            <td>${room.area}</td>
-            <td>${room.type === 'CHUNG_CHU' ? 'Chung chủ' : 'Không chung chủ'}</td>
-          </tr>`;
-                roomTable.innerHTML += row;
-            });
-
-            document.getElementById('pageDisplay').innerText = `Page ${currentPage}`;
-        }
-            currentPage = 1;
-            displayRooms();
-        }
-        function prevPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                displayRooms();
-            }
-        }
-        function nextPage() {
-            if (currentPage * rowsPerPage < rooms.length) {
-                currentPage++;
-                displayRooms();
-            }
-        }
-        fetchRooms();
-    </script>
     <footer>
         <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>
         <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>

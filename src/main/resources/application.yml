@@ -2,7 +2,7 @@ spring:
   application:
     name: BTL_OOP
   datasource:
-    password: 24052004
+    password: tuanphat2004
     username: root
     url: 'jdbc:mysql://localhost:3306/btloop?createDatabaseIfNotExist=true'
     driver-class-name: com.mysql.cj.jdbc.Driver

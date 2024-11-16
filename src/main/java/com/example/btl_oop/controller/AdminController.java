@@ -43,15 +43,20 @@ public class AdminController {
     }
     @GetMapping("/RoomManagement")
     public String home(Authentication authentication, Model model,
-                       @ModelAttribute RoomFilterDataRequest request
-            , @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
+                       @ModelAttribute RoomFilterDataRequest request,
+                       @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
         func_common(authentication, model);
+
+        if (pageNo < 1) {
+            pageNo = 1; // Đảm bảo pageNo luôn bắt đầu từ 1
+        }
+
         Pageable pageable = PageRequest.of(pageNo - 1, sizeOfPage);
         List<RoomDto> roomList = roomService.getAllRoomByManyContraints(request, pageable);
 
         model.addAttribute("rooms", roomList);
         model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPage", roomList.size() / sizeOfPage + 1);
+        model.addAttribute("totalPage", (roomList.size() + sizeOfPage - 1) / sizeOfPage); // Tổng số trang
 
         // Lưu trạng thái lọc khi chuyển trang
         model.addAttribute("request", request);

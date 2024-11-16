@@ -5,7 +5,8 @@ import com.example.btl_oop.model.request.user.*;
 import com.example.btl_oop.model.response.user.ChangeInfoResponse;
 import com.example.btl_oop.model.response.user.RegisterResponse;
 import com.example.btl_oop.model.response.user.UserDto;
-import com.example.btl_oop.service.EmailService;
+import com.example.btl_oop.model.dto.EmailDTO;
+import com.example.btl_oop.service.email.*;
 import com.example.btl_oop.service.UserService;
 import jakarta.validation.Valid;
 import lombok.NonNull;
@@ -31,7 +32,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private EmailService emailService;
+    private EmailProducer emailProducer;
 
     @GetMapping("/list")
     public String getAll(Model model,
@@ -172,6 +173,7 @@ public class UserController {
                                                 "    </div>\n" +
                                                 "</body>")
                         .build();
+
         emailProducer.sendEmail(emailDto);
     }
 
@@ -180,7 +182,7 @@ public class UserController {
         userService.createNewPassword(request);
         return "redirect:/user/login";
     }
-    @Autowired
+
     // Endpoint để lấy danh sách người dùng
     @GetMapping
     public List<User> getAllUsers() {
