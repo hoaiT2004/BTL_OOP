@@ -1,5 +1,6 @@
 package com.example.btl_oop.controller;
 
+import com.example.btl_oop.entity.User;
 import com.example.btl_oop.model.dto.EmailDTO;
 import com.example.btl_oop.model.dto.UserDto;
 import com.example.btl_oop.model.request.user.*;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -200,7 +200,7 @@ public class UserController {
 
 
     @GetMapping
-    public List<UserDto> getAllUsers() {
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 

@@ -1,5 +1,6 @@
 package com.example.btl_oop.service;
 
+import com.example.btl_oop.entity.User;
 import com.example.btl_oop.model.dto.UserDto;
 import com.example.btl_oop.model.request.user.*;
 import com.example.btl_oop.model.response.user.*;
@@ -25,5 +26,5 @@ public interface UserService {
 
     CreateNewPasswordResponse createNewPassword(CreateNewPasswordRequest request);
 
-    List<UserDto> getAllUsers();
+    List<User> getAllUsers();
 }

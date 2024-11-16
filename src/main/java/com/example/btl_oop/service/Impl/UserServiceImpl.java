@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
-        return userRepository.getAllUsers();
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
