@@ -1,9 +1,11 @@
 package com.example.btl_oop.controller;
 
+import com.example.btl_oop.entity.Room;
 import com.example.btl_oop.model.request.room.RoomFilterDataRequest;
 import com.example.btl_oop.model.dto.RoomDto;
 import com.example.btl_oop.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -40,11 +42,12 @@ public class HomeController {
             , @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
         func_common(authentication, model);
         Pageable pageable = PageRequest.of(pageNo - 1, sizeOfPage);
-        List<RoomDto> roomList = roomService.getAllRoomByManyContraints(request, pageable);
-
-        model.addAttribute("rooms", roomList);
+        Page<Room> roomPage = roomService.getAllRoomByManyContraints(request, pageable);
+        List<Room> roomList = new LinkedList<>();
+        roomPage.forEach(roomList::add);
+        model.addAttribute("rooms", RoomDto.toDto(roomList));
         model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPage", roomList.size() / sizeOfPage + 1);
+        model.addAttribute("totalPage", roomPage.getTotalPages() == 0 ? 1 : roomPage.getTotalPages());
 
         // Lưu trạng thái lọc khi chuyển trang
         model.addAttribute("request", request);

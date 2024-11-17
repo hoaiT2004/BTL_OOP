@@ -28,7 +28,7 @@ public class RoomServiceImpl implements RoomService {
     private static final String isApproval = "true";
 
     @Override
-    public List<RoomDto> getAllRoomByManyContraints(RoomFilterDataRequest request, Pageable pageable) {
+    public Page<Room> getAllRoomByManyContraints(RoomFilterDataRequest request, Pageable pageable) {
         Page<Room> roomPage;
         if (request.isNull()) {
             roomPage = roomRepository.findAllByIsApproval(isApproval, pageable);
@@ -41,9 +41,7 @@ public class RoomServiceImpl implements RoomService {
             }
             roomPage = roomRepository.findAllByFilterConstraints(request.getPrice(), request.getAddress(), request.getArea(), roomType, pageable);
         }
-        List<Room> roomList = new LinkedList<>();
-        roomPage.forEach(roomList::add);
-        return RoomDto.toDto(roomList);
+        return roomPage;
     }
 
     @Override

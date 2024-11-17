@@ -50,7 +50,7 @@ public class RoomController {
     }
 
     @PostMapping("/schedule")
-    public String schedule(@ModelAttribute AppointmentRequest request, Authentication auth, Model model) {
+    public String createAppointment(@ModelAttribute AppointmentRequest request, Authentication auth, Model model) {
         commonFunc(auth, model);
         appointmentService.createAppointment(request);
         return "redirect:/api/home";
