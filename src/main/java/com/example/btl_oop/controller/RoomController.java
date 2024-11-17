@@ -28,6 +28,20 @@ public class RoomController {
     @Autowired
     private AppointmentService appointmentService;
 
+    @DeleteMapping("/manageroom/{roomId}")
+    public void deteteRoom(@PathVariable Long roomId) {
+        roomService.deleteRoomByRoomId(roomId);
+    }
+
+    @GetMapping("/manageroom")
+    public String showOwnedRooms(Model model, Authentication auth) {
+        String username = auth.getName();
+        List<RoomDto> roomDtos = roomService.getAllRoomByUser(username);
+        model.addAttribute("rooms", roomDtos);
+        commonFunc(auth, model);
+        return "manage_room";
+    }
+
     @GetMapping
     public String showDetailRoom(Authentication auth, @RequestParam(name = "room_id") String room_id, Model model) {
         RoomDto roomDto = roomService.getInfoRoomByRoom_Id(room_id);

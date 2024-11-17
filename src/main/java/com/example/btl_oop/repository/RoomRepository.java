@@ -56,4 +56,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             "    ) " +
             "    AND (:roomType IS NULL OR (:roomType IS NOT NULL AND r.roomType = :roomType))")
     List<Room> findAllByFilterConstraintsWithoutPagination(@Param("price") String price, @Param("address") String address, @Param("area") String area, @Param("roomType") RoomType roomType);
+
+
+    @Query("SELECT r FROM Room r WHERE r.user_id = :userId")
+    List<Room> findAllByUserid(@Param("userId") Long userId);
 }
