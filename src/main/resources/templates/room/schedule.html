@@ -543,17 +543,16 @@
                         <div th:if="${username != null}" class="big-device flex">
                             <div><a class="btn italic" th:href="@{/user/profile}"><h4 th:text="${username}"></h4></a></div>
                             <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
-                                                                                            class="fa fa-address-book"></i>Đăng xuất</a></div>
-                            <div><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
-                                                                       class="fas fa-pen-alt"></i>Đăng tin</a></div>
+                                                                                        class="fa fa-address-book"></i>Đăng xuất</a></div>
+                            <div th:if="${role == 'Landlord'}"><a class="btn header-btn" href="/api/room/addroom"><i style="margin-right: 5px;"
+                                                                                                                     class="fas fa-pen-alt"></i>Đăng tin</a></div>
                         </div>
                         <div th:if="${username == null}" class="big-device flex">
-                                <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
-                                            class="fa fa-sign-in"></i>Đăng nhập</a></div>
-                                <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
-                                            class="fa fa-address-book"></i>Đăng ký</a></div>
-                                <div><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
-                                        class="	fas fa-pen-alt"></i>Đăng tin</a></div>
+                            <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
+                                                                                       class="fa fa-sign-in"></i>Đăng nhập</a></div>
+                            <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
+                                                                                          class="fa fa-address-book"></i>Đăng ký</a></div>
+
                         </div>
                         <div class="small-device flex">
                             <div><a href="@{/user/login}" type="button" style="padding: 3px;" class="fa fa-sign-in"></a></div>
