@@ -161,9 +161,10 @@ public class UserController {
     }
 
     @GetMapping("/sendEmailAgain")
-    public String sendEmailAgain(@RequestParam(name = "username") String username, Model model) {
+    public String sendEmailAgain(@RequestParam(name = "username") String username, Model model, Authentication auth) {
         UserDto userDto = userService.findUserByUsername(username.toLowerCase());
         sendEmail(model, userDto);
+        commonFunc(auth, model);
         return "user/createNewPassword";
     }
 
