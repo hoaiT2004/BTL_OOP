@@ -6,8 +6,7 @@ import com.example.btl_oop.entity.Image;
 import com.example.btl_oop.entity.Room;
 import com.example.btl_oop.entity.User;
 import com.example.btl_oop.model.request.room.RoomFilterDataRequest;
-import com.example.btl_oop.model.response.room.ImageDto;
-import com.example.btl_oop.model.response.room.RoomDto;
+import com.example.btl_oop.model.dto.*;
 import com.example.btl_oop.repository.ImageRepository;
 import com.example.btl_oop.repository.RoomRepository;
 import com.example.btl_oop.repository.UserRepository;
@@ -41,7 +40,7 @@ public class RoomServiceImpl implements RoomService {
     private UserRepository userRepository;
 
     @Override
-    public List<RoomDto> getAllRoomByManyContraints(RoomFilterDataRequest request, Pageable pageable) {
+    public Page<Room> getAllRoomByManyContraints(RoomFilterDataRequest request, Pageable pageable) {
         Page<Room> roomPage;
         if (request.isNull()) {
             roomPage = roomRepository.findAllByIsApproval(isApproval, pageable);
@@ -54,9 +53,7 @@ public class RoomServiceImpl implements RoomService {
             }
             roomPage = roomRepository.findAllByFilterConstraints(request.getPrice(), request.getAddress(), request.getArea(), roomType, pageable);
         }
-        List<Room> roomList = new LinkedList<>();
-        roomPage.forEach(roomList::add);
-        return RoomDto.toDto(roomList);
+        return roomPage;
     }
 
     @Override

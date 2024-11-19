@@ -3,6 +3,7 @@ package com.example.btl_oop.service.Impl;
 import com.example.btl_oop.config.MyUserDetails;
 import com.example.btl_oop.entity.Role;
 import com.example.btl_oop.entity.User;
+import com.example.btl_oop.model.dto.UserDto;
 import com.example.btl_oop.model.request.user.*;
 import com.example.btl_oop.model.response.user.*;
 import com.example.btl_oop.repository.RoleRepository;
@@ -54,6 +55,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional
     public ChangePasswordResponse changePassword(ChangePasswordRequest request, String username) {
         UserDetails userDetails = loadUserByUsername(username);
         if (request.getPassword().equals(userDetails.getPassword())) {
@@ -64,6 +66,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional
     public CreateNewPasswordResponse createNewPassword(CreateNewPasswordRequest request) {
         userRepository.updatePassword(passwordEncoder.encode(request.getNewPassword()), request.getUsername());
         return new CreateNewPasswordResponse(request.getUsername());
@@ -101,6 +104,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional
     public ChangeAvatarResponse changeAvatar(ChangeAvatarRequest request) {
         String linkAvatar = fileService.uploadFile(request.getFile());
         userRepository.updateAvatarUser(linkAvatar, request.getUsername());

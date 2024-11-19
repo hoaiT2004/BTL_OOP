@@ -10,6 +10,6 @@ public class RoomFilterDataRequest {
     private String price, area,address, roomType;
 
     public boolean isNull() {
-        return price == null && area == null && address == null && roomType == null;
+        return (price == null || price.equals("null")) && (area == null || area.equals("null")) && (address == null || address.equals("null")) && (roomType == null || roomType.equals("null"));
     }
 }

@@ -2,6 +2,8 @@ package com.example.btl_oop.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -15,6 +17,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class Appointment extends BaseEntity {
+
+    @NonNull
+    private String username;
 
     @Column(nullable = false, length = 100)
     private String fullname;
@@ -34,4 +39,7 @@ public class Appointment extends BaseEntity {
     private String transportation;
 
     private long room_id;
+
+    @NonNull
+    private String isApproval;
 }

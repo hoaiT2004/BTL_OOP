@@ -1,4 +1,4 @@
-package com.example.btl_oop.model.response.user;
+package com.example.btl_oop.model.dto;
 
 import com.example.btl_oop.entity.User;
 import lombok.*;

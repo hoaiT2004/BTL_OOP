@@ -491,6 +491,8 @@
                     <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
                     <li th:if="${role == 'Admin'}"><a href="#">Người dùng</a></li>
                     <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
+                    <li th:if="${role == 'Tenant'}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
+                    <li th:if="${role == 'Landlord'}"><a th:href="@{/user/appointment}">Lịch hẹn</a></li>
                 </ul>
             </div>
         </div>
@@ -506,7 +508,6 @@
             <nav2>
                     <ul>
                         <li><a th:href="@{/user/changePassword}">Thay đổi mật khẩu</a></li>
-                        <li><a href="#">Đơn hàng của tôi</a></li>
                         <hr>
                         <li><a th:href="@{/user/logout}">Đăng xuất</a></li>
                     </ul>

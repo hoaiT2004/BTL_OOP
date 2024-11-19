@@ -1,10 +1,11 @@
 package com.example.btl_oop.controller;
 
 import java.util.List;
+
+import com.example.btl_oop.model.dto.UserDto;
 import com.example.btl_oop.model.request.AppointmentRequest;
-import com.example.btl_oop.model.response.room.RoomDto;
-import com.example.btl_oop.model.response.user.UserDto;
-import com.example.btl_oop.service.Impl.AppointmentServiceImpl;
+import com.example.btl_oop.model.dto.RoomDto;
+import com.example.btl_oop.service.AppointmentService;
 import com.example.btl_oop.service.RoomService;
 import com.example.btl_oop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class RoomController {
     private UserService userService;
 
     @Autowired
-    private AppointmentServiceImpl appointmentService;
+    private AppointmentService appointmentService;
 
     @PostMapping("/addroom")
     public String addRoom(@ModelAttribute RoomDto roomDto, Model model, Authentication auth,@RequestParam("images") List<MultipartFile> images ) {
@@ -57,12 +58,14 @@ public class RoomController {
     @GetMapping("/schedule")
     public String schedule(Authentication auth, Model model, @RequestParam(name = "room_id") String room_id) {
         commonFunc(auth, model);
+        UserDto dto = userService.findUserByUsername(auth.getName());
+        model.addAttribute("dto",dto);
         model.addAttribute("room_id", room_id);
         return "room/schedule";
     }
 
     @PostMapping("/schedule")
-    public String schedule(@ModelAttribute AppointmentRequest request, Authentication auth, Model model) {
+    public String createAppointment(@ModelAttribute AppointmentRequest request, Authentication auth, Model model) {
         commonFunc(auth, model);
         appointmentService.createAppointment(request);
         return "redirect:/api/home";

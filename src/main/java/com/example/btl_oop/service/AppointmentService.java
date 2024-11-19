@@ -2,33 +2,29 @@ package com.example.btl_oop.service;
 
 import com.example.btl_oop.entity.Appointment;
 import com.example.btl_oop.model.request.AppointmentRequest;
+import com.example.btl_oop.model.request.schedule.UpdateScheduleRequest;
 import com.example.btl_oop.model.response.AppointmentResponse;
-import com.example.btl_oop.repository.AppointmentRepository;
-import com.example.btl_oop.service.Impl.AppointmentServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.btl_oop.model.dto.AppointmentDto;
+import com.example.btl_oop.model.response.DeleteScheduleResponse;
+import com.example.btl_oop.model.response.schedule.UpdateScheduleResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.List;
 
-@Service
-public class AppointmentService implements AppointmentServiceImpl {
+public interface AppointmentService {
 
-    @Autowired
-    private AppointmentRepository appointmentRepository;
+    AppointmentResponse createAppointment (AppointmentRequest request);
 
-    @Override
-    public AppointmentResponse createAppointment(AppointmentRequest request) {
-        var appointment = Appointment.builder()
-                .room_id(Long.parseLong(request.getRoom_id()))
-                .fullname(request.getFullname())
-                .email(request.getEmail())
-                .tel(request.getTel())
-                .numPeople(request.getNumPeople())
-                .comeDate(Date.valueOf(request.getComeDate()))
-                .transportation(request.getTransportation())
-                .build();
-        appointment = appointmentRepository.save(appointment);
-        return new AppointmentResponse(appointment.getId());
-    }
+    Page<Appointment> getAllByUsername(String username, Pageable pageable) throws ParseException;
+
+    DeleteScheduleResponse deleteScheduleById (Long scheduleId);
+
+    Page<Appointment> getAppointmentsByUsername (String isApproval, String username, Pageable pageable);
+
+    void permitAppointment(long appointmentId);
+
+    UpdateScheduleResponse updateAppointment (UpdateScheduleRequest request);
 }

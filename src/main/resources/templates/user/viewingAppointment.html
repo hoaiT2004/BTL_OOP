@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <script src="/static/js/index.js"></script>
-    <script src="/static/js/loadData.js"></script>
 </head>
 <style>
     * {
@@ -88,7 +86,7 @@
     }
 
     .container {
-        width: 80%;
+        width: 95%;
         align-items: center;
         margin: 0 auto;
     }
@@ -480,54 +478,121 @@
     .main  {
         width: 80%;
     }
-/*    */
-    /* CSS cho giao diện đẹp hơn phần Đặt lịch hẹn */
-    .left {
-        background-color: white;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
-        width: 70%;
-        height: 100%;
-        margin-bottom: 20px;
-    }
 
-    .subject {
-        text-align: center;
-        text-transform: uppercase;
-        color: #1266dd;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        font-weight: bold;
-        color: #333;
-    }
-
-    .form-group input,
-    .form-group select {
-        border-radius: 5px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        margin-bottom: 15px;
-    }
-
-    .form-group input[type="submit"] {
-        background-color: #57b846;
-        color: white;
-        border: none;
-        padding: 12px;
-        width: 100%;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+/*    Nut bam*/
+    /* Nút Đã duyệt và Chờ xác nhận */
+    .status-btn {
+        display: inline-block;
+        padding: 10px 20px;
         font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        margin: 0 10px;
+        color: white;
+        background: linear-gradient(90deg, #4caf50, #2e7d32);
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
     }
 
-    .form-group input[type="submit"]:hover {
-        background-color: #45a63a;
+    .status-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Đã duyệt nút */
+    .approved-btn {
+        background: linear-gradient(90deg, #28a745, #218838);
+    }
+
+    /* Chờ xác nhận nút */
+    .pending-btn {
+        background: linear-gradient(90deg, #ffc107, #d39e00);
+        color: black;
+    }
+
+    /* Hiệu ứng cho nút xem trong bảng */
+    .room-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .view-btn {
+        margin-left: 10px;
+    }
+/* Làm đẹp bảng */
+    /* Table Container */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-top: 20px;
+        font-size: 14px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Header của bảng */
+    table thead {
+        background: linear-gradient(90deg, #4caf50, #2e7d32);
+        color: white;
+        font-weight: bold;
+    }
+
+    table thead th {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    /* Dòng dữ liệu */
+    table tbody tr {
+        border-bottom: 1px solid #e0e0e0;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    /* Màu sắc xen kẽ */
+    table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    /* Hiệu ứng hover khi rê chuột */
+    table tbody tr:hover {
+        background-color: #e8f5e9;
+    }
+
+    /* Các ô dữ liệu */
+    table td {
+        padding: 12px;
+        text-align: center;
+        vertical-align: middle;
+        color: #424242;
+    }
+
+    /* Tăng độ nổi bật cho nút trong bảng */
+    table a, table button {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    table a:hover, table button:hover {
+        background-color: #007bff;
+        color: white;
     }
 
 </style>
@@ -543,16 +608,17 @@
                         <div th:if="${username != null}" class="big-device flex">
                             <div><a class="btn italic" th:href="@{/user/profile}"><h4 th:text="${username}"></h4></a></div>
                             <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
-                                                                                        class="fa fa-address-book"></i>Đăng xuất</a></div>
-                            <div th:if="${role == 'Landlord'}"><a class="btn header-btn" href="/api/room/addroom"><i style="margin-right: 5px;"
-                                                                                                                     class="fas fa-pen-alt"></i>Đăng tin</a></div>
+                                                                                            class="fa fa-address-book"></i>Đăng xuất</a></div>
+                            <div><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
+                                                                       class="fas fa-pen-alt"></i>Đăng tin</a></div>
                         </div>
                         <div th:if="${username == null}" class="big-device flex">
-                            <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
-                                                                                       class="fa fa-sign-in"></i>Đăng nhập</a></div>
-                            <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
-                                                                                          class="fa fa-address-book"></i>Đăng ký</a></div>
-
+                                <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
+                                            class="fa fa-sign-in"></i>Đăng nhập</a></div>
+                                <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
+                                            class="fa fa-address-book"></i>Đăng ký</a></div>
+                                <div><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
+                                        class="	fas fa-pen-alt"></i>Đăng tin</a></div>
                         </div>
                         <div class="small-device flex">
                             <div><a href="@{/user/login}" type="button" style="padding: 3px;" class="fa fa-sign-in"></a></div>
@@ -583,63 +649,68 @@
         </div>
     </nav>
 
-
     <div class="container">
         <section>
             <div style="margin-top: 10px;" class="content">
                 <div class="left border">
-                    <h3 class="subject">Đặt lịch hẹn</h3>
-                    <div class="items" id="phongtro">
-                        <div class="item">
-                            <div class="info">
-                                <div class="main-info">
-                                    <form th:action="@{/api/room/schedule}" method="post">
-                                        <input type="text" hidden="hidden" th:value="${room_id}" name="room_id">
-                                        <input type="text" hidden="hidden" th:value="${username}" name="username">
-                                        <div class="form-group">
-                                            <label for="name">Họ và tên(*):</label>
-                                            <input type="text" class="form-control" name = "fullname" th:value="${dto.getFullname()}" id="name" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tel">Số điện thoại(*):</label>
-                                            <input type="tel" class="form-control" th:value="${dto.getTel()}" name = "tel" id="tel" required
-                                                   pattern="^0\d{9,11}$" title="Telephone number must be between 10 and 12 digits
-                            and start with zero number">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email">Email(*):</label>
-                                            <input type="email" class="form-control" th:value="${dto.getEmail()}" name = "email" id="email" required
-                                                   pattern="^[\w.%+-]+@gmail\.com$" title="Email must contain @gmail.com at the end">
+                    <!-- Nút bấm Đã duyệt và Chờ xác nhận -->
+                    <div style="margin-bottom: 20px; text-align: center;">
+                        <button class="status-btn approved-btn" th:onclick="|window.location.href='@{/user/appointment?isApproval=true}'|">Đã duyệt</button>
+                        <button class="status-btn pending-btn" th:onclick="|window.location.href='@{/user/appointment?isApproval=false}'|">Chờ xác nhận</button>
+                    </div>
+                    <!-- Bảng dữ liệu -->
+                    <table>
+                        <thead>
+                        <tr>
+                            <th style="color: white; width: 100px; text-align: center">ID phòng</th>
+                            <th style="color: white; width: 250px; text-align: center">Họ và tên</th>
+                            <th style="color: white; width: 250px; text-align: center">Số điện thoại</th>
+                            <th style="color: white; width: 250px; text-align: center">Email</th>
+                            <th style="color: white; width: 100px; text-align: center">Số người</th>
+                            <th style="color: white; width: 200px; text-align: center">Phương tiện</th>
+                            <th style="color: white; width: 150px; text-align: center">Ngày đến</th>
+                            <th style="color: white; width: 250px;"></th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="appoint, iterStat : ${Appointments}">
+                        <tr>
+                            <td style="width: 100px;text-align: center">
+                                <a th:href="@{'../api/room?room_id='+${appoint.getRoom_id()}}">
+                                    <p th:text="${appoint.getRoom_id()}"></p>
+                                </a>
+                            </td>
+                            <td style="width: 250px;text-align: center" th:text="${appoint.getFullname()}"></td>
+                            <td style="width: 250px;text-align: center" th:text="${appoint.getTel()}"></td>
+                            <td style="width: 250px;text-align: center" th:text="${appoint.getEmail()}"></td>
+                            <td style="width: 100px;text-align: center" th:text="${appoint.getNumPeople()}"></td>
+                            <td style="width: 200px;text-align: center" th:text="${appoint.getTransportation()}"></td>
+                            <td style="width: 150px;text-align: center" th:text="${appoint.getComeDate()}"></td>
+                            <td style="width: 250px;text-align: center">
+                                <a th:if="${isApproval == 'false'}"
+                                        th:href="@{'/user/permitAppointment?appointmentId=' + ${appoint.getId()}+'&pageNo='+${currentPage}}">
+                                    Chấp nhận
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class = "box-footer clearfix">
+                        <ul class="pagination pagination-sm no-margin pull-right">
+                            <li th:if="${currentPage > 1}">
+                                <a th:href="@{'/user/schedule?pageNo=' + ${currentPage - 1} + '&isApproval=' + ${isApproval}}"><<</a>
+                            </li>
+                            <li th:each="i : ${#numbers.sequence(1, totalPage)}"
+                                th:classappend="${currentPage == i ? 'active' : ''}">
+                                <a th:href="@{'/user/schedule?pageNo=' + ${i} + '&isApproval=' + ${isApproval}}"
+                                   th:text="${i}"></a>
+                            </li>
+                            <li th:if="${currentPage < totalPage}">
+                                <a th:href="@{'/user/schedule?pageNo=' + ${currentPage + 1} + '&isApproval=' + ${isApproval}}">>></a>
+                            </li>
+                        </ul>
 
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="numPeople">Số người đến(*):</label>
-                                            <input type="number" value="1" min="1" class="form-control" name = "numPeople" id="numPeople" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="comeDate">Ngày đến(*):</label>
-                                            <input type="date" class="form-control" onmouseout="validateDate()" name = "comeDate" id="comeDate" required>
-                                            <span id="error-message" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="transportation">Phương tiện di chuyển(*):</label>
-                                            <select class="form-control" required="required" data-val="true" id="transportation" name="transportation">
-                                                <option value="đi bộ">Đi bộ</option>
-                                                <option value="Xe 2 bánh">Xe 2 bánh</option>
-                                                <option value="Xe 4 bánh">Xe 4 bánh</option>
-                                            </select>
-                                        </div>
-                                        <hr>
-                                        <div class="form-group">
-                                            <input class="but" type="submit" value="Xác nhận">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
-
 
                 <div class="right border bg-white">
                     <h3 class="subject">Tin mới đăng</h3>
@@ -650,9 +721,6 @@
                         <li><a href="/api/home/nhadephon">Làm sao để nhà đẹp hơn</a></li>
                     </ul>
                 </div>
-
-
-
                 <div class="right-no-border"></div>
 
                 <div class="right-no-border"></div>
@@ -666,17 +734,5 @@
         <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
     </footer>
 </body>
-<script>
-    function validateDate() {
-        const inputDate = new Date(document.getElementById("comeDate").value);
-        const today = new Date();
-        const errorMessage = document.getElementById("error-message");
 
-        // Kiểm tra nếu ngày nhập vào nhỏ hơn ngày hiện tại
-        if (inputDate < today) {
-            alert("Ngày đến không hợp lệ. Vui lòng chọn ngày trong tương lai.");
-            document.getElementById("comeDate").value = ""; // Xóa giá trị đã nhập
-        }
-    }
-</script>
 </html>
