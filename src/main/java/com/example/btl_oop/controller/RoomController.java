@@ -2,13 +2,18 @@ package com.example.btl_oop.controller;
 
 import java.util.List;
 
+import com.example.btl_oop.model.dto.CommentDto;
 import com.example.btl_oop.model.dto.UserDto;
 import com.example.btl_oop.model.request.AppointmentRequest;
 import com.example.btl_oop.model.dto.RoomDto;
 import com.example.btl_oop.service.AppointmentService;
+import com.example.btl_oop.service.CommentService;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.data.domain.PageRequest;
 import com.example.btl_oop.service.RoomService;
 import com.example.btl_oop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -28,6 +33,9 @@ public class RoomController {
 
     @Autowired
     private AppointmentService appointmentService;
+
+    @Autowired
+    private CommentService commentService;
 
     @PostMapping("/addroom")
     public String addRoom(@ModelAttribute RoomDto roomDto, Model model, Authentication auth,@RequestParam("images") List<MultipartFile> images ) {
@@ -49,8 +57,13 @@ public class RoomController {
         List<String>  imageDtos = roomService.getAllImagesByRoom_Id(room_id);
         model.addAttribute("room", roomDto);
         model.addAttribute("images", imageDtos);
+
         UserDto userDto = userService.getUserById(roomDto.getUser_id());
         model.addAttribute("userDto", userDto);
+
+        List<CommentDto> commentDtos = commentService.getAllCommentsByRoom_id(Long.parseLong(room_id));
+        model.addAttribute("comments", commentDtos);
+
         commonFunc(auth, model);
         return "room/details";
     }

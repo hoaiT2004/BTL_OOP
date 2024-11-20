@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
             integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <script src="/static/js/index.js"></script>
-    <script src="/static/js/loadData.js"></script>
 </head>
 <style>
     * {
@@ -349,7 +347,7 @@
         margin: 0 auto;
         padding: 5px 0px;
         font-size: 120%;
-        background-color: lightgray;
+        background-color: cornsilk;
         border-radius: 7px;
     }
 
@@ -613,6 +611,113 @@
         height: 24px;
         margin-right: 8px;
     }
+    /* Bình luận */
+    /* Tổng thể phần bình luận */
+    .reports-comments-section {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Tiêu đề phần bình luận */
+    .comments-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    /* Danh sách bình luận */
+    .comments-list {
+        margin-bottom: 20px;
+    }
+
+    /* Mỗi bình luận */
+    .comment-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 10px 0;
+        border-bottom: 1px solid #e0e0e0;
+        gap: 10px;
+    }
+
+    /* Ảnh đại diện */
+    .comment-avatar {
+        flex-shrink: 0;
+    }
+
+    .avatar-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    /* Nội dung bình luận */
+    .comment-body {
+        flex: 1;
+    }
+
+    /* Phần đầu của bình luận */
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        align-items: center;
+    }
+
+    .comment-user {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .comment-time {
+        font-size: 12px;
+        color: #888;
+    }
+
+    /* Nội dung bình luận */
+    .comment-content {
+        font-size: 14px;
+        color: #444;
+    }
+
+    /* Form thêm bình luận */
+    .comment-form .form-container {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .comment-textarea {
+        flex: 1;
+        min-height: 40px;
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 20px;
+        font-size: 14px;
+        resize: none;
+        background-color: #f5f5f5;
+    }
+
+    .submit-comment-button {
+        padding: 8px 16px;
+        background-color: #1877f2;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .submit-comment-button:hover {
+        background-color: #155cb0;
+    }
 
 </style>
 <body data-spy="scroll" data-target=".nav" data-offset="1">
@@ -709,14 +814,44 @@
                                         <a th:href="@{'https://zalo.me/' + ${userDto.getTel()}}" target="_blank" class="contact-icon">
                                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/1200px-Icon_of_Zalo.svg.png" alt="Zalo" class="icon-image">
                                         </a>
-                                        <a href="#" target="_blank" class="contact-icon">
-                                            <img src="https://inkythuatso.com/uploads/images/2021/10/logo-messenger-inkythuatso-2-01-30-15-47-51.jpg" alt="Messenger" class="icon-image">
-                                        </a>
                                     </div>
                                 </div>
                         </div>
                     </div>
 
+                <div class="comments">
+                    <h4 class="comments-title">Bình luận</h4>
+                    <div class="comments-list">
+                        <div th:each="comment : ${comments}" class="comment-item">
+                            <div class="comment-avatar">
+                                <img th:src="@{${comment.getAvatar()}}" alt="User Avatar" class="avatar-img">
+                            </div>
+                            <div class="comment-body">
+                                <div class="comment-header">
+                                    <strong class="comment-user" th:text="${comment.getUsername()}"></strong>
+                                    <span class="comment-time"
+                                          th:data-comment-time="${comment.getCommentTime()}"
+                                          th:text="'Đang tải...'"></span>
+                                </div>
+                                <p class="comment-content" th:text="${comment.getContent()}"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ô nhập bình luận -->
+                    <div class="comment-form">
+                        <form th:action="@{/api/comment/add}" method="post" class="form-container">
+                            <input type="text" hidden="hidden" th:value="${room.getRoom_id()}" name="room_id">
+                            <input type="text" hidden="hidden" th:if="${username != null}" th:value="${username}" name="username">
+                            <input type="text" hidden="hidden" id="commentTime" name="commentTime">
+                            <textarea name="content" placeholder="Viết bình luận..." class="comment-textarea" required></textarea>
+                            <button type="submit" class="submit-comment-button" onclick="setCommentTime()">Gửi</button>
+                        </form>
+                    </div>
+                </div>
+
+
+                <!-- Kết thúc phần báo cáo và bình luận -->
             </div>
 
             <div class="right border bg-white">
@@ -766,5 +901,62 @@
     // Tự động chuyển ảnh sau mỗi 8 giây
     setInterval(nextSlide, 8000);
 
+    function setCommentTime() {
+        const commentDateInput = document.getElementById('commentTime');
+        const now = new Date();
+
+        // Lấy các thành phần của ngày giờ
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+        const date = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+
+        // Định dạng theo kiểu "yyyy-MM-dd HH:mm:ss"
+        const formattedDate = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+
+        // Gán giá trị vào input hidden
+        commentDateInput.value = formattedDate;
+    }
+
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.7/dayjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.7/plugin/customParseFormat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.7/plugin/relativeTime.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.7/locale/vi.min.js"></script>
+<script>
+    // Tích hợp các plugin và đặt ngôn ngữ mặc định là tiếng Việt
+    dayjs.extend(dayjs_plugin_customParseFormat); // Plugin cho định dạng tùy chỉnh
+    dayjs.extend(dayjs_plugin_relativeTime); // Plugin để tính thời gian tương đối
+    dayjs.locale('vi'); // Đặt ngôn ngữ là tiếng Việt
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const timeElements = document.querySelectorAll('.comment-time');
+
+        timeElements.forEach(el => {
+            const commentTime = el.getAttribute('data-comment-time'); // Lấy thời gian từ data-comment-time
+            if (commentTime) {
+                try {
+                    // Sử dụng định dạng "yyyy-MM-dd HH:mm:ss" để phân tích chuỗi thời gian
+                    const parsedTime = dayjs(commentTime, "YYYY-MM-DD HH:mm:ss");
+
+                    if (parsedTime.isValid()) {
+                        // Hiển thị thời gian tương đối bằng tiếng Việt
+                        const relativeTime = parsedTime.fromNow();
+                        el.textContent = relativeTime;
+                    } else {
+                        el.textContent = "Thời gian không hợp lệ"; // Xử lý nếu thời gian không hợp lệ
+                    }
+                } catch (error) {
+                    el.textContent = "Lỗi định dạng thời gian"; // Xử lý lỗi ngoại lệ
+                }
+            } else {
+                el.textContent = "Không có thời gian"; // Nếu không có giá trị
+            }
+        });
+    });
+
+</script>
+
 </html>
