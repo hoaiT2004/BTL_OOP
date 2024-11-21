@@ -1,8 +1,9 @@
 package com.example.btl_oop.controller;
 
-import com.example.btl_oop.entity.User;
+import com.example.btl_oop.entity.Appointment;
 import com.example.btl_oop.model.dto.EmailDTO;
 import com.example.btl_oop.model.dto.UserDto;
+import com.example.btl_oop.model.request.schedule.UpdateScheduleRequest;
 import com.example.btl_oop.model.request.user.*;
 import com.example.btl_oop.model.dto.AppointmentDto;
 import com.example.btl_oop.model.response.user.RegisterResponse;
@@ -13,18 +14,20 @@ import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 @RequestMapping("/user")
@@ -161,9 +164,10 @@ public class UserController {
     }
 
     @GetMapping("/sendEmailAgain")
-    public String sendEmailAgain(@RequestParam(name = "username") String username, Model model) {
+    public String sendEmailAgain(@RequestParam(name = "username") String username, Model model, Authentication auth) {
         UserDto userDto = userService.findUserByUsername(username.toLowerCase());
         sendEmail(model, userDto);
+        commonFunc(auth, model);
         return "user/createNewPassword";
     }
 
@@ -198,29 +202,56 @@ public class UserController {
         return "redirect:/user/login";
     }
 
-
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
     @GetMapping("/schedule")
     public String showRoomViewingSchedule(Authentication auth, Model model,
-    @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) throws ParseException {
+                                          @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) throws ParseException {
         commonFunc(auth, model);
         Pageable pageable = PageRequest.of(pageNo - 1, sizeOfPage);
-        List<AppointmentDto> dtoList = appointmentService.getAllByUsername(auth.getName(), pageable);
-        model.addAttribute("Appointments", dtoList);
-        model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPage", dtoList.size() / sizeOfPage + 1);
+        Page<Appointment> pages = appointmentService.getAllByUsername(auth.getName(), pageable);
+        commonFunc2(model, pageNo, pages);
         return "user/roomViewingSchedule";
     }
 
     @GetMapping("/deleteSchedule")
     public String deleteRoomViewingSchedule(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                            @RequestParam(name = "appointmentId") Long appointmentId) throws ParseException {
+                                            @RequestParam(name = "scheduleId") Long appointmentId) throws ParseException {
         appointmentService.deleteScheduleById(appointmentId);
         return "redirect:/user/schedule?pageNo="+pageNo;
+    }
+
+    @PostMapping("/updateSchedule")
+    public String updateSchedule(@ModelAttribute UpdateScheduleRequest request,
+                                 @RequestParam(name="pageNo", defaultValue = "1") Integer pageNo) {
+        appointmentService.updateAppointment(request);
+        return "redirect:/user/schedule?pageNo="+pageNo;
+    }
+
+
+    @GetMapping("/appointment")
+    public String showAppointment(Authentication auth, Model model,
+                                  @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                  @RequestParam(name = "isApproval", defaultValue = "true") String isApproval) throws ParseException {
+        commonFunc(auth, model);
+        Pageable pageable = PageRequest.of(pageNo - 1, sizeOfPage);
+        Page<Appointment> pages = appointmentService.getAppointmentsByUsername(isApproval, auth.getName(), pageable);
+        commonFunc2(model, pageNo, pages);
+        model.addAttribute("isApproval", isApproval);
+        return "user/viewingAppointment";
+    }
+
+    @GetMapping("/permitAppointment")
+    public String showAppointment(@RequestParam(name="appointmentId") String appointmentId,
+                                  @RequestParam(name="pageNo", defaultValue = "1") Integer pageNo) {
+        appointmentService.permitAppointment(Long.parseLong(appointmentId));
+        return "redirect:/user/appointment?isApproval=false&pageNo="+pageNo;
+    }
+
+    private void commonFunc2(Model model, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, Page<Appointment> pages) {
+        List<Appointment> dtoList = new ArrayList<>();
+        pages.forEach(dtoList::add);
+        model.addAttribute("Appointments", AppointmentDto.toDto(dtoList));
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPage", pages.getTotalPages() == 0 ? 1 : pages.getTotalPages());
     }
 
     private static void commonFunc(Authentication auth, Model model) {

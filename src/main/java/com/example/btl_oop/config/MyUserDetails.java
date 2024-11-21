@@ -22,7 +22,9 @@ public class MyUserDetails implements UserDetails {
     public MyUserDetails(User user, Role role) {
         username = user.getUsername();
         password = user.getPassword();
-        if (role != null && role.getRole_name() != null) authorities = Collections.singletonList(new SimpleGrantedAuthority(role.getRole_name().name()));
+        if (role != null && role.getRole_name() != null) {
+            authorities = Collections.singletonList(new SimpleGrantedAuthority(role.getRole_name().name()));
+        }
     }
 
     @Override

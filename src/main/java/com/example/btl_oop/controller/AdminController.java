@@ -41,7 +41,7 @@ public class AdminController {
             model.addAttribute("role", roleLength.substring(1, roleLength.length() - 1));
         }
     }
-    @GetMapping("/RoomManagement")
+    @GetMapping("/admin/RoomManagement")
     public String home(Authentication authentication, Model model,
                        @ModelAttribute RoomFilterDataRequest request,
                        @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
@@ -52,18 +52,18 @@ public class AdminController {
         }
 
         Pageable pageable = PageRequest.of(pageNo - 1, sizeOfPage);
-        List<RoomDto> roomList = roomService.getAllRoomByManyContraints(request, pageable);
+        Page<Room> roomList = roomService.getAllRoomByManyContraints(request, pageable);
 
         model.addAttribute("rooms", roomList);
         model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPage", (roomList.size() + sizeOfPage - 1) / sizeOfPage); // Tổng số trang
+        model.addAttribute("totalPage", (roomList.getTotalPages() + sizeOfPage - 1) / sizeOfPage); // Tổng số trang
 
         // Lưu trạng thái lọc khi chuyển trang
         model.addAttribute("request", request);
         return "RoomManagement";
     }
 
-    @GetMapping("/UserManagement")
+    @GetMapping("/admin/UserManagement")
     public String usermanagement() {
         return "UserManagement";
     }

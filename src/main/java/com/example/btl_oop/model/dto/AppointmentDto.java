@@ -34,6 +34,8 @@ public class AppointmentDto {
 
     private long room_id;
 
+    private String isApproval;
+
     public static AppointmentDto toDto(Appointment appointment) {
         if (appointment == null) {
             return null;
@@ -50,6 +52,7 @@ public class AppointmentDto {
                 .comeDate(comeDate)
                 .fullname(appointment.getFullname())
                 .numPeople(appointment.getNumPeople())
+                .isApproval(appointment.getIsApproval())
                 .transportation(appointment.getTransportation())
                 .build();
     }
@@ -73,6 +76,7 @@ public class AppointmentDto {
                 .fullname(appointment.getFullname())
                 .numPeople(appointment.getNumPeople())
                 .transportation(appointment.getTransportation())
+                .isApproval(appointment.getIsApproval())
                 .build();
     }
 

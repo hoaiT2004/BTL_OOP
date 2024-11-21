@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-
-<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,8 +11,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
             integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <script src="/static/js/index.js"></script>
-    <script src="/static/js/loadData.js"></script>
 </head>
 <style>
     * {
@@ -535,9 +531,10 @@
         <div class="container">
             <ul class="menu flex" id="menu">
                 <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                <li th:if="${role == 'Admin'}"><a href="#">Người dùng</a></li>
-                <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
-                <li th:if="${role != null}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
+                <li th:if="${role == 'Admin'}"><a href="/api/home/admin/UserManagement">Người dùng</a></li>
+                <li th:if="${role == 'Admin'}"><a href="/api/home/admin/RoomManagement">Phòng</a></li>
+                <li th:if="${role == 'User'}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
+                <li th:if="${role == 'Landlord'}"><a th:href="@{/user/appointment}">Lịch hẹn</a></li>
             </ul>
         </div>
     </div>
@@ -552,7 +549,7 @@
             </h1>
         </div>
         <section>
-            <form th:action="@{/api/addroom}" th:object="${room}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/api/room/addroom}" th:object="${room}" method="post" enctype="multipart/form-data">
                 <div class="col-xs-12">
                     <div class="form-horizontal" role="form" >
 
@@ -573,7 +570,7 @@
                         <div class="form-group">
                             <label class="col-sm-3">(*) Giá thuê: </label>
                             <div class="col-sm-9">
-                                <input class="form-control" type="number" id="price" th:field="*{price}" required min="1" placeholder="Nhập giá thuê lớn hơn 0"/>
+                                <input class="form-control" type="number" id="price" th:field="*{price}" required min="1" step="any"  placeholder="Nhập giá thuê lớn hơn 0"/>
                             </div>
                         </div>
 
@@ -587,7 +584,7 @@
                         <div class="form-group">
                             <label class="col-sm-3">(*) Diện tích phòng: </label>
                             <div class="col-sm-9">
-                                <input class="form-control" type="number" id="area" th:field="*{area}" required min="1" placeholder="Nhập diện tích lớn hơn 0"/>
+                                <input class="form-control" type="number" id="area" th:field="*{area}" required min="1"  step="any"  placeholder="Nhập diện tích lớn hơn 0"/>
                             </div>
                         </div>
 
@@ -611,7 +608,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-9">
-                                <button type="submit" class="btn btn-primary">Gửi</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
                             </div>
                         </div>
                     </div>

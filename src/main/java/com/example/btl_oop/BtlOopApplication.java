@@ -23,18 +23,18 @@ public class BtlOopApplication {
         SpringApplication.run(BtlOopApplication.class, args);
     }
 
-//    @Autowired
-//    private UserRepository userRepository;
-//
-//    @Autowired
-//    private ImageRepository imageRepository;
-//
-//    @Autowired
-//    private RoomRepository roomRepository;
-//
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-//
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 //    @PostConstruct
 //    public void init() {
 //        var u1 = User.builder()

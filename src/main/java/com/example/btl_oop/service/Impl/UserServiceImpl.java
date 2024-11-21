@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional
     public ChangePasswordResponse changePassword(ChangePasswordRequest request, String username) {
         UserDetails userDetails = loadUserByUsername(username);
         if (request.getPassword().equals(userDetails.getPassword())) {
@@ -64,6 +65,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional
     public CreateNewPasswordResponse createNewPassword(CreateNewPasswordRequest request) {
         userRepository.updatePassword(passwordEncoder.encode(request.getNewPassword()), request.getUsername());
         return new CreateNewPasswordResponse(request.getUsername());
@@ -101,6 +103,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional
     public ChangeAvatarResponse changeAvatar(ChangeAvatarRequest request) {
         String linkAvatar = fileService.uploadFile(request.getFile());
         userRepository.updateAvatarUser(linkAvatar, request.getUsername());

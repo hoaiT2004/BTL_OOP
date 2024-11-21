@@ -19,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
 
 @EnableWebSecurity
 @Configuration
@@ -55,11 +57,16 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity https, HttpServletRequest request) throws Exception {
         https
                 .authorizeHttpRequests()
-                .requestMatchers("/api/home/*", "/api/home", "/user/sendEmailAgain","/api/room","/user/register","/user/login","/user/retrievePassword")
+                .requestMatchers("/api/home/*", "/api/home", "/user/sendEmailAgain","/user/register","/user/login","/user/retrievePassword", "/api/room")
                 .permitAll()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .permitAll()
-                .requestMatchers("/admin/*").hasAuthority("ADMIN")
+                .requestMatchers("/admin/*").hasAuthority("Admin")
+                .requestMatchers("/user/schedule").hasAuthority("Tenant")
+                .requestMatchers("/api/room/schedule").hasAuthority("Tenant")
+                .requestMatchers("/api/comment/add").hasAuthority("Tenant")
+                .requestMatchers("/api/addRoom").hasAuthority("Landlord")
+                .requestMatchers("/user/appointment").hasAuthority("Landlord")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -68,6 +75,9 @@ public class WebSecurityConfig {
                 .loginProcessingUrl("/user/login/credentials")
                 .defaultSuccessUrl("/api/home")
                 .and()
+                .exceptionHandling()
+                .accessDeniedPage("/403")
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
@@ -75,8 +85,17 @@ public class WebSecurityConfig {
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                .logoutSuccessUrl("/api/home");
+                .logoutSuccessUrl("/api/home")
+                .and()
+                .requestCache()
+                .requestCache(requestCache());
 
         return https.build();
     }
+
+    @Bean
+    public RequestCache requestCache() {
+        return new HttpSessionRequestCache();
+    }
 }
+

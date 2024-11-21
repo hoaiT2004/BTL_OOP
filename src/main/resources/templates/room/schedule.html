@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <script src="/static/js/index.js"></script>
-    <script src="/static/js/loadData.js"></script>
 </head>
 <style>
     * {
@@ -543,17 +541,16 @@
                         <div th:if="${username != null}" class="big-device flex">
                             <div><a class="btn italic" th:href="@{/user/profile}"><h4 th:text="${username}"></h4></a></div>
                             <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
-                                                                                            class="fa fa-address-book"></i>Đăng xuất</a></div>
-                            <div><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
-                                                                       class="fas fa-pen-alt"></i>Đăng tin</a></div>
+                                                                                        class="fa fa-address-book"></i>Đăng xuất</a></div>
+                            <div th:if="${role == 'Landlord'}"><a class="btn header-btn" href="/api/room/addroom"><i style="margin-right: 5px;"
+                                                                                                                     class="fas fa-pen-alt"></i>Đăng tin</a></div>
                         </div>
                         <div th:if="${username == null}" class="big-device flex">
-                                <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
-                                            class="fa fa-sign-in"></i>Đăng nhập</a></div>
-                                <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
-                                            class="fa fa-address-book"></i>Đăng ký</a></div>
-                                <div><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
-                                        class="	fas fa-pen-alt"></i>Đăng tin</a></div>
+                            <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
+                                                                                       class="fa fa-sign-in"></i>Đăng nhập</a></div>
+                            <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
+                                                                                          class="fa fa-address-book"></i>Đăng ký</a></div>
+
                         </div>
                         <div class="small-device flex">
                             <div><a href="@{/user/login}" type="button" style="padding: 3px;" class="fa fa-sign-in"></a></div>
@@ -575,9 +572,10 @@
             <div class="container">
                 <ul class="menu flex" id="menu">
                     <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                    <li th:if="${role == 'Admin'}"><a href="/api/home/UserManagement">Người dùng</a></li>
-                    <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
-                    <li th:if="${role != null}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
+                    <li th:if="${role == 'Admin'}"><a href="/api/home/admin/UserManagement">Người dùng</a></li>
+                    <li th:if="${role == 'Admin'}"><a href="/api/home/admin/RoomManagement">Phòng</a></li>
+                    <li th:if="${role == 'Tenant'}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
+                    <li th:if="${role == 'Landlord'}"><a th:href="@{/user/appointment}">Lịch hẹn</a></li>
                 </ul>
             </div>
         </div>
