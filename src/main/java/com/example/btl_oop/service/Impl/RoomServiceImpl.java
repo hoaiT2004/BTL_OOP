@@ -19,6 +19,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +40,36 @@ public class RoomServiceImpl implements RoomService {
     private static final String isApproval = "true";
     @Autowired
     private UserRepository userRepository;
+
+    @Override
+    public List<RoomDto> getAllRoomByUser(String username){
+        Optional<User> user = userRepository.findUserByUsername(username);
+        List<Room> rooms = roomRepository.findAllByUserid(user.get().getId());
+        List<RoomDto> roomDtos = new ArrayList<>();
+        for (Room room : rooms) {
+            RoomDto roomDto = RoomDto.toDto(room);
+            roomDtos.add(roomDto);
+        }
+        return roomDtos;
+    }
+
+    @Override
+    public void deleteRoomByRoomId(Long room_id) {
+        imageRepository.deleteAllImagesByRoomId(room_id);
+        roomRepository.deleteById(room_id);
+    }
+
+    @Override
+    public Page<Room> getRoomsByUser(String username, Pageable pageable) {
+        Optional<User> user = userRepository.findUserByUsername(username);
+        return roomRepository.getAllByUserId(user.get().getId(), pageable);
+    }
+
+    @Override
+    public void updateRoom(RoomDto roomDto) {
+        roomRepository.save(RoomDto.toRoom(roomDto));
+    }
+
 
     @Override
     public Page<Room> getAllRoomByManyContraints(RoomFilterDataRequest request, Pageable pageable) {
@@ -71,6 +103,13 @@ public class RoomServiceImpl implements RoomService {
     public void addRoom(RoomDto roomDto, List<MultipartFile> images, Authentication auth) {
         Room room = RoomDto.toRoom(roomDto);
         room.setIsApproval("false");
+        if(roomDto.getRoom_id()!=0){
+            Room oldroom = roomRepository.findById(roomDto.getRoom_id()).orElse(null);
+            room.setId(roomDto.getRoom_id());
+            room.setCreatedAt(oldroom.getCreatedAt());
+        }
+
+
         if(auth != null) {
             String username = auth.getName();
             Optional<User> user =  userRepository.findUserByUsername(username);
