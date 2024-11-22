@@ -3,6 +3,7 @@ package com.example.btl_oop.exception;
 import jakarta.persistence.EntityExistsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,5 +30,10 @@ public class GlobalExceptionHandler {
     public String handleInvalidParameterException(InvalidParameterException ex, Model model) {
         model.addAttribute("errorBE", ex.getMessage());
         return "user/changePassword";
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public String handleHttpRequestMethodNotSupportedException (HttpRequestMethodNotSupportedException ex) {
+        return "error/accessDenied";
     }
 }

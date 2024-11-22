@@ -8,10 +8,14 @@ import com.example.btl_oop.common.RoomType;
 import com.example.btl_oop.entity.Appointment;
 import com.example.btl_oop.entity.Room;
 import com.example.btl_oop.model.dto.AppointmentDto;
+import com.example.btl_oop.model.dto.CommentDto;
 import com.example.btl_oop.model.dto.UserDto;
 import com.example.btl_oop.model.request.AppointmentRequest;
 import com.example.btl_oop.model.dto.RoomDto;
 import com.example.btl_oop.service.AppointmentService;
+import com.example.btl_oop.service.CommentService;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.data.domain.PageRequest;
 import com.example.btl_oop.service.RoomService;
 import com.example.btl_oop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -35,6 +40,9 @@ public class RoomController {
 
     @Autowired
     private UserService userService;
+  
+    @Autowired
+    private CommentService commentService;
 
     @Autowired
     private AppointmentService appointmentService;
@@ -59,7 +67,6 @@ public class RoomController {
         commonFunc2(model, pageNo, pages);
         return "manage_room";
     }
-
 
     @PostMapping("/addroom")
     public String addOrUpdateRoom(@ModelAttribute RoomDto roomDto, Model model, Authentication auth,@RequestParam(value = "images", required = false) List<MultipartFile> images )  {
@@ -95,8 +102,13 @@ public class RoomController {
         List<String>  imageDtos = roomService.getAllImagesByRoom_Id(room_id);
         model.addAttribute("room", roomDto);
         model.addAttribute("images", imageDtos);
+
         UserDto userDto = userService.getUserById(roomDto.getUser_id());
         model.addAttribute("userDto", userDto);
+
+        List<CommentDto> commentDtos = commentService.getAllCommentsByRoom_id(Long.parseLong(room_id));
+        model.addAttribute("comments", commentDtos);
+
         commonFunc(auth, model);
         return "room/details";
     }
