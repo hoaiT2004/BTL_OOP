@@ -22,4 +22,7 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     @Modifying
     @Query("DELETE FROM Image i WHERE i.room_id = :roomId")
     void deleteAllImagesByRoomId(@Param("roomId") Long roomId);
+
+    @Query("SELECT i from Image i where i.room_id = :room_id")
+    List<Image> findAllImagesEntityByRoomId(@Param("room_id") long room_id);
 }

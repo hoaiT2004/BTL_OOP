@@ -6,12 +6,14 @@ import java.util.List;
 
 import com.example.btl_oop.common.RoomType;
 import com.example.btl_oop.entity.Appointment;
+import com.example.btl_oop.entity.Image;
 import com.example.btl_oop.entity.Room;
 import com.example.btl_oop.model.dto.AppointmentDto;
 import com.example.btl_oop.model.dto.CommentDto;
 import com.example.btl_oop.model.dto.UserDto;
 import com.example.btl_oop.model.request.AppointmentRequest;
 import com.example.btl_oop.model.dto.RoomDto;
+import com.example.btl_oop.repository.ImageRepository;
 import com.example.btl_oop.service.AppointmentService;
 import com.example.btl_oop.service.CommentService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -48,6 +50,8 @@ public class RoomController {
     private AppointmentService appointmentService;
 
     private static final int sizeOfPage = 4;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @PreAuthorize("hasRole('Landlord')")
     @GetMapping("/delete")
@@ -69,29 +73,37 @@ public class RoomController {
     }
 
     @PostMapping("/addroom")
-    public String addOrUpdateRoom(@ModelAttribute RoomDto roomDto, Model model, Authentication auth,@RequestParam(value = "images", required = false) List<MultipartFile> images )  {
-        commonFunc(auth, model);
-        if(roomDto.getRoom_id()==0){
-            roomService.addRoom(roomDto, images, auth);
-        }
-        else{
-            roomService.updateRoom(roomDto);
-            return "redirect:/api/room/manage";
-        }
+    public String addRoom(@ModelAttribute RoomDto roomDto, Model model, Authentication auth,@RequestParam(value = "images", required = false) List<MultipartFile> images )  {
+        roomService.addRoom(roomDto, images, auth);
         return "redirect:addroom";
     }
 
     @GetMapping("/addroom")
-    public String showAddOrUpdateRoomForm(@ModelAttribute RoomDto roomDto, Model model, Authentication auth,
-                                          @RequestParam(name = "roomId", required = false) Long roomId) {
+    public String showAddRoomForm(@ModelAttribute RoomDto roomDto, Model model, Authentication auth) {
         commonFunc(auth, model);
-        if(roomId!=null) {
-            roomDto = roomService.getInfoRoomByRoom_Id(String.valueOf(roomId));
-            String  image = roomDto.getImage();
-            model.addAttribute("image", image);
-        }
         model.addAttribute("room", roomDto);
         return "addroom";
+    }
+
+    @PostMapping("/update")
+    public String UpdateRoom(@ModelAttribute RoomDto roomDto, Model model, Authentication auth,
+                             @RequestParam(value = "images", required = false) List<MultipartFile> imagesAdd,
+                             @RequestParam(value = "imageIdsDel", required = false) List<Long> imageIdsDel)  {
+        commonFunc(auth, model);
+        roomService.updateRoom(roomDto,auth, imagesAdd, imageIdsDel);
+        return "redirect:manage";
+    }
+
+
+    @GetMapping("/update")
+    public String showUpdateRoomForm(@ModelAttribute RoomDto roomDto, Model model, Authentication auth,
+                                          @RequestParam(name = "roomId") Long roomId) {
+        commonFunc(auth, model);
+        roomDto = roomService.getInfoRoomByRoom_Id(String.valueOf(roomId));
+        List<Image> images = imageRepository.findAllImagesEntityByRoomId(roomId);
+        model.addAttribute("images", images);
+        model.addAttribute("room", roomDto);
+        return "updateroom";
     }
 
 

@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
             integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="/static/js/index.js"></script>
+    <script src="/static/js/loadData.js"></script>
 </head>
 <style>
     * {
@@ -498,6 +500,29 @@
         border: 2px solid #ddd;
         border-radius: 5px;
     }
+    .image-gallery ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .image-gallery li {
+        flex: 0 0 auto;
+    }
+
+    .image-gallery img.thumbnail {
+        width: 100px; /* Chiều rộng tối đa */
+        height: 100px; /* Chiều cao tối đa */
+        object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+        border: 1px solid #ddd; /* Viền nhẹ cho ảnh */
+        border-radius: 5px; /* Bo góc */
+        padding: 2px;
+        background: #fff;
+    }
+
 </style>
 <body data-spy="scroll" data-target=".nav" data-offset="1">
 <header>
@@ -564,20 +589,15 @@
     <div class="page-content">
         <div class="page-header">
             <h1>
-                Thêm phòng trọ
+                Cập nhật phòng trọ
             </h1>
         </div>
         <section>
-            <form th:action="@{/api/room/addroom}" th:object="${room}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/api/room/update}" th:object="${room}" method="post" enctype="multipart/form-data">
                 <div class="col-xs-12">
                     <div class="form-horizontal" role="form">
-
-                        <div class="form-group">
-                            <div class="col-sm-9">
-                                <input class="form-control" type="hidden" id="room_id" th:field="*{room_id}"/>
-                            </div>
-                        </div>
-
+                        <input class="form-control" type="hidden" id="room_id" th:field="*{room_id}"/>
+                        <input class="form-control" type="hidden" id="room_images" th:field="*{image}"/>
                         <div class="form-group">
                             <label class="col-sm-3">(*) Địa chỉ: </label>
                             <div class="col-sm-9">
@@ -638,10 +658,25 @@
                         </div>
 
 
-                        <div class="form-group" th:if="${room.room_id == 0}">
-                            <label class="col-sm-3">(*) Ảnh mô tả: </label>
-                            <div class="col-sm-3">
-                                <input class="form-control" type="file" name="images" multiple required/>
+                        <!-- Phần ảnh -->
+                        <div class="form-group">
+                            <label class="col-sm-3">Chọn ảnh để xóa: </label>
+                            <div class="col-sm-6">
+                                <div class="image-gallery">
+                                    <ul>
+                                        <li th:each="image : ${images}">
+                                            <div style="position: relative; display: inline-block;">
+                                                <!-- Ảnh hiển thị -->
+                                                <img th:src="@{${image.url}}" alt="Image" class="thumbnail" />
+                                                <!-- Checkbox để chọn ảnh cần xóa -->
+                                                <input type="checkbox" th:value="${image.id}" name="imageIdsDel" />
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Input upload ảnh -->
+                                <label class="col-sm-3">Thêm ảnh: </label>
+                                <input class="form-control" type="file" name="images" multiple />
                             </div>
                         </div>
 
@@ -649,9 +684,8 @@
                             <div class="col-sm-offset-3 col-sm-9">
                                 <button type="submit" class="btn btn-primary"
                                         onclick="return confirm('Bạn có chắc chắn muốn thực hiện thao tác này?');">
-                                    Thêm
+                                    Cập nhật
                                 </button>
-
                             </div>
                         </div>
                     </div>
@@ -675,9 +709,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <script>
-    function confirmUpdate() {
-        return confirm("Bạn có chắc muốn cập nhật phòng?");
-    }
+
 </script>
 <footer>
     <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>

@@ -26,5 +26,5 @@ public interface RoomService {
 
     Page<Room> getRoomsByUser(String username, Pageable pageable);
 
-    void updateRoom(RoomDto roomDto);
+    void updateRoom(RoomDto roomDto, Authentication auth, List<MultipartFile> imagesAdd, List<Long> imageIdsDel);
 }

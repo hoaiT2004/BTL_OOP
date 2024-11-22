@@ -630,7 +630,7 @@
     }
 
     function sendRoomId(roomId){
-        const url = `/api/room/addroom?roomId=${roomId}`; // Đường dẫn API kèm roomId
+        const url = `/api/room/update?roomId=${roomId}`; // Đường dẫn API kèm roomId
         // Thực hiện điều hướng đến URL hoặc fetch dữ liệu
         window.location.href = url;
     }
