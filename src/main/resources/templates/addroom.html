@@ -482,8 +482,23 @@
         width: 80%;
     }
 
-    h1{
+    h1 {
         font-size: 20px;
+    }
+
+    .carousel-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .image-wrapper {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    .room-image {
+        border: 2px solid #ddd;
+        border-radius: 5px;
     }
 </style>
 <body data-spy="scroll" data-target=".nav" data-offset="1">
@@ -502,6 +517,9 @@
                         <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
                                                                                     class="fa fa-address-book"></i>Đăng
                             xuất</a></div>
+                        <div th:if="${role == 'Landlord'}"><a class="btn header-btn" href="/api/room/addroom"><i
+                                style="margin-right: 5px;"
+                                class="fas fa-pen-alt"></i>Đăng tin</a></div>
                     </div>
                     <div th:if="${username == null}" class="big-device flex">
                         <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
@@ -535,8 +553,9 @@
                 <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
                 <li th:if="${role == 'Admin'}"><a href="#">Người dùng</a></li>
                 <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
-                <li th:if="${role == 'User'}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
+                <li th:if="${role == 'Tenant'}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
                 <li th:if="${role == 'Landlord'}"><a th:href="@{/user/appointment}">Lịch hẹn</a></li>
+                <li th:if="${role == 'Landlord'}"><a th:href="@{/api/room/manage}">Quản lý phòng trọ</a></li>
             </ul>
         </div>
     </div>
@@ -553,7 +572,13 @@
         <section>
             <form th:action="@{/api/room/addroom}" th:object="${room}" method="post" enctype="multipart/form-data">
                 <div class="col-xs-12">
-                    <div class="form-horizontal" role="form" >
+                    <div class="form-horizontal" role="form">
+
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                <input class="form-control" type="hidden" id="room_id" th:field="*{room_id}"/>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label class="col-sm-3">(*) Địa chỉ: </label>
@@ -565,43 +590,57 @@
                         <div class="form-group">
                             <label class="col-sm-3">(*) Sức chứa: </label>
                             <div class="col-sm-9">
-                                <input class="form-control" type="number" id="capacity" th:field="*{capacity}" required min="1" placeholder="Nhập sức chứa lớn hơn 0"/>
+                                <input class="form-control" type="number" id="capacity" th:field="*{capacity}" required
+                                       min="1" placeholder="Nhập sức chứa lớn hơn 0"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-3">(*) Giá thuê: </label>
                             <div class="col-sm-9">
-                                <input class="form-control" type="number" id="price" th:field="*{price}" required min="1" step="any"  placeholder="Nhập giá thuê lớn hơn 0"/>
+                                <input class="form-control" type="number" id="price" th:field="*{price}" required
+                                       min="1" step="any" placeholder="Nhập giá thuê lớn hơn 0"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-3">Mô tả phòng: </label>
                             <div class="col-sm-9">
-                                <input class="form-control" type="text" id="description" th:field="*{description}" />
+                                <input class="form-control" type="text" id="description" th:field="*{description}"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-3">(*) Diện tích phòng: </label>
                             <div class="col-sm-9">
-                                <input class="form-control" type="number" id="area" th:field="*{area}" required min="1"  step="any"  placeholder="Nhập diện tích lớn hơn 0"/>
+                                <input class="form-control" type="number" id="area" th:field="*{area}" required min="1"
+                                       step="any" placeholder="Nhập diện tích lớn hơn 0"/>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-sm-3">(*) Loại phòng: </label>
-                            <div class="col-sm-3">
-                                <select class="form-control" th:field="*{roomType}" required>
-                                    <option value="">- - - - - - Chọn Loại Phòng - - - - - - -</option>
-                                    <option value="CHUNG_CHU">Chung chủ</option>
-                                    <option value="KHONG_CHUNG_CHU">Không chung chủ</option>
-                                </select>
+                            <div class="col-sm-9">
+                                <!-- Nút radio "Chung chủ" -->
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="roomType" value="CHUNG_CHU"
+                                               th:checked="*{roomType == 'Chung chủ'}" required>
+                                        Chung chủ
+                                    </label>
+                                </div>
+                                <!-- Nút radio "Không chung chủ" -->
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="roomType" value="KHONG_CHUNG_CHU"
+                                               th:checked="*{roomType == 'Không chung chủ'}" required>
+                                        Không chung chủ
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
+
+                        <div class="form-group" th:if="${room.room_id == 0}">
                             <label class="col-sm-3">(*) Ảnh mô tả: </label>
                             <div class="col-sm-3">
                                 <input class="form-control" type="file" name="images" multiple required/>
@@ -610,7 +649,10 @@
 
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-9">
-                                <button type="submit" class="btn btn-primary">Thêm</button>
+                                <button type="submit" class="btn btn-primary"
+                                        th:text="${room.room_id != 0 ? 'Cập nhật' : 'Thêm'}"
+                                        onclick="return confirm('Bạn có chắc chắn muốn thực hiện thao tác này?');">
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -628,11 +670,20 @@
 
     </div>
 </div>
+<!-- Thêm jQuery và Bootstrap JS (nếu chưa có trong trang của bạn) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <footer>
-        <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>
-        <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
-    </footer>
+<script>
+    function confirmUpdate() {
+        return confirm("Bạn có chắc muốn cập nhật phòng?");
+    }
+</script>
+<footer>
+    <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>
+    <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
+</footer>
 </body>
 
 </html>
