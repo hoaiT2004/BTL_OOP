@@ -705,7 +705,7 @@
                 <label>ID phòng</label>
                 <input type="text" id="roomId" name="room_id" disabled>
                 <label>Ngày đến</label>
-                <input type="date" name="comeDate" id="comeDate" required>
+                <input type="date" name="comeDate" onmouseout="validateDate()" id="comeDate" required>
                 <span id="error-message" class="text-danger"></span>
                 <hr>
                 <input type="submit" class="submit-button" value="Update">
