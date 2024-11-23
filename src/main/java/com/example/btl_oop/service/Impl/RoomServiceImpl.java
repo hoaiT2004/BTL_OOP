@@ -152,7 +152,7 @@ public class RoomServiceImpl implements RoomService {
             room.setUser_id(user.get().getId());
         }
 
-        if (images.size() < 1) {
+        if (images.size() > 0) {
             room.setImage(fileService.uploadFile((MultipartFile) images.get(0)));//luu anh vao roomentity
             roomRepository.save(room);
             for (int i = 0; i < images.size(); i++) {//luu anh vao bang image
