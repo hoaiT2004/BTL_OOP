@@ -83,7 +83,7 @@ public class RoomServiceImpl implements RoomService {
             for (Long id : imageIdsDel) {
                 Optional<Image> image = imageRepository.findById(id);
                 if (room.getImage().equals(image.get().getUrl())) {
-                    room.setImage(null);
+                    room.setImage("");
                 }
             }
             imageRepository.deleteAllById(imageIdsDel);

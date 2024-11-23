@@ -523,6 +523,23 @@
         background: #fff;
     }
 
+    .thumbnail {
+        display: block;
+        width: 100%; /* Chỉnh kích thước ảnh nếu cần */
+        height: auto;
+    }
+
+    .image-checkbox {
+        position: absolute;
+        top: 5px; /* Khoảng cách từ cạnh trên */
+        left: 5px; /* Khoảng cách từ cạnh trái */
+        z-index: 10; /* Đảm bảo checkbox nằm trên ảnh */
+        width: 20px; /* Chỉnh kích thước checkbox */
+        height: 20px;
+        cursor: pointer; /* Hiệu ứng con trỏ khi hover */
+    }
+
+
 </style>
 <body data-spy="scroll" data-target=".nav" data-offset="1">
 <header>
@@ -660,7 +677,7 @@
 
                         <!-- Phần ảnh -->
                         <div class="form-group">
-                            <label class="col-sm-3">Chọn ảnh để xóa: </label>
+                            <label class="col-sm-3">Chọn ảnh muốn xóa: </label>
                             <div class="col-sm-6">
                                 <div class="image-gallery">
                                     <ul>
@@ -669,7 +686,7 @@
                                                 <!-- Ảnh hiển thị -->
                                                 <img th:src="@{${image.url}}" alt="Image" class="thumbnail" />
                                                 <!-- Checkbox để chọn ảnh cần xóa -->
-                                                <input type="checkbox" th:value="${image.id}" name="imageIdsDel" />
+                                                <input type="checkbox" th:value="${image.id}" name="imageIdsDel" class="image-checkbox" />
                                             </div>
                                         </li>
                                     </ul>
