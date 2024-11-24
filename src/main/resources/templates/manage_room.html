@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -480,25 +480,52 @@
         width: 80%;
     }
 
-    h1 {
-        font-size: 20px;
+    .button-container {
+        display: flex;
+        gap: 10px; /* Khoảng cách giữa các nút */
     }
 
-    .carousel-container {
-        text-align: center;
-        margin-top: 20px;
+    .btn-red {
+        background-color: #b22222; /* Màu đỏ đậm */
+        color: white; /* Màu chữ trắng */
+        border: none; /* Không có đường viền */
     }
 
-    .image-wrapper {
+    .btn-red:hover {
+        background-color: darkred; /* Màu nền khi hover */
+        color: white;
+    }
+
+
+    /*    Nut bam*/
+    /* Nút Đã duyệt và Chờ xác nhận */
+    .status-btn {
         display: inline-block;
-        margin-bottom: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        margin: 0 10px;
+        color: white;
+        background: linear-gradient(90deg, #4caf50, #2e7d32);
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
     }
 
-    .room-image {
-        border: 2px solid #ddd;
-        border-radius: 5px;
+    /* Đã duyệt nút */
+    .approved-btn {
+        background: linear-gradient(90deg, #28a745, #218838);
+    }
+
+    /* Chờ xác nhận nút */
+    .pending-btn {
+        background: linear-gradient(90deg, #ffc107, #d39e00);
+        color: black;
     }
 </style>
+
 <body data-spy="scroll" data-target=".nav" data-offset="1">
 <header>
     <div style="background-color: white;" class="flex border top">
@@ -515,9 +542,9 @@
                         <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
                                                                                     class="fa fa-address-book"></i>Đăng
                             xuất</a></div>
-                        <div th:if="${role == 'Landlord'}"><a class="btn header-btn" href="/api/room/addroom"><i
-                                style="margin-right: 5px;"
-                                class="fas fa-pen-alt"></i>Đăng tin</a></div>
+                        <div><a class="btn header-btn" href="/api/room/addroom"><i style="margin-right: 5px;"
+                                                                              class="fas fa-pen-alt"></i>Đăng tin</a>
+                        </div>
                     </div>
                     <div th:if="${username == null}" class="big-device flex">
                         <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
@@ -549,7 +576,7 @@
         <div class="container">
             <ul class="menu flex" id="menu">
                 <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                <li th:if="${role == 'Admin'}"><a href="#">Người dùng</a></li>
+                <li th:if="${role == 'Admin'}"><a href="/api/home/UserManagement">Người dùng</a></li>
                 <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
                 <li th:if="${role == 'Tenant'}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
                 <li th:if="${role == 'Landlord'}"><a th:href="@{/user/appointment}">Lịch hẹn</a></li>
@@ -559,133 +586,98 @@
     </div>
 </nav>
 
+<div class="container">
+    <section>
+        <div style="margin-top: 10px;" class="content">
 
-<div class="container" style="background-color: white;">
-    <div class="page-content">
-        <div class="page-header">
-            <h1>
-                Thêm phòng trọ
-            </h1>
-        </div>
-        <section>
-            <form th:action="@{/api/room/addroom}" th:object="${room}" method="post" enctype="multipart/form-data">
-                <div class="col-xs-12">
-                    <div class="form-horizontal" role="form">
-
-                        <div class="form-group">
-                            <div class="col-sm-9">
-                                <input class="form-control" type="hidden" id="room_id" th:field="*{room_id}"/>
+            <div class="left border">
+                <h3 class="subject">Danh sách phòng trọ</h3>
+                <div style="margin-bottom: 20px; text-align: center;">
+                    <button class="status-btn approved-btn" th:onclick="|window.location.href='@{/api/room/manage?isApproval=true}'|">Đã duyệt</button>
+                    <button class="status-btn pending-btn" th:onclick="|window.location.href='@{/api/room/manage?isApproval=false}'|">Chờ xác nhận</button>
+                </div>
+                <div class="items" id="phongtro" th:each="room: ${rooms}">
+                    <div class="item">
+                        <div class="image"><a th:href="@{'/api/room?room_id='+${room.getRoom_id()}}"><img
+                                th:src="@{${room.getImage()}}" style="width: 100%;height: 100%" alt=""/></a></div>
+                        <div class="info">
+                            <div class="main-title"><a th:href="@{'/api/room?room_id='+${room.getRoom_id()}}"></a>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-3">(*) Địa chỉ: </label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" id="address" th:field="*{address}" required/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-3">(*) Sức chứa: </label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="number" id="capacity" th:field="*{capacity}" required
-                                       min="1" placeholder="Nhập sức chứa lớn hơn 0"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-3">(*) Giá thuê: </label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="number" id="price" th:field="*{price}" required
-                                       min="1" step="any" placeholder="Nhập giá thuê lớn hơn 0"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-3">Mô tả phòng: </label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" id="description" th:field="*{description}"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-3">(*) Diện tích phòng: </label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="number" id="area" th:field="*{area}" required min="1"
-                                       step="any" placeholder="Nhập diện tích lớn hơn 0"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3">(*) Loại phòng: </label>
-                            <div class="col-sm-9">
-                                <!-- Nút radio "Chung chủ" -->
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="roomType" value="CHUNG_CHU"
-                                               th:checked="*{roomType == 'Chung chủ'}" required>
-                                        Chung chủ
-                                    </label>
+                            <div class="main-info">
+                                <div>
+                                    <p th:text="'Giá: ' + ${room.getPrice()} + ' triệu/tháng - ' + ${room.getRoomType()}">
+                                    </p>
                                 </div>
-                                <!-- Nút radio "Không chung chủ" -->
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="roomType" value="KHONG_CHUNG_CHU"
-                                               th:checked="*{roomType == 'Không chung chủ'}" required>
-                                        Không chung chủ
-                                    </label>
-                                </div>
+                                <div><p th:text="'Diện tích: '+${room.getArea()} + 'm2'"></p></div>
+                                <div><p th:text="${'Địa chỉ: '+room.getAddress()}"></p></div>
                             </div>
-                        </div>
-
-
-                        <div class="form-group" th:if="${room.room_id == 0}">
-                            <label class="col-sm-3">(*) Ảnh mô tả: </label>
-                            <div class="col-sm-3">
-                                <input class="form-control" type="file" name="images" multiple required/>
+                            <div><p th:text="${room.getDescription()}"></p>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-9">
-                                <button type="submit" class="btn btn-primary"
-                                        onclick="return confirm('Bạn có chắc chắn muốn thực hiện thao tác này?');">
-                                    Thêm
-                                </button>
-
+                            <div style="width: 100px; text-align: center;">
+                                <!-- Lưu URL xóa trong input hidden -->
+                                <input type="text" th:value="'/api/room/delete?roomId=' + ${room.getRoom_id()}" hidden="hidden" th:id="'url-' + ${room.getRoom_id()}"/>
+                                <a href="#" th:onclick="'confirmDelete('+${room.getRoom_id()}+')'">Xóa</a>
                             </div>
+                            <div>
+                                <a href="#" th:onclick="'sendRoomId(' + ${room.getRoom_id()} + ')'">Cập nhật</a>
+                            </div>
+
                         </div>
                     </div>
+
                 </div>
-            </form>
+                <div class = "box-footer clearfix">
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        <li th:if="${currentPage > 1}">
+                            <a th:href="@{'/api/room/manage?pageNo=' + ${currentPage - 1} + '&isApproval=' + ${isApproval}}"><<</a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(1, totalPage)}"
+                            th:classappend="${currentPage == i ? 'active' : ''}">
+                            <a th:href="@{'/api/room/manage?pageNo=' + ${i} + '&isApproval=' + ${isApproval}}"
+                               th:text="${i}"></a>
+                        </li>
+                        <li th:if="${currentPage < totalPage}">
+                            <a th:href="@{'/api/room/manage?pageNo=' + ${currentPage + 1} + '&isApproval=' + ${isApproval}}">>></a>
+                        </li>
+                    </ul>
 
-            <div style="margin-top: 10px;" class="content">
-
-                <div class="right-no-border"></div>
-
-                <div class="right-no-border"></div>
-
+                </div>
             </div>
-        </section>
 
-    </div>
+
+        </div>
+    </section>
+
 </div>
-<!-- Thêm jQuery và Bootstrap JS (nếu chưa có trong trang của bạn) -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
 <script>
-    function confirmUpdate() {
-        return confirm("Bạn có chắc muốn cập nhật phòng?");
+    function confirmDelete(id) {
+        const url = document.getElementById(`url-${id}`).value;
+        // Hiển thị hộp thoại xác nhận
+        if (confirm("Bạn có chắc chắn muốn xóa?")) {
+            // Nếu chọn "Có", điều hướng tới URL được cung cấp
+            window.location.href = url;
+        } else {
+            // Nếu chọn "Không", không làm gì
+            return false;
+        }
     }
+
+    function sendRoomId(roomId){
+        const url = `/api/room/update?roomId=${roomId}`; // Đường dẫn API kèm roomId
+        // Thực hiện điều hướng đến URL hoặc fetch dữ liệu
+        window.location.href = url;
+    }
+
 </script>
-
-
-    <footer>
-        <h3 style="text-align:center ;">Copyright Nhom9 &copy; IT</h3>
-        <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
-    </footer>
-
+<footer>
+    <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>
+    <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
+</footer>
 </body>
 
+</html></title>
+</head>
+<body>
+
+</body>
 </html>

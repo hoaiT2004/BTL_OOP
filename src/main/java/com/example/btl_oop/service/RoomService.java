@@ -19,4 +19,12 @@ public interface RoomService {
     List<String> getAllImagesByRoom_Id(String room_id);
 
     void addRoom(RoomDto roomDto, List<MultipartFile> images, Authentication auth);
+
+    List<RoomDto> getAllRoomByUser(String username);
+
+    void deleteRoomByRoomId(Long room_id);
+
+    Page<Room> getRoomsByUser(String isApproval, String username, Pageable pageable);
+
+    void updateRoom(RoomDto roomDto, Authentication auth, List<MultipartFile> imagesAdd, List<Long> imageIdsDel);
 }

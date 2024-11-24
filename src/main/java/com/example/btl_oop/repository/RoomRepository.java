@@ -6,6 +6,7 @@ import com.example.btl_oop.entity.Room;
 import java.util.*;
 
 import com.example.btl_oop.entity.User;
+import com.example.btl_oop.model.dto.RoomDto;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,4 +57,11 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             "    ) " +
             "    AND (:roomType IS NULL OR (:roomType IS NOT NULL AND r.roomType = :roomType))")
     List<Room> findAllByFilterConstraintsWithoutPagination(@Param("price") String price, @Param("address") String address, @Param("area") String area, @Param("roomType") RoomType roomType);
+
+    @Query("SELECT r FROM Room r WHERE r.user_id = :userId")
+    List<Room> findAllByUserid(@Param("userId") Long userId);
+
+    @Query("SELECT r FROM Room r WHERE r.user_id = :userId and r.isApproval = :isApproval ")
+    Page<Room> getAllByUserId(@Param("isApproval") String isApproval, @Param("userId") Long userId, Pageable pageable);
+
 }
