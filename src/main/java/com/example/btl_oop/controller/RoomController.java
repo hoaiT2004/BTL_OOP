@@ -63,12 +63,14 @@ public class RoomController {
 
     @GetMapping("/manage")
     public String showOwnedRooms(Model model, Authentication auth,
-                                @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) throws ParseException  {
+                                 @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                 @RequestParam(name = "isApproval", defaultValue = "true") String isApproval) throws ParseException  {
         commonFunc(auth, model);
         String username = auth.getName();
         Pageable pageable = PageRequest.of(pageNo - 1, sizeOfPage);
-        Page<Room> pages = roomService.getRoomsByUser(username, pageable);
+        Page<Room> pages = roomService.getRoomsByUser(isApproval, username, pageable);
         commonFunc2(model, pageNo, pages);
+        model.addAttribute("isApproval", isApproval);
         return "manage_room";
     }
 

@@ -24,7 +24,7 @@ public interface RoomService {
 
     void deleteRoomByRoomId(Long room_id);
 
-    Page<Room> getRoomsByUser(String username, Pageable pageable);
+    Page<Room> getRoomsByUser(String isApproval, String username, Pageable pageable);
 
     void updateRoom(RoomDto roomDto, Authentication auth, List<MultipartFile> imagesAdd, List<Long> imageIdsDel);
 }

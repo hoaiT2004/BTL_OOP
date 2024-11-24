@@ -495,6 +495,35 @@
         background-color: darkred; /* Màu nền khi hover */
         color: white;
     }
+
+
+    /*    Nut bam*/
+    /* Nút Đã duyệt và Chờ xác nhận */
+    .status-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        margin: 0 10px;
+        color: white;
+        background: linear-gradient(90deg, #4caf50, #2e7d32);
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Đã duyệt nút */
+    .approved-btn {
+        background: linear-gradient(90deg, #28a745, #218838);
+    }
+
+    /* Chờ xác nhận nút */
+    .pending-btn {
+        background: linear-gradient(90deg, #ffc107, #d39e00);
+        color: black;
+    }
 </style>
 
 <body data-spy="scroll" data-target=".nav" data-offset="1">
@@ -563,6 +592,10 @@
 
             <div class="left border">
                 <h3 class="subject">Danh sách phòng trọ</h3>
+                <div style="margin-bottom: 20px; text-align: center;">
+                    <button class="status-btn approved-btn" th:onclick="|window.location.href='@{/api/room/manage?isApproval=true}'|">Đã duyệt</button>
+                    <button class="status-btn pending-btn" th:onclick="|window.location.href='@{/api/room/manage?isApproval=false}'|">Chờ xác nhận</button>
+                </div>
                 <div class="items" id="phongtro" th:each="room: ${rooms}">
                     <div class="item">
                         <div class="image"><a th:href="@{'/api/room?room_id='+${room.getRoom_id()}}"><img
@@ -596,15 +629,15 @@
                 <div class = "box-footer clearfix">
                     <ul class="pagination pagination-sm no-margin pull-right">
                         <li th:if="${currentPage > 1}">
-                            <a th:href="@{'/api/room/manage?pageNo=' + ${currentPage - 1}}"><<</a>
+                            <a th:href="@{'/api/room/manage?pageNo=' + ${currentPage - 1} + '&isApproval=' + ${isApproval}}"><<</a>
                         </li>
                         <li th:each="i : ${#numbers.sequence(1, totalPage)}"
                             th:classappend="${currentPage == i ? 'active' : ''}">
-                            <a th:href="@{'/api/room/manage?pageNo=' + ${i}}"
+                            <a th:href="@{'/api/room/manage?pageNo=' + ${i} + '&isApproval=' + ${isApproval}}"
                                th:text="${i}"></a>
                         </li>
                         <li th:if="${currentPage < totalPage}">
-                            <a th:href="@{'/api/room/manage?pageNo=' + ${currentPage + 1}}">>></a>
+                            <a th:href="@{'/api/room/manage?pageNo=' + ${currentPage + 1} + '&isApproval=' + ${isApproval}}">>></a>
                         </li>
                     </ul>
 

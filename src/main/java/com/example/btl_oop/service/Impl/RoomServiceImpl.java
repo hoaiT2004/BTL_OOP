@@ -7,6 +7,7 @@ import com.example.btl_oop.entity.Room;
 import com.example.btl_oop.entity.User;
 import com.example.btl_oop.model.request.room.RoomFilterDataRequest;
 import com.example.btl_oop.model.dto.*;
+import com.example.btl_oop.repository.CommentRepository;
 import com.example.btl_oop.repository.ImageRepository;
 import com.example.btl_oop.repository.RoomRepository;
 import com.example.btl_oop.repository.UserRepository;
@@ -42,6 +43,9 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     @Override
     public List<RoomDto> getAllRoomByUser(String username) {
         Optional<User> user = userRepository.findUserByUsername(username);
@@ -57,15 +61,18 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void deleteRoomByRoomId(Long room_id) {
         imageRepository.deleteAllImagesByRoomId(room_id);
+        commentRepository.deleteCommentsByRoom_id(room_id);
         roomRepository.deleteById(room_id);
     }
 
     @Override
-    public Page<Room> getRoomsByUser(String username, Pageable pageable) {
+    public Page<Room> getRoomsByUser(String isApproval, String username, Pageable pageable) {
         Optional<User> user = userRepository.findUserByUsername(username);
-        return roomRepository.getAllByUserId(user.get().getId(), pageable);
+        return roomRepository.getAllByUserId(isApproval, user.get().getId(), pageable);
     }
 
+    @Modifying
+    @Transactional
     @Override
     public void updateRoom(RoomDto roomDto, Authentication auth, List<MultipartFile> imagesAdd, List<Long> imageIdsDel) {
         Room room = RoomDto.toRoom(roomDto);
@@ -79,31 +86,39 @@ public class RoomServiceImpl implements RoomService {
             room.setUser_id(user.get().getId());
         }
 
-        if (imageIdsDel != null ) {
+        commentRepository.deleteCommentsByRoom_id(roomDto.getRoom_id());
+
+        if (imageIdsDel != null) {
             for (Long id : imageIdsDel) {
                 Optional<Image> image = imageRepository.findById(id);
                 if (room.getImage().equals(image.get().getUrl())) {
                     room.setImage("");
+                    break;
                 }
             }
             imageRepository.deleteAllById(imageIdsDel);
         }
 
-        if (imagesAdd.size() > 0) {
-            for (int i = 0; i < imagesAdd.size(); i++) {//luu anh vao bang image
+        if (imagesAdd != null && !imagesAdd.isEmpty()) {
+            for (MultipartFile file : imagesAdd) {
+                // Kiểm tra nếu file rỗng
+                if (file.isEmpty()) {
+                    continue;
+                }
+
+                // Nếu file không rỗng, tải lên Cloudinary
                 Image image = new Image();
                 image.setRoom_id(room.getId());
-                String imageUrl = fileService.uploadFile(imagesAdd.get(i));
+                String imageUrl = fileService.uploadFile(file); // Tải file lên Cloudinary
                 image.setUrl(imageUrl);
                 imageRepository.save(image);
             }
         }
-        String s = room.getImage();
+
         if (room.getImage().equals(null) || room.getImage().equals("")) {
             List<String> images = imageRepository.findAllImagesByRoom_id(room.getId());
             room.setImage(images.get(0));//luu anh vao roomentity
         }
-        System.out.println("ok");
         roomRepository.save(room);
     }
 
@@ -141,27 +156,25 @@ public class RoomServiceImpl implements RoomService {
     public void addRoom(RoomDto roomDto, List<MultipartFile> images, Authentication auth) {
         Room room = RoomDto.toRoom(roomDto);
         room.setIsApproval("false");
-        if (roomDto.getRoom_id() != 0) {
-            Room oldroom = roomRepository.findById(roomDto.getRoom_id()).orElse(null);
-            room.setId(roomDto.getRoom_id());
-            room.setCreatedAt(oldroom.getCreatedAt());
-        }
         if (auth != null) {
             String username = auth.getName();
             Optional<User> user = userRepository.findUserByUsername(username);
             room.setUser_id(user.get().getId());
         }
 
-        if (images.size() > 0) {
-            room.setImage(fileService.uploadFile((MultipartFile) images.get(0)));//luu anh vao roomentity
-            roomRepository.save(room);
-            for (int i = 0; i < images.size(); i++) {//luu anh vao bang image
-                Image image = new Image();
-                image.setRoom_id(room.getId());
-                String imageUrl = fileService.uploadFile(images.get(i));
-                image.setUrl(imageUrl);
-                imageRepository.save(image);
-            }
+
+        room.setImage(fileService.uploadFile((MultipartFile) images.get(0)));//luu anh vao roomentity
+        roomRepository.save(room);
+        Image roomImage = new Image();
+        roomImage.setRoom_id(room.getId());
+        roomImage.setUrl(room.getImage());
+        imageRepository.save(roomImage);
+        for (int i = 1; i < images.size(); i++) {//luu anh vao bang image
+            Image image = new Image();
+            image.setRoom_id(room.getId());
+            String imageUrl = fileService.uploadFile(images.get(i));
+            image.setUrl(imageUrl);
+            imageRepository.save(image);
         }
         roomRepository.save(room);
     }

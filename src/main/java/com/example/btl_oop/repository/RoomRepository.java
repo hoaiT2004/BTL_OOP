@@ -61,7 +61,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT r FROM Room r WHERE r.user_id = :userId")
     List<Room> findAllByUserid(@Param("userId") Long userId);
 
-    @Query("SELECT r FROM Room r WHERE r.user_id = :userId")
-    Page<Room> getAllByUserId(@Param("userId") Long userId, Pageable pageable);
+    @Query("SELECT r FROM Room r WHERE r.user_id = :userId and r.isApproval = :isApproval ")
+    Page<Room> getAllByUserId(@Param("isApproval") String isApproval, @Param("userId") Long userId, Pageable pageable);
 
 }
