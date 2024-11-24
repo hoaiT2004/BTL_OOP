@@ -138,8 +138,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
 
         // Chuyển đổi Page<User> sang Page<UserDto>
-        Page<UserDto> userDtoPage = userPage.map(user -> UserDto.toDto(user));
+        Page<UserDto> userDtoPage = userPage.map(UserDto::toDto);
         return userDtoPage;
     }
+
 
 }

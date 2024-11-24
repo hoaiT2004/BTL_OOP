@@ -45,18 +45,6 @@ public class UserController {
 
     private static final int sizeOfPage = 8;
 
-    @GetMapping("/list")
-    public String getAll(Model model,
-                         @RequestParam(name = "name", required = false) String name,
-                         @RequestParam(name = "tel", required = false) String tel,
-                         @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo, 10);
-        List<UserDto> users = userService.getAllUser(name, tel, pageable);
-        model.addAttribute("users", users);
-        model.addAttribute("currentPage", pageNo);
-        return "user/list";
-    }
-
     @GetMapping("/login")
     public String login(){
         return "user/login";

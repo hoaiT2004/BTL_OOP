@@ -707,7 +707,7 @@
                 <!-- Nút lọc -->
 
                 <div class="filter-item">
-                    <button type="button" class="btn header-btn" onclick="searchUser()">Lọc kết quả</button>
+                    <button type="submit" class="btn header-btn">Lọc kết quả</button>
                 </div>
             </form>
         </div>
@@ -730,12 +730,12 @@
                             </thead>
                             <tbody id="roomTable">
                             <tr th:each="room : ${rooms}">
-                                <td th:text="${room.id}"></td>
-                                <td th:text="${room.price} + ' triệu/tháng'"></td>
-                                <td th:text="${room.address}"></td>
-                                <td th:text="${room.area} + ' m²'"></td>
-                                <td th:text="${room.roomType == 'CHUNG_CHU' ? 'Chung chủ' : 'Không chung chủ'}"></td>
-                                <td th:text="${room.isApproval ? 'Đã duyệt' : 'Chưa duyệt'}"></td>
+                                <td th:text="${room.getRoom_id()}"></td>
+                                <td th:text="${room.getPrice()} + ' triệu/tháng'"></td>
+                                <td th:text="${room.getAddress()}"></td>
+                                <td th:text="${room.getArea()} + ' m²'"></td>
+                                <td th:text="${room.getRoomType() }"></td>
+                                <td th:text="${room.getIsApproval() ? 'Đã duyệt' : 'Chưa duyệt'}"></td>
                                 <td>
                                     <!-- Nếu chưa duyệt -->
                                     <div th:if="${!room.isApproval}">
@@ -753,9 +753,9 @@
 
                         <!-- Pagination Controls -->
                         <div class="pagination">
-                            <button onclick="changePage(${currentPage - 1})" ${currentPage == 0 ? 'disabled' : ''}>Previous</button>
-                            <span th:text="'Page ' + (${currentPage ?: 0})"></span>
-                            <button onclick="changePage(${currentPage + 1})" ${rooms.size() < 10 ? 'disabled' : ''}>Next</button>
+                            <button onclick="changePage(${currentPage - 1})" ${currentPage == 1 ? 'disabled' : ''}>Previous</button>
+                            <span th:text="'Page ' + (${currentPage})"></span>
+                            <button onclick="changePage(${currentPage + 1})" ${currentPage == totalPage ? 'disabled' : ''}>Next</button>
                         </div>
 
                         <script>
@@ -818,7 +818,7 @@
     </div>
 
     <footer>
-        <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>
+        <h3 style="text-align:center ;">Nhóm 9</h3>
         <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
     </footer>
     </body>

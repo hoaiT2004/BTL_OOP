@@ -54,7 +54,7 @@ public class RoomController {
 
     @GetMapping
     public String showDetailRoom(Authentication auth, @RequestParam(name = "room_id") String room_id, Model model) {
-        RoomDto roomDto = roomService.getInfoRoomByRoom_Id(room_id);
+        RoomDto roomDto = roomService. getInfoRoomByRoom_Id(room_id);
         List<String>  imageDtos = roomService.getAllImagesByRoom_Id(room_id);
         model.addAttribute("room", roomDto);
         model.addAttribute("images", imageDtos);

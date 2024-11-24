@@ -72,5 +72,5 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             "    (:area = '40' AND r.area > 40)" +
             ") " +
             "AND (:roomType IS NULL OR r.roomType = :roomType)")
-    Page<Room> findAllByFilterConstraintsWithoutApproval(String price, String address, String area, RoomType roomType, Pageable pageable);
+    Page<Room> findAllByFilterConstraintsWithoutApproval(@Param("price") String price, @Param("address") String address, @Param("area") String area, @Param("roomType") RoomType roomType, Pageable pageable);
 }
