@@ -35,7 +35,8 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private ImageRepository imageRepository;
 
-    private static final String isApproval = "true";
+    private static final String isApproval = "true" ;
+    private static final String isNotApproval = "false" ;
     @Autowired
     private UserRepository userRepository;
 
@@ -43,6 +44,7 @@ public class RoomServiceImpl implements RoomService {
     public Page<Room> getAllRoomByManyContraints(RoomFilterDataRequest request, Pageable pageable) {
         Page<Room> roomPage;
         if (request.isNull()) {
+            // Nếu không có bộ lọc, lấy tất cả các phòng đã duyệt
             roomPage = roomRepository.findAllByIsApproval(isApproval, pageable);
         } else {
             RoomType roomType;
@@ -51,10 +53,13 @@ public class RoomServiceImpl implements RoomService {
             } catch (Exception ex) {
                 roomType = null;
             }
+
+            // Thêm điều kiện lọc cho trạng thái duyệt trong trường hợp có bộ lọc
             roomPage = roomRepository.findAllByFilterConstraints(request.getPrice(), request.getAddress(), request.getArea(), roomType, pageable);
         }
         return roomPage;
     }
+
 
     @Override
     public RoomDto getInfoRoomByRoom_Id(String room_id) {
@@ -89,5 +94,59 @@ public class RoomServiceImpl implements RoomService {
             imageRepository.save(image);
         }
     }
+
+    @Override
+    public Page<Room> getAllRoomsForAdmin(RoomFilterDataRequest request, Pageable pageable) {
+        Page<Room> roomPage;
+
+        if (request.isNull()) {
+            // Lấy tất cả các phòng (bao gồm cả đã duyệt và chưa duyệt)
+            roomPage = roomRepository.findAll(pageable);
+        } else {
+            RoomType roomType;
+            try {
+                roomType = RoomTypeConverter.convertToEntityAttributeGlobal(request.getRoomType());
+            } catch (Exception ex) {
+                roomType = null;
+            }
+            roomPage = roomRepository.findAllByFilterConstraintsWithoutApproval(
+                    request.getPrice(), request.getAddress(), request.getArea(), roomType, pageable);
+        }
+        return roomPage;
+    }
+    @Override
+    @Transactional
+    public void approveRoom(Long roomId) {
+        // Tìm phòng theo ID, trả về Optional<Room>
+        Optional<Room> roomOptional = roomRepository.findById(roomId);
+
+        // Kiểm tra nếu phòng tồn tại trong Optional
+        roomOptional.ifPresentOrElse(room -> {
+            // Cập nhật trạng thái phòng thành 'Đã duyệt'
+            room.setIsApproval("true");
+
+            // Lưu lại phòng sau khi thay đổi trạng thái
+            roomRepository.save(room); // Lưu trực tiếp đối tượng Room
+        }, () ->{
+                });
+    }
+
+    // Không duyệt phòng
+    @Override
+    @Transactional
+    public void disapproveRoom(Long roomId) {
+        Optional<Room> roomOptional = roomRepository.findById(roomId);
+
+        // Kiểm tra nếu phòng tồn tại trong Optional
+        roomOptional.ifPresentOrElse(room -> {
+            // Cập nhật trạng thái phòng thành 'Đã duyệt'
+            room.setIsApproval("false");
+
+            // Lưu lại phòng sau khi thay đổi trạng thái
+            roomRepository.save(room); // Lưu trực tiếp đối tượng Room
+        }, () ->{
+        });
+    }
+
 
 }

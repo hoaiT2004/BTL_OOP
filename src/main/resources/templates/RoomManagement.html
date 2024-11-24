@@ -634,7 +634,7 @@
         </a>
         <h1>Quản Lý Phòng</h1>
         <div className="filter-container container" style="border-color: white">
-            <form th:action="@{/api/home/RoomManagement}" method="GET" className="flex"
+            <form th:action="@{/api/home/admin/RoomManagement}" method="GET" className="flex"
                   style="display: flex; justify-content: space-evenly; flex-wrap: wrap; align-items: center; margin-top: 20px; margin-bottom: 20px;">
                 <!-- Lọc theo giá -->
                 <div className="filter-item">
@@ -734,16 +734,16 @@
                                 <td th:text="${room.price} + ' triệu/tháng'"></td>
                                 <td th:text="${room.address}"></td>
                                 <td th:text="${room.area} + ' m²'"></td>
-                                <td th:text="${room.type == 'CHUNG_CHU' ? 'Chung chủ' : 'Không chung chủ'}"></td>
-                                <td th:text="${room.approved ? 'Đã duyệt' : 'Chưa duyệt'}"></td>
+                                <td th:text="${room.roomType == 'CHUNG_CHU' ? 'Chung chủ' : 'Không chung chủ'}"></td>
+                                <td th:text="${room.isApproval ? 'Đã duyệt' : 'Chưa duyệt'}"></td>
                                 <td>
                                     <!-- Nếu chưa duyệt -->
-                                    <div th:if="${!room.approved}">
+                                    <div th:if="${!room.isApproval}">
                                         <button onclick="approveRoom([[${room.id}]])" class="btn btn-success">Duyệt</button>
                                         <button onclick="disapproveRoom([[${room.id}]])" class="btn btn-danger">Không duyệt</button>
                                     </div>
                                     <!-- Nếu đã duyệt -->
-                                    <div th:if="${room.approved}">
+                                    <div th:if="${room.isApproval}">
                                         <span>Đã duyệt</span>
                                     </div>
                                 </td>
@@ -751,75 +751,66 @@
                             </tbody>
                         </table>
 
-        <!-- Pagination Controls -->
-        <div class="pagination">
-            <button onclick="changePage(${currentPage - 1})" ${currentPage == 0 ? 'disabled' : ''}>Previous</button>
-            <span th:text="'Page ' + (${currentPage ?: 0})"></span>
-            <button onclick="changePage(${currentPage + 1})" ${users.size() < 10 ? 'disabled' : ''}>Next</button>
-        </div>
+                        <!-- Pagination Controls -->
+                        <div class="pagination">
+                            <button onclick="changePage(${currentPage - 1})" ${currentPage == 0 ? 'disabled' : ''}>Previous</button>
+                            <span th:text="'Page ' + (${currentPage ?: 0})"></span>
+                            <button onclick="changePage(${currentPage + 1})" ${rooms.size() < 10 ? 'disabled' : ''}>Next</button>
+                        </div>
 
-    <script>
-        // Function to handle search form submission
-        function submitRoomSearch() {
-            document.getElementById('roomSearchForm').submit();
-        }
+                        <script>
+                            // Function to handle search form submission
+                            function submitRoomSearch() {
+                                document.getElementById('roomSearchForm').submit();
+                            }
 
-        // Function to change page
-        function changePage(pageNo) {
-            const form = document.getElementById('roomSearchForm');
+                            // Function to change page
+                            function changePage(pageNo) {
+                                const form = document.getElementById('roomSearchForm');
 
-            // Create hidden input for page number
-            let pageInput = document.querySelector('input[name="pageNo"]');
-            if (!pageInput) {
-                pageInput = document.createElement('input');
-                pageInput.setAttribute('type', 'hidden');
-                pageInput.setAttribute('name', 'pageNo');
-                form.appendChild(pageInput);
-            }
-            pageInput.setAttribute('value', pageNo);
+                                // Create hidden input for page number
+                                let pageInput = document.querySelector('input[name="pageNo"]');
+                                if (!pageInput) {
+                                    pageInput = document.createElement('input');
+                                    pageInput.setAttribute('type', 'hidden');
+                                    pageInput.setAttribute('name', 'pageNo');
+                                    form.appendChild(pageInput);
+                                }
+                                pageInput.setAttribute('value', pageNo);
 
-            form.submit();
-        }
-        function approveRoom(roomId) {
-            if (confirm("Bạn có chắc muốn duyệt phòng này?")) {
-                // Gửi yêu cầu duyệt phòng
-                fetch(`/api/rooms/approve/${roomId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            alert("Duyệt phòng thành công!");
-                            location.reload(); // Reload trang để cập nhật danh sách
-                        } else {
-                            alert("Có lỗi xảy ra khi duyệt phòng!");
-                        }
-                    });
-            }
-        }
+                                form.submit();
+                            }
 
-        function disapproveRoom(roomId) {
-            if (confirm("Bạn có chắc muốn không duyệt phòng này?")) {
-                // Gửi yêu cầu không duyệt phòng
-                fetch(`/api/rooms/disapprove/${roomId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            alert("Không duyệt phòng thành công!");
-                            location.reload(); // Reload trang để cập nhật danh sách
-                        } else {
-                            alert("Có lỗi xảy ra khi không duyệt phòng!");
-                        }
-                    });
-            }
-        }
-    </script>
+                            // Hàm duyệt phòng
+                            function approveRoom(roomId) {
+                                fetch(`/api/rooms/approve/${roomId}`, {
+                                    method: 'POST'
+                                })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            alert('Phòng đã được duyệt!');
+                                            location.reload(); // Reload trang để cập nhật trạng thái
+                                        } else {
+                                            alert('Lỗi khi duyệt phòng.');
+                                        }
+                                    });
+                            }
+
+                            // Hàm gửi yêu cầu không duyệt phòng
+                            function disapproveRoom(roomId) {
+                                fetch(`/api/rooms/disapprove/${roomId}`, {
+                                    method: 'POST'
+                                })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            alert('Phòng đã được chuyển về chưa duyệt!');
+                                            location.reload();
+                                        } else {
+                                            alert('Lỗi khi cập nhật trạng thái.');
+                                        }
+                                    });
+                            }
+                        </script>
                     </div>
                 </div>
             </section>

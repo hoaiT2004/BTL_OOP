@@ -14,6 +14,7 @@ import com.example.btl_oop.service.RoomService;
 import com.example.btl_oop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -92,5 +93,21 @@ public class RoomController {
             model.addAttribute("role", roleLength.substring(1, roleLength.length() - 1));
         }
     }
+    @PostMapping("/approve/{roomId}")
+    public ResponseEntity<String> approveRoom(@PathVariable Long roomId) {
+            roomService.approveRoom(roomId);
+            return ResponseEntity.ok("Phòng đã được duyệt.");
+
+    }
+
+    // Không duyệt phòng
+    @PostMapping("/disapprove/{roomId}")
+    public ResponseEntity<String> disapproveRoom(@PathVariable Long roomId) {
+
+            roomService.disapproveRoom(roomId);
+            return ResponseEntity.ok("Phòng đã được chuyển về chưa duyệt.");
+
+    }
+
 
 }

@@ -52,7 +52,7 @@ public class AdminController {
         }
 
         Pageable pageable = PageRequest.of(pageNo - 1, sizeOfPage);
-        Page<Room> roomList = roomService.getAllRoomByManyContraints(request, pageable);
+        Page<Room> roomList = roomService.getAllRoomsForAdmin(request, pageable);
 
         model.addAttribute("rooms", roomList);
         model.addAttribute("currentPage", pageNo);
@@ -67,4 +67,5 @@ public class AdminController {
     public String usermanagement() {
         return "UserManagement";
     }
+
 }
