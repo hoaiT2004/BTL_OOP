@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.repository.query.Param;
 
 import java.util.*;
 
@@ -36,4 +37,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserByUsername(String username);
 
     Page<User> findByUsernameContaining(String name, String tel, Pageable pageable);
+
+    @Transactional
+    @Query("SELECT u FROM User u WHERE (:name IS NULL OR u.username LIKE %:name%) AND (:tel IS NULL OR u.tel LIKE %:tel%)")
+    Page<User> findByUsernameAndTel(@Param("name") String name,
+                                    @Param("tel") String tel,
+                                    Pageable pageable);
 }

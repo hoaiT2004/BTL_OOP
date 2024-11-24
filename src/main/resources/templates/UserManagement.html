@@ -674,7 +674,7 @@
     <thead>
     <tr>
       <th>ID</th>
-      <th>Name</th>
+      <th>Tên</th>
       <th>PhoneNumber</th>
       <th>Email</th>
 
@@ -683,9 +683,9 @@
     <tbody id="userTable">
     <tr th:each="user : ${users}">
       <td th:text="${user.id}"></td>
-      <td th:text="${user.name}"></td>
-      <td th:text="${user.tel}"></td>
-      <td th:text="${user.email}"></td>
+      <td th:text="${user.getFullname()}"></td>
+      <td th:text="${user.getTel()}"></td>
+      <td th:text="${user.getEmail()}"></td>
     </tr>
     </tbody>
   </table>

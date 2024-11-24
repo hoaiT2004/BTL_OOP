@@ -71,10 +71,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return new CreateNewPasswordResponse(request.getUsername());
     }
 
-    @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+
 
     @Override
     @Transactional
@@ -128,6 +125,21 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         List<User> userList = userPage.getContent();
         return UserDto.toDto(userList);
+    }
+    @Override
+    public Page<UserDto> getAllUserForAdmin(String name, String tel, Pageable pageable) {
+        Page<User> userPage;
+
+        // Kiểm tra các điều kiện lọc
+        if ((name != null && !name.isEmpty()) || (tel != null && !tel.isEmpty())) {
+            userPage = userRepository.findByUsernameAndTel(name, tel, pageable);
+        } else {
+            userPage = userRepository.findAll(pageable);
+        }
+
+        // Chuyển đổi Page<User> sang Page<UserDto>
+        Page<UserDto> userDtoPage = userPage.map(user -> UserDto.toDto(user));
+        return userDtoPage;
     }
 
 }
