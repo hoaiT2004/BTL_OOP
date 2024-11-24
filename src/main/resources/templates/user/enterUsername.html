@@ -6,7 +6,12 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+            integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 </head>
 <style>
     * {
@@ -323,13 +328,9 @@
                                                                                    class="fa fa-sign-in"></i>Đăng nhập</a></div>
                         <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
                                                                                       class="fa fa-address-book"></i>Đăng ký</a></div>
-                    <div th:if="${role == 'Landlord'}"><a class="btn header-btn" href="/api/room/addroom"><i style="margin-right: 5px;"
-                                                                                                             class="fas fa-pen-alt"></i>Đăng tin</a></div>
-
                     <div class="small-device flex">
                         <div><a href="@{/user/login}" type="button" style="padding: 3px;" class="fa fa-sign-in"></a></div>
                         <div><a href="@{/user/register}" type="button" style="padding: 3px;" class="fa-solid fa-user-plus"></a></div>
-                        <div><a href="#" type="button" style="padding: 3px;" class="fa-solid fa-plus"></a></div>
                     </div>
                 </div>
             </div>
@@ -365,7 +366,7 @@
     </fieldset>
 
 <footer>
-    <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>
+    <h3 style="text-align:center ;">Copyright Nhom9 &copy; IT</h3>
     <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
 </footer>
 </body>

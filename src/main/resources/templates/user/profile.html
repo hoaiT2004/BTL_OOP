@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Thông tin cá nhân</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+            integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 </head>
 <style>
     * {
@@ -35,7 +41,7 @@
     }
 
 
-    .rightheader div {
+    .right header div {
         padding: 10px;
     }
 
@@ -44,7 +50,7 @@
         padding: 10px;
     }
 
-    .container {
+    .container2 {
         width: 80%;
         align-items: center;
         margin: 0 auto;
@@ -100,7 +106,7 @@
             flex-direction: column;
         }
 
-        .container{
+        .container2{
             width: 95%;
         }
 
@@ -449,7 +455,7 @@
 <body>
     <header>
         <div style="background-color: white;" class="flex border top">
-            <div class="container">
+            <div class="container2">
                 <div class="header flex">
                     <div class="web icon">
                         <a th:href="@{/api/home}"><img style="width: 50%; height: 50%;" src="https://res.cloudinary.com/hoaptit/image/upload/v1730187948/tro-sinh-vien2_wiuzca.png" alt=""></a>
@@ -486,7 +492,7 @@
     </div>
     <nav>
         <div>
-            <div class="container">
+            <div class="container2">
                 <ul class="menu flex" id="menu">
                     <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
                     <li th:if="${role == 'Admin'}"><a href="#">Người dùng</a></li>
@@ -552,7 +558,7 @@
 <!--End content-->
 <!--Footer-->
     <footer>
-        <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>
+        <h3 style="text-align:center ;">Copyright Nhom9 &copy; IT</h3>
         <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
     </footer>
 </body>

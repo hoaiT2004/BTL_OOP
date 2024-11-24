@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
             integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <script src="/static/js/index.js"></script>
-    <script src="/static/js/loadData.js"></script>
 </head>
 <style>
     * {
@@ -569,7 +567,7 @@
         <div class="container">
             <ul class="menu flex" id="menu">
                 <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                <li th:if="${role == 'Admin'}"><a href="#">Người dùng</a></li>
+                <li th:if="${role == 'Admin'}"><a href="/api/home/UserManagement">Người dùng</a></li>
                 <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
                 <li th:if="${role == 'Tenant'}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
                 <li th:if="${role == 'Landlord'}"><a th:href="@{/user/appointment}">Lịch hẹn</a></li>
@@ -601,7 +599,7 @@
     <p>Với một số gợi ý trên, hy vọng bạn sẽ tạo nên một không gian sống thoải mái và đẹp mắt cho ngôi nhà của mình.</p>
 </div>
 <footer>
-    <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>
+    <h3 style="text-align:center ;">Copyright Nhom9 &copy; IT</h3>
     <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
 </footer>
 </body>
