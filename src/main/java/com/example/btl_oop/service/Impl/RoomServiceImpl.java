@@ -7,10 +7,7 @@ import com.example.btl_oop.entity.Room;
 import com.example.btl_oop.entity.User;
 import com.example.btl_oop.model.request.room.RoomFilterDataRequest;
 import com.example.btl_oop.model.dto.*;
-import com.example.btl_oop.repository.CommentRepository;
-import com.example.btl_oop.repository.ImageRepository;
-import com.example.btl_oop.repository.RoomRepository;
-import com.example.btl_oop.repository.UserRepository;
+import com.example.btl_oop.repository.*;
 import com.example.btl_oop.service.FileService;
 import com.example.btl_oop.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +43,9 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
     @Override
     public List<RoomDto> getAllRoomByUser(String username) {
         Optional<User> user = userRepository.findUserByUsername(username);
@@ -62,6 +62,7 @@ public class RoomServiceImpl implements RoomService {
     public void deleteRoomByRoomId(Long room_id) {
         imageRepository.deleteAllImagesByRoomId(room_id);
         commentRepository.deleteCommentsByRoom_id(room_id);
+        appointmentRepository.deleteAppointmentByRoom_id(room_id);
         roomRepository.deleteById(room_id);
     }
 
@@ -87,6 +88,7 @@ public class RoomServiceImpl implements RoomService {
         }
 
         commentRepository.deleteCommentsByRoom_id(roomDto.getRoom_id());
+        appointmentRepository.deleteAppointmentByRoom_id(roomDto.getRoom_id());
 
         if (imageIdsDel != null) {
             for (Long id : imageIdsDel) {

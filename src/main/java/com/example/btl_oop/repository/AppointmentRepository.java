@@ -41,5 +41,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "SET a.comeDate = :comeDate " +
             "WHERE a.id = :appointment_id")
     void updateAppointmentComeDate(@Param("appointment_id") long appointment_id, @Param("comeDate") Date comeDate);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Appointment a WHERE a.room_id = :room_id")
+    void deleteAppointmentByRoom_id(@Param("room_id") long room_id);
 }
 
