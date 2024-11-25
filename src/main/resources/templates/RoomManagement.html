@@ -40,7 +40,7 @@
         .left {
             background-color: white;
             border: 1px solid;
-            width: 100%;
+            width: 70%;
             height: 100%;
             margin-bottom: 20px;
         }
@@ -119,6 +119,21 @@
             background: linear-gradient(-135deg, cyan, lightcyan, blue);
 
         }
+        .title {
+            font-family: 'Montserrat', sans-serif; /* Sử dụng font Montserrat */
+            font-size: 36px; /* Kích thước chữ */
+            color: #020101; /* Màu chữ trắng */
+            text-align: center; /* Căn giữa */
+            margin: 20px 0; /* Khoảng cách trên và dưới */
+            text-transform: uppercase; /* Chữ in hoa */
+            letter-spacing: 2px; /* Khoảng cách giữa các chữ */
+            font-weight: bold; /* Chữ đậm */
+            padding: 20px; /* Khoảng cách bên trong */
+            background: radial-gradient(circle at center, #1e90ff, #1e90ff 40%, #00bfff 70%, #ffffff 100%); /* Nền gradient đậm ở giữa và nhạt dần ra */
+            border-radius: 10px; /* Bo tròn góc */
+
+        }
+
 
         .border {
             border: 0.5px solid gray;
@@ -597,7 +612,7 @@
 <body>
 <header>
     <div style="background-color: white;" class="flex border top">
-        <div class="container">
+        <div class="container" >
             <div class="header flex">
                 <div class="web icon">
                     <a th:href="@{/api/home}"><img style="width: 50%; height: 50%;" src="https://res.cloudinary.com/hoaptit/image/upload/v1730187948/tro-sinh-vien2_wiuzca.png" alt=""></a>
@@ -630,14 +645,16 @@
 
     </div>
 </header>
-
+<div class="toggle">
+    <i class="fas fa-bars"></i>
+</div>
 <nav>
     <div>
         <div class="container">
             <ul class="menu flex" id="menu">
-                <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                <li th:if="${role == 'Admin'}"><a href="/admin/UserManagement">Người dùng</a></li>
-                <li th:if="${role == 'Admin'}"><a href="/admin/RoomManagement">Phòng</a></li>
+                <li><a  th:href="@{/api/home}">Trang chủ</a></li>
+                <li th:if="${role == 'Admin'}"><a th:href="@{/admin/UserManagement}">Người dùng</a></li>
+                <li th:if="${role == 'Admin'}"><a class="active" th:href="@{/admin/RoomManagement}">Phòng</a></li>
                 <li th:if="${role == 'Tenant'}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
                 <li th:if="${role == 'Landlord'}"><a th:href="@{/user/appointment}">Lịch hẹn</a></li>
                 <li th:if="${role == 'Landlord'}"><a th:href="@{/api/room/manage}">Quản lý phòng trọ</a></li>
@@ -645,12 +662,12 @@
         </div>
     </div>
 </nav>
-<h1>Quản Lý Phòng</h1>
-<div class="container">
+
+<div class="container" >
     <section>
         <div style="margin-top: 10px;" class="content">
             <div class="left border">
-                <!-- Room Table -->
+                <h1 class="title">Quản Lý Phòng</h1>
                 <table>
                     <thead>
                     <tr>
@@ -725,13 +742,23 @@
 
                 </script>
             </div>
+
+            <div class="right border bg-white">
+                <h3 class="subject">Tin mới đăng</h3>
+                <ul class="flex v-menu">
+                    <li><a href="/api/home/news_1">Những lưu ý khi thuê trọ</a></li>
+                    <li><a href="/api/home/news_2">Vấn nạn an toàn PCCC tại các nhà trọ</a></li>
+                    <li><a href="/api/home/nenthuenhaodau">Nên thuê nhà ở đâu</a></li>
+                    <li><a href="/api/home/nhadephon">Làm sao để nhà đẹp hơn</a></li>
+                </ul>
+            </div>
+            <div class="right-no-border"></div>
+            <div class="right-no-border"></div>
         </div>
     </section>
 </div>
-
-
 <footer>
-    <h3 style="text-align:center ;">Nhóm 9</h3>
+    <h3 style="text-align:center ;">Copyright Nhom9 &copy; IT</h3>
     <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
 </footer>
 </body>
