@@ -29,7 +29,7 @@
     import org.springframework.web.multipart.MultipartFile;
 
     @Controller
-    @RequestMapping("api/home")
+    @RequestMapping("/api/home/admin")
     public class AdminController {
         @Autowired
         private RoomService roomService;
@@ -47,7 +47,7 @@
                 model.addAttribute("role", roleLength.substring(1, roleLength.length() - 1));
             }
         }
-        @GetMapping("/admin/RoomManagement")
+        @GetMapping("/RoomManagement")
         public String home(Authentication authentication, Model model,
                            @ModelAttribute RoomFilterDataRequest request
                 , @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
@@ -65,7 +65,7 @@
             return "RoomManagement";
         }
 
-        @GetMapping("/admin/UserManagement")
+        @GetMapping("/UserManagement")
         public String usermanagement(Authentication authentication, Model model,
                                      @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                      @RequestParam(name = "name", required = false) String name,
@@ -89,6 +89,17 @@
             model.addAttribute("tel", tel);
 
             return "UserManagement";
+        }
+        @PostMapping("/approveRoom")
+        public String approveRoom(@RequestParam Long roomId) {
+            roomService.approveRoom(roomId);
+            return "redirect:/api/home/admin/RoomManagement";
+        }
+
+        @PostMapping("/disapproveRoom")
+        public String disapproveRoom(@RequestParam Long roomId) {
+            roomService.disapproveRoom(roomId);
+            return "redirect:/api/home/admin/RoomManagement";
         }
 
 

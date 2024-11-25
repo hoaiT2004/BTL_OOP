@@ -730,17 +730,23 @@
                             </thead>
                             <tbody id="roomTable">
                             <tr th:each="room : ${rooms}">
-                                <td th:text="${room.getRoom_id()}"></td>
-                                <td th:text="${room.getPrice()} + ' triệu/tháng'"></td>
-                                <td th:text="${room.getAddress()}"></td>
-                                <td th:text="${room.getArea()} + ' m²'"></td>
-                                <td th:text="${room.getRoomType() }"></td>
-                                <td th:text="${room.getIsApproval() ? 'Đã duyệt' : 'Chưa duyệt'}"></td>
+                                <td th:text="${room.room_id}"></td>
+                                <td th:text="${room.price + ' triệu/tháng'}"></td>
+                                <td th:text="${room.address}"></td>
+                                <td th:text="${room.area + ' m²'}"></td>
+                                <td th:text="${room.roomType}"></td>
+                                <td th:text="${room.isApproval ? 'Đã duyệt' : 'Chưa duyệt'}"></td>
                                 <td>
                                     <!-- Nếu chưa duyệt -->
                                     <div th:if="${!room.isApproval}">
-                                        <button onclick="approveRoom([[${room.id}]])" class="btn btn-success">Duyệt</button>
-                                        <button onclick="disapproveRoom([[${room.id}]])" class="btn btn-danger">Không duyệt</button>
+                                        <form action="/api/home/admin/approveRoom" method="post" style="display:inline;">
+                                            <input type="hidden" name="roomId" th:value="${room.room_id}" />
+                                            <button type="submit" class="btn btn-success">Duyệt</button>
+                                        </form>
+                                        <form action="/api/home/admin/disapproveRoom" method="post" style="display:inline;">
+                                            <input type="hidden" name="roomId" th:value="${room.room_id}" />
+                                            <button type="submit" class="btn btn-danger">Không duyệt</button>
+                                        </form>
                                     </div>
                                     <!-- Nếu đã duyệt -->
                                     <div th:if="${room.isApproval}">
@@ -750,6 +756,7 @@
                             </tr>
                             </tbody>
                         </table>
+
 
                         <!-- Pagination Controls -->
                         <div class="pagination">
@@ -781,35 +788,6 @@
                                 form.submit();
                             }
 
-                            // Hàm duyệt phòng
-                            function approveRoom(roomId) {
-                                fetch(`/api/rooms/approve/${roomId}`, {
-                                    method: 'POST'
-                                })
-                                    .then(response => {
-                                        if (response.ok) {
-                                            alert('Phòng đã được duyệt!');
-                                            location.reload(); // Reload trang để cập nhật trạng thái
-                                        } else {
-                                            alert('Lỗi khi duyệt phòng.');
-                                        }
-                                    });
-                            }
-
-                            // Hàm gửi yêu cầu không duyệt phòng
-                            function disapproveRoom(roomId) {
-                                fetch(`/api/rooms/disapprove/${roomId}`, {
-                                    method: 'POST'
-                                })
-                                    .then(response => {
-                                        if (response.ok) {
-                                            alert('Phòng đã được chuyển về chưa duyệt!');
-                                            location.reload();
-                                        } else {
-                                            alert('Lỗi khi cập nhật trạng thái.');
-                                        }
-                                    });
-                            }
                         </script>
                     </div>
                 </div>

@@ -117,36 +117,17 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional
     public void approveRoom(Long roomId) {
-        // Tìm phòng theo ID, trả về Optional<Room>
-        Optional<Room> roomOptional = roomRepository.findById(roomId);
-
-        // Kiểm tra nếu phòng tồn tại trong Optional
-        roomOptional.ifPresentOrElse(room -> {
-            // Cập nhật trạng thái phòng thành 'Đã duyệt'
-            room.setIsApproval("true");
-
-            // Lưu lại phòng sau khi thay đổi trạng thái
-            roomRepository.save(room); // Lưu trực tiếp đối tượng Room
-        }, () ->{
-                });
-    }
+        Room room = roomRepository.findById(roomId) .orElseThrow(() -> new RuntimeException("Room not found"));
+        room.setIsApproval("true");
+        roomRepository.save(room); }
 
     // Không duyệt phòng
     @Override
     @Transactional
     public void disapproveRoom(Long roomId) {
-        Optional<Room> roomOptional = roomRepository.findById(roomId);
-
-        // Kiểm tra nếu phòng tồn tại trong Optional
-        roomOptional.ifPresentOrElse(room -> {
-            // Cập nhật trạng thái phòng thành 'Đã duyệt'
-            room.setIsApproval("false");
-
-            // Lưu lại phòng sau khi thay đổi trạng thái
-            roomRepository.save(room); // Lưu trực tiếp đối tượng Room
-        }, () ->{
-        });
+        Room room = roomRepository.findById(roomId) .orElseThrow(() -> new RuntimeException("Room not found"));
+        room.setIsApproval("false");
+        roomRepository.save(room);
     }
 
-
-}
+    }

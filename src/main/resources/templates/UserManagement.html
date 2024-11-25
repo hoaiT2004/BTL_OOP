@@ -695,7 +695,7 @@
   <!-- Pagination Controls -->
   <div class="pagination">
     <button onclick="changePage(${currentPage - 1})" ${currentPage == 0 ? 'disabled' : ''}>Previous</button>
-    <span th:text="'Page ' + (${currentPage ?: 0} + 1)"></span>
+    <span th:text="'Page ' + (${currentPage ?: 0} )"></span>
     <button onclick="changePage(${currentPage + 1})" ${users.size() < 10 ? 'disabled' : ''}>Next</button>
   </div>
 
