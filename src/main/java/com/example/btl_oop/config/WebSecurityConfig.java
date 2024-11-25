@@ -63,6 +63,7 @@ public class WebSecurityConfig {
                 .permitAll()
                 .requestMatchers("/admin/*").hasAuthority("Admin")
                 .requestMatchers("/user/schedule").hasAuthority("Tenant")
+                .requestMatchers("/api/home/admin/approveRoom", "/api/home/admin/disapproveRoom").hasAnyAuthority("Admin")
                 .requestMatchers("/api/room/schedule").hasAuthority("Tenant")
                 .requestMatchers("/api/comment/add").hasAuthority("Tenant")
                 .requestMatchers("/api/addRoom").hasAuthority("Landlord")

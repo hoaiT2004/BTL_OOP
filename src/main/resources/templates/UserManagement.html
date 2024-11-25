@@ -465,6 +465,17 @@
       background-color: #1266dd;
     }
 
+    .form-row {
+      display: flex;
+      align-items: center;
+      gap: 10px; /* Khoảng cách giữa các phần tử */
+    }
+
+    .form-row label {
+      margin-right: 5px; /* Khoảng cách giữa nhãn và input */
+    }
+
+
 
     .price{
       color: green;
@@ -657,16 +668,13 @@
 
   <!-- Search Form -->
   <form th:action="@{/admin/UserManagement}" method="get" id="searchForm">
-    <div>
-      <label for="name">Tên:</label>
-      <input type="text" id="name" name="name" th:value="${name}">
+    <div class="form-row">
+      <input type="text" id="name" name="name" th:value="${name}" placeholder="Tên">
+      <input type="text" id="tel" name="tel" th:value="${tel}" placeholder="Số điện thoại">
+      <button type="submit" class="btn header-btn">Lọc kết quả</button>
     </div>
-    <div>
-      <label for="tel">Số điện thoại:</label>
-      <input type="text" id="tel" name="tel" th:value="${tel}">
-    </div>
-    <button type="submit" class="btn header-btn">Lọc kết quả</button>
   </form>
+
   <div class="container">
     <section>
       <div style="margin-top: 10px;" class="content">
