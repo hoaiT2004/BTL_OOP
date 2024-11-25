@@ -71,7 +71,7 @@
       display: flex;
       align-items: center;
       justify-content: center; /* Căn giữa phần search-container */
-      margin-bottom: 20px; /* Tùy chọn: khoảng cách dưới phần tìm kiếm */
+      
     }
 
     .search-container {
@@ -163,15 +163,21 @@
     }
 
     nav {
+      width: 100%;
       background-color: #1266dd;
+      justify-content: flex-start;
     }
+
+
+
 
     nav ul.menu {
       display: flex;
+      list-style: none;
       overflow: hidden;
-      list-style-type: none;
-      padding: 0;
       margin: 0;
+      padding: 0;
+      float: left;
 
     }
 
@@ -468,11 +474,14 @@
     .form-row {
       display: flex;
       align-items: center;
-      gap: 10px; /* Khoảng cách giữa các phần tử */
+      justify-content: center;
+      gap: 10px;
+      margin: 10px auto;
+      max-width: 600px;
     }
 
     .form-row label {
-      margin-right: 5px; /* Khoảng cách giữa nhãn và input */
+      margin-right: 5px;
     }
 
 
@@ -626,7 +635,7 @@
 </head>
 <body>
 <header>
-  <div style="background-color: white;" class="flex border top">
+  <div style="background-color: white;">
     <div class="container">
       <div class="header flex">
         <div class="web icon">
@@ -660,10 +669,19 @@
 
   </div>
 </header>
-<div class="container">
-  <a href="/api/home" class="back-button">
-    <i>&#8592;</i>
-  </a>
+
+  <nav>
+    <div>
+      <div class="container">
+        <ul class="menu flex" id="menu">
+          <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
+          <li th:if="${role == 'Admin'}"><a href="/admin/UserManagement">Người dùng</a></li>
+          <li th:if="${role == 'Admin'}"><a href="/admin/RoomManagement">Phòng</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
   <h1>Quản Lí Người Dùng</h1>
 
   <!-- Search Form -->
@@ -731,7 +749,7 @@
     </section>
 
   </div>
-</div>
+
 <footer>
   <h3 style="text-align:center ;">Copyright 2023 &copy; IT</h3>
   <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>

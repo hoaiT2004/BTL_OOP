@@ -29,7 +29,7 @@
     import org.springframework.web.multipart.MultipartFile;
 
     @Controller
-    @RequestMapping("/api/home/admin")
+    @RequestMapping("/admin")
     public class AdminController {
         @Autowired
         private RoomService roomService;
@@ -93,13 +93,13 @@
         @PostMapping("/approveRoom")
         public String approveRoom(@RequestParam Long roomId) {
             roomService.approveRoom(roomId);
-            return "redirect:/api/home/admin/RoomManagement";
+            return "redirect:/admin/RoomManagement";
         }
 
         @PostMapping("/disapproveRoom")
         public String disapproveRoom(@RequestParam Long roomId) {
             roomService.disapproveRoom(roomId);
-            return "redirect:/api/home/admin/RoomManagement";
+            return "redirect:/admin/RoomManagement";
         }
 
 
