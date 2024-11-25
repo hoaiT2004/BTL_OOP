@@ -27,4 +27,10 @@ public interface RoomService {
     Page<Room> getRoomsByUser(String isApproval, String username, Pageable pageable);
 
     void updateRoom(RoomDto roomDto, Authentication auth, List<MultipartFile> imagesAdd, List<Long> imageIdsDel);
+
+    Page<Room> getAllRoomsForAdmin(Pageable pageable);
+
+    void approveRoom(Long roomId);
+
+    void disapproveRoom(Long roomId);
 }

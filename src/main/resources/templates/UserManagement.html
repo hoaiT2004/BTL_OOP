@@ -2,15 +2,542 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quản Lí Người Dùng</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.js"
+          integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+  <title>Quản Lý Người Dùng - Admin</title>
+</head>
+
   <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    hr {
+      margin-left: auto;
+      margin-right: auto;
+      width: 90%;
+      border-width: 1px;
+    }
+
+    a{
+      text-decoration: none !important;
+    }
+
+    .subject {
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .left {
+      background-color: white;
+      border: 1px solid;
+      width: 1500px;
+      height: 100%;
+      margin-bottom: 30px;
+    }
+
+    .right {
+      /* background-color: white; */
+      /* border: 1px solid; */
+      width: 28%;
+      height: 100%;
+    }
+
+    .bg-white{
+      background-color: white;
+    }
+
+
+
+    .content {
+      display: flex;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+    }
+
+
+    .flex {
+      display: flex;
+      align-items: center;
+      justify-content: center; /* Căn giữa phần search-container */
+
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      gap: 10px; /* Tăng khoảng cách giữa các thành phần nếu cần */
+    }
+
+    .search-container input[type="text"] {
+      width: 250px; /* Điều chỉnh lại kích thước nếu cần */
+      padding: 8px; /* Thêm padding để trông cân đối */
+    }
+
+    .search-container button {
+      padding: 8px 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .search-container button:hover {
+      background-color: #0056b3;
+    }
+
+
+
+
+    .header {
+      justify-content: space-between;
+    }
+
+
+    .rightheader div {
+      padding: 10px;
+    }
+
+    .webicon {
+      width: 11%;
+      padding: 10px;
+    }
+
+    .container {
+      width: 80%;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    .detail-container {
+      width: 90%;
+      margin: 0 auto;
+    }
+    .filter-item button {
+      padding: 10px 20px;
+      background-color: #003c9d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .filter-item button:hover {
+      background-color: #002e7a;
+    }
+    body {
+      justify-content: center;
+      position: relative;
+      align-items: center;
+      background: linear-gradient(-135deg, cyan, lightcyan, blue);
+
+    }
+
+    .border {
+      border: 0.5px solid gray;
+      border-radius: 7px;
+    }
+
+    .bordertop {
+      border-top: 0;
+      border: 0.5px solid gray;
+      border-radius: 7px 7px 0 0;
+    }
+
+    .borderbottom {
+      border: 0.5px solid gray;
+      border-radius: 0 0 7px 7px;
+    }
+
+    nav {
+      width: 100%;
+      background-color: #1266dd;
+      justify-content: flex-start;
+    }
+
+
+
+
+    nav ul.menu {
+      display: flex;
+      list-style: none;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      float: left;
+
+    }
+
+    nav ul.menu>li>a {
+
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    nav ul.menu>li:hover a {
+      border-bottom: 5px solid lightblue;
+      transition: all 0.1s;
+    }
+
+    nav ul.menu>li>a.active {
+      border-bottom: 5px solid lightblue;
+    }
+
+    @media screen and (max-width: 873px) {
+      .menu {
+        flex-direction: column;
+      }
+
+      .container{
+        width: 95%;
+      }
+
+      .content {
+        display: block;
+      }
+
+      .right {
+        width: 100%;
+      }
+
+      .left {
+        width: 100%;
+      }
+
+      .toggle {
+        display: block !important;
+      }
+
+      nav {
+        display: none;
+      }
+
+      div.big-device {
+        display: none;
+      }
+
+      div.small-device {
+        display: flex !important;
+      }
+
+      .main-info {
+        display: block;
+      }
+
+      .sticky {
+        position: absolute !important;
+        top: 0;
+        width: 100%
+      }
+      .item{
+        display: block !important;
+      }
+      .image{
+        width: 100% !important;
+        margin: 0 !important;
+      }
+      .info{
+        width: 100% !important;
+      }
+    }
+
+
+    div.small-device {
+      display: none;
+    }
+
+    .toggle {
+      display: none;
+      background-color: #0f305f;
+      color: white;
+      text-align: right;
+      padding: 10px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .sticky {
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+
+    .smaller {
+      padding: 8px 16px !important;
+    }
+
+    @keyframes move {
+      from {
+        left: 0;
+      }
+
+      to {
+        left: 100%;
+      }
+    }
+
+    .v-menu {
+      flex-direction: column;
+      overflow: hidden;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+
+    }
+
+    .v-menu>li {
+      width: 90%;
+      border-top: 1px solid lightgray;
+    }
+
+    .v-menu>li>a {
+      float: left;
+      display: block;
+      color: black;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    .v-menu>li>a:hover {
+      color: red;
+    }
+
+    footer {
+      margin-top: 10px;
+      overflow: hidden;
+      background-color: white;
+      padding: 0.5rem;
+      color: black;
+    }
+
+    footer>span.moving {
+      position: relative;
+      animation: move 10s infinite;
+    }
+
+    .item {
+      display: flex;
+      border-top: 1px solid gray;
+    }
+
+    .image {
+      width: 30%;
+      margin: auto 10px;
+      padding: 5px;
+    }
+
+    .image>img {
+      border-radius: 7px;
+    }
+
+    .border-image{
+      border-radius: 7px;
+    }
+
+    .info {
+      width: 70%;
+    }
+
+    .main-title {
+      width: 100%;
+      /* padding: 10px; */
+      font-size: 150%;
+    }
+
+    .main-info {
+      width: 100%;
+      justify-content: space-between;
+      /* padding: 10px; */
+    }
+
+    .info>div {
+      padding: 10px;
+    }
+
+    .detail-title {
+      font-size: 200%;
+      text-transform: capitalize;
+    }
+
+    .comment-form {
+      width: 90%;
+      margin: 0 auto;
+      padding: 5px 0px;
+      font-size: 120%;
+      background-color: lightgray;
+      border-radius: 7px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      outline: none;
+      padding: 5px 0;
+      width: 100%;
+    }
+
+    /* .comment-info {
+        width: 90%;
+        margin: 0px auto;
+    } */
+
+    .comment-info table {
+      /* background-color: #f3f3f3; */
+      padding: 20px 30px 15px;
+      width: 100%;
+    }
+
+    .comment-info table th {
+      font-weight: 600;
+      padding-bottom: 20px;
+      text-align: left;
+      text-transform: uppercase;
+      width: 25%;
+    }
+
+    .comment-info table td {
+      padding-bottom: 20px;
+    }
+
+    .comment-info p {
+      text-align: center;
+    }
+
+    .comment-info p button {
+      background-color: #666;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      height: 36px;
+      text-align: center;
+      width: 100px;
+    }
+
+    @media only screen and (max-width: 873px) {
+      .comment-info {
+        max-width: 90%;
+        width: auto;
+      }
+
+      .comment-info table th,
+      .comment-info table td {
+        display: block;
+      }
+
+      .comment-info p button {
+        width: 50%;
+        min-width: 200px;
+      }
+    }
+
+    .user-img {
+      margin-top: 10px;
+    }
+
+    .ml-10{
+      margin-left: 10px;
+    }
+
+    .rounded-circle {
+      border-radius: 100px;
+    }
+
+    .mt-10 {
+      margin-top: 10px;
+    }
+
+    .header-btn {
+      color: white;
+      text-decoration: none;
+      background-color: #1266dd;
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px auto;
+      max-width: 600px;
+    }
+
+    .form-row label {
+      margin-right: 5px;
+    }
+
+
+
+    .price{
+      color: green;
+      font-size: 25px;
+    }
+
+    .mr-5{
+      margin-right: 5px;
+    }
+
+    .test{
+      background-color: red;
+    }
+
+    .wrap-login-btn {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding-top: 5px;
+      padding-bottom: 10px;
+    }
+
+    .login-btn {
+      font-family: Montserrat-Bold;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #fff;
+      text-transform: uppercase;
+      width: 80%;
+      height: 40px;
+      border-radius: 7px;
+      background: #57b846;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 25px;
+    }
+    button {
+      outline: none !important;
+      border: none;
+      background: transparent;
+    }
+
+
+    .thump {
+      width: 15%;
+    }
+
+    .main  {
+      width: 80%;
+    }
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
-      color: #333;
-      margin: 0;
-      padding: 0;
+      text-align: center;
+      padding: 20px;
     }
     .container {
       width: 80%;
@@ -99,123 +626,114 @@
 </head>
 <body>
 <div class="container">
-  <a href="/api/home" class="back-button">
-    <i>&#8592;</i>
+  <header>
+    <div style="background-color: white;">
+      <div class="container">
+        <div class="header flex">
+          <div class="web icon">
+            <a th:href="@{/api/home}"><img style="width: 50%; height: 50%;" src="https://res.cloudinary.com/hoaptit/image/upload/v1730187948/tro-sinh-vien2_wiuzca.png" alt=""></a>
+          </div>
+          <div class="right header flex">
+            <div th:if="${username != null}" class="big-device flex">
+              <div><a class="btn italic" th:href="@{/user/profile}"><h4 th:text="${username}"></h4></a></div>
+              <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
+                                                                          class="fa fa-address-book"></i>Đăng xuất</a></div>
+              <div><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
+                                                                    class="fas fa-pen-alt"></i>Đăng tin</a></div>
+            </div>
+            <div th:if="${username == null}" class="big-device flex">
+              <div><a class="btn header-btn" th:href="@{/user/login}"><i style="margin-right: 5px;"
+                                                                         class="fa fa-sign-in"></i>Đăng nhập</a></div>
+              <div><a class="btn header-btn" th:href="@{/user/register}"><i style="margin-right: 5px;"
+                                                                            class="fa fa-address-book"></i>Đăng ký</a></div>
+              <div><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
+                                                                    class="	fas fa-pen-alt"></i>Đăng tin</a></div>
+            </div>
+            <div class="small-device flex">
+              <div><a href="@{/user/login}" type="button" style="padding: 3px;" class="fa fa-sign-in"></a></div>
+              <div><a href="@{/user/register}" type="button" style="padding: 3px;" class="fa-solid fa-user-plus"></a></div>
+              <div><a href="#" type="button" style="padding: 3px;" class="fa-solid fa-plus"></a></div>
+            </div>
+          </div>
+        </div>
 
+      </div>
 
-  </a>
+    </div>
+  </header>
+
+  <nav>
+    <div>
+      <div class="container">
+        <ul class="menu flex" id="menu">
+          <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
+          <li th:if="${role == 'Admin'}"><a href="/admin/UserManagement">Người dùng</a></li>
+          <li th:if="${role == 'Admin'}"><a href="/admin/RoomManagement">Phòng</a></li>
+          <li th:if="${role == 'Tenant'}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
+          <li th:if="${role == 'Landlord'}"><a th:href="@{/user/appointment}">Lịch hẹn</a></li>
+          <li th:if="${role == 'Landlord'}"><a th:href="@{/api/room/manage}">Quản lý phòng trọ</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
   <h1>Quản Lí Người Dùng</h1>
-
-  <!-- Search Bar -->
-  <div class="search-bar">
-    <input type="text" id="searchName" placeholder="Tìm kiếm theo tên">
-    <input type="text" id="searchAddress" placeholder="Tìm kiếm theo địa chỉ">
-    <button onclick="searchUser()">Search</button>
-  </div>
-
+  <div class="container">
+    <section>
+      <div style="margin-top: 10px;" class="content">
+        <div class="left border">
   <!-- User Table -->
   <table>
     <thead>
     <tr>
       <th>ID</th>
-      <th>Name</th>
-      <th>Address</th>
+      <th>Tên</th>
+      <th>PhoneNumber</th>
       <th>Email</th>
-      <th>Actions</th>
     </tr>
     </thead>
     <tbody id="userTable">
+    <tr th:each="user : ${users}">
+      <td th:text="${user.getId()}"></td>
+      <td th:text="${user.getFullname()}"></td>
+      <td th:text="${user.getTel()}"></td>
+      <td th:text="${user.getEmail()}"></td>
+    </tr>
     </tbody>
   </table>
 
   <!-- Pagination Controls -->
   <div class="pagination">
-    <button onclick="prevPage()">Previous</button>
-    <span id="pageDisplay">Page 1</span>
-    <button onclick="nextPage()">Next</button>
+    <button onclick="changePage(${currentPage - 1})" ${currentPage == 0 ? 'disabled' : ''}>Previous</button>
+    <span th:text="'Page ' + (${currentPage ?: 0} )"></span>
+    <button onclick="changePage(${currentPage + 1})" ${users.size() < 10 ? 'disabled' : ''}>Next</button>
   </div>
 </div>
-
-<script>
-  let users = []; // Array to store user data fetched from the API
-  const rowsPerPage = 10; // Number of rows per page
-  let currentPage = 1;
-
-  // Function to fetch users from the API
-  async function fetchUsers() {
-    try {
-      const response = await fetch('/api/users');
-      if (response.ok) {
-        users = await response.json();
-        displayUsers();
-      } else {
-        console.error('Failed to fetch users:', response.status);
-      }
-    } catch (error) {
-      console.error('Error fetching users:', error);
+</div>
+    </section>
+  </div>
+</div>
+<footer>
+  <h3 style="text-align:center ;">Copyright Nhom9 &copy; IT</h3>
+  <span class="moving">Muốn có một nơi ở tốt hãy đến với trang web trọ sinh viên của chúng tôi</span>
+</footer>
+  <script>
+    // Function to handle search form submission
+    function submitSearch() {
+      const form = document.getElementById('searchForm');
+      form.submit();
     }
-  }
 
-  // Function to display users on the current page
-  function displayUsers() {
-    const userTable = document.getElementById('userTable');
-    userTable.innerHTML = ''; // Clear the table before adding new rows
-
-    const start = (currentPage - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    const paginatedUsers = users.slice(start, end);
-
-    // Add rows for current page users
-    paginatedUsers.forEach(user => {
-      const row = `<tr>
-        <td>${user.id}</td>
-        <td>${user.name}</td>
-        <td>${user.address}</td>
-        <td>${user.email}</td>
-        <td><button>Edit</button> <button>Delete</button></td>
-      </tr>`;
-      userTable.innerHTML += row;
-    });
-
-    document.getElementById('pageDisplay').innerText = `Page ${currentPage}`;
-  }
-
-  // Function to go to the previous page
-  function prevPage() {
-    if (currentPage > 1) {
-      currentPage--;
-      displayUsers();
+    // Function to change page
+    function changePage(pageNo) {
+      const form = document.getElementById('searchForm');
+      const pageInput = document.createElement('input');
+      pageInput.setAttribute('type', 'hidden');
+      pageInput.setAttribute('name', 'pageNo');
+      pageInput.setAttribute('value', pageNo);
+      form.appendChild(pageInput);
+      form.submit();
     }
-  }
 
-  // Function to go to the next page
-  function nextPage() {
-    if (currentPage * rowsPerPage < users.length) {
-      currentPage++;
-      displayUsers();
-    }
-  }
-
-  // Function to search for users by name and address
-  function searchUser() {
-    const name = document.getElementById('searchName').value.toLowerCase();
-    const address = document.getElementById('searchAddress').value.toLowerCase();
-
-    const filteredUsers = users.filter(user =>
-            user.name.toLowerCase().includes(name) &&
-            user.address.toLowerCase().includes(address)
-    );
-
-    // Update the users array with the filtered results
-    users = filteredUsers;
-
-    // Reset pagination and display filtered users
-    currentPage = 1;
-    displayUsers();
-  }
-
-  // Fetch users when the page loads
-  fetchUsers();
-</script>
+  </script>
 </body>
 </html>

@@ -73,8 +73,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Page<UserDto> getAllUserForAdmin(Pageable pageable) {
+        Page<User> userPage = userRepository.findAll(pageable);
+
+        // Chuyển đổi Page<User> sang Page<UserDto>
+        Page<UserDto> userDtoPage = userPage.map(UserDto::toDto);
+        return userDtoPage;
     }
 
     @Override
@@ -117,15 +121,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public List<UserDto> getAllUser(String textSearch, Pageable pageable) {
+    public List<UserDto> getAllUser(String name, String tel, Pageable pageable) {
         Page<User> userPage;
-        if (textSearch != null) {
-            userPage = userRepository.findByUsernameContaining(textSearch, pageable);
+        if ((name != null && !name.isEmpty()) || (tel != null && !tel.isEmpty())) {
+            userPage = userRepository.findByUsernameContaining(name, tel, pageable);
         } else {
             userPage = userRepository.findAll(pageable);
         }
-        List<User> userList = new LinkedList<>();
-        userPage.forEach(userList::add);
+        List<User> userList = userPage.getContent();
         return UserDto.toDto(userList);
     }
 }

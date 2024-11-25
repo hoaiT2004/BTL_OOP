@@ -181,4 +181,24 @@ public class RoomServiceImpl implements RoomService {
         roomRepository.save(room);
     }
 
+    @Override
+    public Page<Room> getAllRoomsForAdmin(Pageable pageable) {
+        return roomRepository.findAll(pageable);
+    }
+
+    @Override
+    @Transactional
+    public void approveRoom(Long roomId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
+        room.setIsApproval("true");
+        roomRepository.save(room);
+    }
+
+    // Không duyệt phòng
+    @Override
+    @Transactional
+    public void disapproveRoom(Long roomId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
+        roomRepository.deleteById(roomId);
+    }
 }

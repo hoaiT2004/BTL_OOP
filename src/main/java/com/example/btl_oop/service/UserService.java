@@ -4,6 +4,7 @@ import com.example.btl_oop.entity.User;
 import com.example.btl_oop.model.dto.UserDto;
 import com.example.btl_oop.model.request.user.*;
 import com.example.btl_oop.model.response.user.*;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.*;
@@ -18,7 +19,7 @@ public interface UserService {
 
     UserDto getUserById(long id);
 
-    List<UserDto> getAllUser(String textSearch, Pageable pageable);
+    List<UserDto> getAllUser(String name, String tel, Pageable pageable);
 
     UserDto findUserByUsername(String username);
 
@@ -26,5 +27,5 @@ public interface UserService {
 
     CreateNewPasswordResponse createNewPassword(CreateNewPasswordRequest request);
 
-    List<User> getAllUsers();
+    Page<UserDto> getAllUserForAdmin(Pageable pageable);
 }

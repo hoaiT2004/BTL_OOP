@@ -576,8 +576,8 @@
         <div class="container">
             <ul class="menu flex" id="menu">
                 <li><a class="active" th:href="@{/api/home}">Trang chủ</a></li>
-                <li th:if="${role == 'Admin'}"><a href="/api/home/UserManagement">Người dùng</a></li>
-                <li th:if="${role == 'Admin'}"><a href="#">Phòng</a></li>
+                <li th:if="${role == 'Admin'}"><a href="/admin/UserManagement">Người dùng</a></li>
+                <li th:if="${role == 'Admin'}"><a href="/admin/RoomManagement">Phòng</a></li>
                 <li th:if="${role == 'Tenant'}"><a th:href="@{/user/schedule}">Lịch xem phòng</a></li>
                 <li th:if="${role == 'Landlord'}"><a th:href="@{/user/appointment}">Lịch hẹn</a></li>
                 <li th:if="${role == 'Landlord'}"><a th:href="@{/api/room/manage}">Quản lý phòng trọ</a></li>

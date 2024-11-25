@@ -64,4 +64,21 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT r FROM Room r WHERE r.user_id = :userId and r.isApproval = :isApproval ")
     Page<Room> getAllByUserId(@Param("isApproval") String isApproval, @Param("userId") Long userId, Pageable pageable);
 
+
+    @Query("SELECT r FROM Room AS r WHERE " +
+            "(:price = '' OR " +
+            "    (:price = '1' AND r.price < 1) OR" +
+            "    (:price = '1-2' AND r.price >= 1 AND r.price <= 2) OR" +
+            "    (:price = '2-3' AND r.price >= 2 AND r.price <= 3) OR" +
+            "    (:price = '3' AND r.price > 3)" +
+            ") " +
+            "AND (:address = '' OR r.address LIKE CONCAT('%', :address, '%')) " +
+            "AND (:area = '' OR " +
+            "    (:area = '20' AND r.area < 20) OR" +
+            "    (:area = '20-30' AND r.area >= 20 AND r.area <= 30) OR" +
+            "    (:area = '30-40' AND r.area >= 30 AND r.area <= 40) OR" +
+            "    (:area = '40' AND r.area > 40)" +
+            ") " +
+            "AND (:roomType IS NULL OR r.roomType = :roomType)")
+    Page<Room> findAllByFilterConstraintsWithoutApproval(@Param("price") String price, @Param("address") String address, @Param("area") String area, @Param("roomType") RoomType roomType, Pageable pageable);
 }
