@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +36,8 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private ImageRepository imageRepository;
 
-    private static final String isApproval = "true" ;
-    private static final String isNotApproval = "false" ;
+    private static final String isApproval = "true";
+    private static final String isNotApproval = "false";
     @Autowired
     private UserRepository userRepository;
 
@@ -76,9 +77,9 @@ public class RoomServiceImpl implements RoomService {
     public void addRoom(RoomDto roomDto, List<MultipartFile> images, Authentication auth) {
         Room room = RoomDto.toRoom(roomDto);
         room.setIsApproval("false");
-        if(auth != null) {
+        if (auth != null) {
             String username = auth.getName();
-            Optional<User> user =  userRepository.findUserByUsername(username);
+            Optional<User> user = userRepository.findUserByUsername(username);
             room.setUser_id(user.get().getId());
         }
 
@@ -86,7 +87,7 @@ public class RoomServiceImpl implements RoomService {
         String url = fileService.uploadFile((MultipartFile) images.get(0));
         room.setImage(url);
         roomRepository.save(room);
-        for(int i=0;i<images.size();i++) {
+        for (int i = 0; i < images.size(); i++) {
             Image image = new Image();
             image.setRoom_id(room.getId());
             String imageUrl = fileService.uploadFile(images.get(i));
@@ -114,20 +115,20 @@ public class RoomServiceImpl implements RoomService {
         }
         return roomPage;
     }
+
     @Override
     @Transactional
     public void approveRoom(Long roomId) {
-        Room room = roomRepository.findById(roomId) .orElseThrow(() -> new RuntimeException("Room not found"));
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
         room.setIsApproval("true");
-        roomRepository.save(room); }
+        roomRepository.save(room);
+    }
 
     // Không duyệt phòng
     @Override
     @Transactional
     public void disapproveRoom(Long roomId) {
-        Room room = roomRepository.findById(roomId) .orElseThrow(() -> new RuntimeException("Room not found"));
-        room.setIsApproval("false");
-        roomRepository.save(room);
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
+        roomRepository.deleteById(roomId);
     }
-
-    }
+}

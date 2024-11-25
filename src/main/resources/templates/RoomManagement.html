@@ -751,11 +751,11 @@
                                 <td>
                                     <!-- Nếu chưa duyệt -->
                                     <div th:if="${!room.isApproval}">
-                                        <form action="/admin/approveRoom" method="post" style="display:inline;">
+                                        <form th:action="@{/admin/approveRoom}" method="post" style="display:inline;">
                                             <input type="hidden" name="roomId" th:value="${room.room_id}" />
                                             <button type="submit" class="btn btn-success">Duyệt</button>
                                         </form>
-                                        <form action="/admin/disapproveRoom" method="post" style="display:inline;">
+                                        <form th:action="@{/admin/disapproveRoom}" method="post" style="display:inline;">
                                             <input type="hidden" name="roomId" th:value="${room.room_id}" />
                                             <button type="submit" class="btn btn-danger">Không duyệt</button>
                                         </form>

@@ -19,8 +19,11 @@ public interface RoomService {
     List<String> getAllImagesByRoom_Id(String room_id);
 
     void addRoom(RoomDto roomDto, List<MultipartFile> images, Authentication auth);
+
     Page<Room> getAllRoomsForAdmin(RoomFilterDataRequest request, Pageable pageable);
+
     void approveRoom(Long roomId);
+
     void disapproveRoom(Long roomId);
 
 

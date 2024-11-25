@@ -91,13 +91,15 @@
             return "UserManagement";
         }
         @PostMapping("/approveRoom")
-        public String approveRoom(@RequestParam Long roomId) {
+        public String approveRoom(@RequestParam Long roomId, Authentication authentication, Model model) {
+            func_common(authentication, model);
             roomService.approveRoom(roomId);
             return "redirect:/admin/RoomManagement";
         }
 
         @PostMapping("/disapproveRoom")
-        public String disapproveRoom(@RequestParam Long roomId) {
+        public String disapproveRoom(@RequestParam Long roomId, Authentication authentication, Model model) {
+            func_common(authentication, model);
             roomService.disapproveRoom(roomId);
             return "redirect:/admin/RoomManagement";
         }
