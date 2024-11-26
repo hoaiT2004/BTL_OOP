@@ -36,7 +36,7 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    private static final int sizeOfPage = 10;
+    private static final int sizeOfPage = 5;
 
 
     private void func_common(Authentication authentication, Model model) {

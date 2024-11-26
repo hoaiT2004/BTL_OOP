@@ -689,30 +689,26 @@
     </tbody>
   </table>
 
-  <!-- Pagination Controls -->
-  <div class="pagination">
-    <button onclick="changePage(${currentPage - 1})" ${currentPage == 0 ? 'disabled' : ''}>Previous</button>
-    <span th:text="'Page ' + (${currentPage ?: 0} )"></span>
-    <button onclick="changePage(${currentPage + 1})" ${users.size() < 10 ? 'disabled' : ''}>Next</button>
-  </div>
-          <script>
-            // Function to handle search form submission
-            function submitSearch() {
-              const form = document.getElementById('searchForm');
-              form.submit();
-            }
+          <div class="box-footer clearfix">
+            <ul class="pagination pagination-sm no-margin pull-right">
+              <li th:if="${currentPage > 1}">
+                <a th:href="@{'/admin/UserManagement?pageNo=' + ${currentPage - 1}}"><<</a>
+              </li>
+              <li th:each="i : ${#numbers.sequence(1, totalPage)}"
+                  th:classappend="${currentPage == i ? 'active' : ''}">
+                <a th:href="@{'/admin/UserManagement?pageNo=' + ${i}}" th:text="${i}">
+                </a>
+              </li>
+              <li th:if="${currentPage < totalPage}">
+                <a th:href="@{'/admin/UserManagement?pageNo=' + ${currentPage + 1}}">>>
+                </a>
+              </li>
+            </ul>
 
-            // Function to change page
-            function changePage(pageNo) {
-              const form = document.getElementById('searchForm');
-              const pageInput = document.createElement('input');
-              pageInput.setAttribute('type', 'hidden');
-              pageInput.setAttribute('name', 'pageNo');
-              pageInput.setAttribute('value', pageNo);
-              form.appendChild(pageInput);
-              form.submit();
-            }
-          </script>
+
+          </div>
+
+
         </div>
 
 
