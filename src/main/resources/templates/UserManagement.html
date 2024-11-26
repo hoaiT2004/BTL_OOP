@@ -623,7 +623,7 @@
               <div><a class="btn italic" th:href="@{/user/profile}"><h4 th:text="${username}"></h4></a></div>
               <div><a class="btn header-btn" th:href="@{/user/logout}"><i style="margin-right: 5px;"
                                                                           class="fa fa-address-book"></i>Đăng xuất</a></div>
-              <div><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
+              <div th:if="${role == 'Landlord'}"><a class="btn header-btn" href="/api/addroom"><i style="margin-right: 5px;"
                                                                     class="fas fa-pen-alt"></i>Đăng tin</a></div>
             </div>
             <div th:if="${username == null}" class="big-device flex">
@@ -637,7 +637,6 @@
             <div class="small-device flex">
               <div><a href="@{/user/login}" type="button" style="padding: 3px;" class="fa fa-sign-in"></a></div>
               <div><a href="@{/user/register}" type="button" style="padding: 3px;" class="fa-solid fa-user-plus"></a></div>
-              <div><a href="#" type="button" style="padding: 3px;" class="fa-solid fa-plus"></a></div>
             </div>
           </div>
         </div>

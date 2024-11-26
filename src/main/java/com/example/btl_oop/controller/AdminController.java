@@ -31,8 +31,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
     @Autowired
     private RoomService roomService;
+
     @Autowired
     private UserService userService;
 
